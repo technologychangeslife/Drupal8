@@ -41,14 +41,7 @@ class TimeBlock extends BlockBase implements ContainerFactoryPluginInterface {
    */
   public function build() {
    
-    $config = \Drupal::config('custom_timezone.settings');
-    // Will print 'Hello'.
-    $config->get('country');
-    // Will print 'en'.
-    $config->get('city');
-    
-    $config->get('timezone');
-    
+    $config = \Drupal::config('custom_timezone.settings');    
     $curent_time = $this->timeZoneService->getCurrentTime($config->get('timezone'));
 
     //return $table;

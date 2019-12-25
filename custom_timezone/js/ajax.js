@@ -1,9 +1,6 @@
-(function ($, Drupal, drupalSettings) {
-Drupal.behaviors.LotusBehavior = {
-  attach: function (context, settings) {    
-    
-   var href = drupalSettings.path.baseUrl + '/get-time';
- 	 var html = $.ajax({
+jQuery(document).ready(function($){
+ var href = drupalSettings.path.baseUrl + '/get-time';
+ 	var html = $.ajax({
 			type: "POST",
 			url: href,
 			data: {"ajaxCall":true},
@@ -21,8 +18,5 @@ Drupal.behaviors.LotusBehavior = {
 				
 				return false;
 			}
-    
-  }
-};
-})(jQuery, Drupal, drupalSettings);
+});
 

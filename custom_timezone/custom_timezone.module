@@ -5,22 +5,11 @@
  */
 function custom_timezone_theme() {
  
-  $templates = array('contacts_show_page' => array('template' =>'contacts_show'),
-                     'custom_timezone_block' => array(
+  $templates = array('custom_timezone_block' => array(
                         'variables' => array('title' => NULL, 'description' => NULL),
                         'template' => 'block--custom-timezone',
-                      ),
-                      'contact_edit_page'  => array(  
-                        'variables' => ['id' => NULL],
-                        'template' => 'contact_edit')
+                      )
      );
      
   return $templates;
- 
-  /*return array(
-   'custom_timezone_block' => array(
-            'variables' => array('title' => NULL, 'description' => NULL),
-            'template' => 'block--custom-timezone',
-        ),
-  );*/
 }

@@ -9,7 +9,7 @@ use Drupal\custom_timezone\GetTimezoneService;
 
 
 /**
- * The class to assign template to binder form.
+ * The class to be called from ajax to update the template.
  */
 class MyController extends ControllerBase {
  
@@ -24,19 +24,11 @@ class MyController extends ControllerBase {
   }
 
   /**
-   * This function renders the reorder form.
+   * This function to get current time.
    */
   public function getTime() {
-    $rand = rand();
     
-    $config = \Drupal::config('custom_timezone.settings');
-    // Will print 'Hello'.
-    $config->get('country');
-    // Will print 'en'.
-    $config->get('city');
-    
-    $config->get('timezone');
-    
+    $config = \Drupal::config('custom_timezone.settings');    
     $curent_time = $this->timeZoneService->getCurrentTime($config->get('timezone'));
     
     $build = array(
