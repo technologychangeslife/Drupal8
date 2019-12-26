@@ -1,10 +1,12 @@
 custom_timezone.configtimezone:
-  path: '/admin/config_timezone'
+  path: '/admin/config/custom_timezone/config_timezone'
   defaults:
     _form: '\Drupal\custom_timezone\Form\TimeConfigForm'
     _title: 'Our Admin Timezone Config'
   requirements:
-    _permission: 'administer site configuration'
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
 custom_timezone.gettime:
   path: 'get-time'
   defaults:
