@@ -4,8 +4,6 @@ namespace Drupal\custom_timezone\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
-
 
 /**
  * Our config form.
@@ -30,23 +28,24 @@ class TimeConfigForm extends ConfigFormBase {
       '#title' => $this->t('Country/Continent'),
       '#default_value' => $config->get('country'),
     ];
-    
+
     $form['city'] = [
       '#type' => 'textfield',
       '#title' => $this->t('City'),
       '#default_value' => $config->get('city'),
     ];
-    
-    $options = array(
-    'America/Chicago' => 'America/Chicago',
-    'America/New_York' => 'America/New_York',
-    'Asia/Tokyo' => 'Asia/Tokyo',
-    'Asia/Dubai' => 'Asia/Dubai',
-    'Asia/Kolkata' => 'Asia/Kolkata',
-    'Europe/Amsterdam' => 'Europe/Amsterdam',
-    'Europe/Oslo' => 'Europe/Oslo',
-    'Europe/London' => 'Europe/London');
-    
+
+    $options = [
+      'America/Chicago' => 'America/Chicago',
+      'America/New_York' => 'America/New_York',
+      'Asia/Tokyo' => 'Asia/Tokyo',
+      'Asia/Dubai' => 'Asia/Dubai',
+      'Asia/Kolkata' => 'Asia/Kolkata',
+      'Europe/Amsterdam' => 'Europe/Amsterdam',
+      'Europe/Oslo' => 'Europe/Oslo',
+      'Europe/London' => 'Europe/London',
+    ];
+
     $form['timezone'] = [
       '#type' => 'select',
       '#options' => $options,
@@ -75,15 +74,16 @@ class TimeConfigForm extends ConfigFormBase {
     $config
       ->set('country', $form_state->getValue('country'))
       ->save();
-      
+
     $config
       ->set('city', $form_state->getValue('city'))
       ->save();
-      
+
     $config
       ->set('timezone', $form_state->getValue('timezone'))
       ->save();
 
     parent::submitForm($form, $form_state);
   }
+
 }

@@ -18,4 +18,5 @@ class GetTimezoneService {
 
     return $current_timezone;
   }
+
 }
