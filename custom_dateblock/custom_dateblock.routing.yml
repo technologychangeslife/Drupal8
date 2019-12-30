@@ -1,0 +1,7 @@
+custom_dateblock.configtimezone:
+  path: '/admin/config_date'
+  defaults:
+    _form: '\Drupal\custom_dateblock\Form\DateConfigForm'
+    _title: 'Our Admin Date Config'
+  requirements:
+    _permission: 'administer site configuration'

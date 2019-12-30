@@ -1,0 +1,4 @@
+name: "Custom Date Block"
+description: "We are going to show Custom Date Block."
+type: module
+core: 8.x
