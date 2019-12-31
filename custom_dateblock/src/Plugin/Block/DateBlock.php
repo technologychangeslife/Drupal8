@@ -5,7 +5,7 @@ namespace Drupal\custom_dateblock\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\custom_timezone\GetTimezoneService;
+use Drupal\custom_dateblock\GetTimezoneService;
 use Drupal\Core\Datetime\DrupalDateTime;
 
 
@@ -26,7 +26,7 @@ class DateBlock extends BlockBase implements ContainerFactoryPluginInterface {
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('custom_timezone.get_timezone')
+      $container->get('custom_dateblock.get_timezone')
     );
     
     
@@ -42,7 +42,7 @@ class DateBlock extends BlockBase implements ContainerFactoryPluginInterface {
    */
   public function build() {
    
-    $config = \Drupal::config('custom_timezone.settings');
+    $config = \Drupal::config('custom_dateblock.settings');
     // Will print 'Hello'.
     $config->get('title');
     // Will print 'en'.
@@ -95,7 +95,7 @@ class DateBlock extends BlockBase implements ContainerFactoryPluginInterface {
           '#type' => 'markup',
           '#markup' => $hero['timezone'],
           '#cache' => [
-           'tags' => ['config:custom_timezone.settings'],
+           'tags' => ['config:custom_dateblock.settings'],
           ]
         ],
       ];

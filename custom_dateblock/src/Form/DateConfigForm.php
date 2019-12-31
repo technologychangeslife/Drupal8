@@ -16,14 +16,14 @@ class DateConfigForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return "custom_timezone_confighero";
+    return "custom_dateblock_confighero";
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('custom_timezone.settings');
+    $config = $this->config('custom_dateblock.settings');
 
     $form['title'] = [
       '#type' => 'textfield',
@@ -67,7 +67,7 @@ class DateConfigForm extends ConfigFormBase {
     print 'Europe/Amsterdam'.$date2->format('m/d/Y g:i a');
     
     
-    $get_timezone = \Drupal::service('custom_timezone.get_timezone');
+    $get_timezone = \Drupal::service('custom_dateblock.get_timezone');
     print $get_timezone->getCurrentTime($new_timezone);
     
     $options = array(
@@ -95,7 +95,7 @@ class DateConfigForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'custom_timezone.settings',
+      'custom_dateblock.settings',
     ];
   }
 
@@ -103,7 +103,7 @@ class DateConfigForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $config = $this->configFactory->getEditable('custom_timezone.settings');
+    $config = $this->configFactory->getEditable('custom_dateblock.settings');
 
     $config
       ->set('title', $form_state->getValue('title'))

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\custom_timezone;
+namespace Drupal\custom_dateblock;
 
 use Drupal\Core\Datetime\DrupalDateTime;
 
