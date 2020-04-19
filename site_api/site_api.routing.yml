@@ -1,0 +1,8 @@
+site_api.json_api:
+  path: '/page_json/{api_key}/{node_dynamic_id}'
+  defaults:
+    _controller: 'Drupal\site_api\Controller\JsonApiController::renderApi'
+    _title: 'JSON api'
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'

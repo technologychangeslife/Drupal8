@@ -1,0 +1,4 @@
+name: "Site Api"
+description: "Providing SITE API Authentication to expose nodes in Json Format."
+type: module
+core: 8.x
