@@ -12,17 +12,18 @@
  *   Returns variable which contains API token.
  */
 function bhge_training_video_api_fetch_training_videos_by_id($vid) {
+  $config = \Drupal::config('bhge_training_video_api.settings');
   if (($_SERVER['HTTP_HOST'] === 'dev.bhge.com') || ($_SERVER['HTTP_HOST'] === 'dev.ge_oil_gas.local')) {
     // Dev url and password.
-    $fetchUrl = "https://staging60.gechannelconnect.com/lms/datacore/api/GET/ActivityLink/?cm_id=" . $vid;
-    $username = "bhgevalves";
-    $password = "28bb7d4d1d03aff5bd2f895722d53d";
+    $fetchUrl = $config->get('dev_api_url') . $vid;
+    $username = $config->get('dev_api_username');
+    $password = $config->get('dev_api_password');
   }
-  if ($_SERVER['HTTP_HOST'] === 'valves.bhge.com') {
+  if (($_SERVER['HTTP_HOST'] === 'valves.bhge.com') || ($_SERVER['HTTP_HOST'] === 'valves.bakerhughes.com')) {
     // Production url and password.
-    $fetchUrl = "https://www.gechannelconnect.com/lms/datacore/api/GET/ActivityLink/?cm_id=" . $vid;
-    $username = "bhgevalves";
-    $password = "2d1eb3fb8f76352eb98b55ade2cd65";
+    $fetchUrl = $config->get('live_api_url') . $vid;
+    $username = $config->get('live_api_username');
+    $password = $config->get('live_api_password');
   }
 
   // Base64 encode username and password.

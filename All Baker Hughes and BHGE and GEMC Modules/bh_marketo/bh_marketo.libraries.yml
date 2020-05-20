@@ -1,0 +1,19 @@
+bh-marketo:
+  version: VERSION
+  js:
+    js/bh_marketo_autofill.js: {}
+  css:
+    theme:
+      css/bh_marketo.css: {}
+jquery-validation:
+  version: VERSION
+  js:
+    js/jquery.validate.js: {}
+jquery-validation-additional:
+  version: VERSION
+  js:
+    js/additional-methods.js: {}
+contact-us-validation:
+  version: VERSION
+  js:
+    js/contact-webform-validate.js: {}

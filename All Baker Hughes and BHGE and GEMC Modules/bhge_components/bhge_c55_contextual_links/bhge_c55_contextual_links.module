@@ -38,7 +38,7 @@ function bhge_c55_contextual_links_preprocess_field(&$variables, $hook) {
             'copy' => !empty($productInformation) ? strip_tags($productInformation->get('field_copy')
               ->getValue()[0]['value']) : '',
             'image' => $image,
-            'url' => $node->url(),
+            'url' => $node->toUrl()->toString(),
           ];
         }
         else {
@@ -47,7 +47,7 @@ function bhge_c55_contextual_links_preprocess_field(&$variables, $hook) {
             'title' => $node->getTitle(),
             'copy' => '',
             'image' => '',
-            'url' => $node->url(),
+            'url' => $node->toUrl()->toString(),
           ];
         }
       }

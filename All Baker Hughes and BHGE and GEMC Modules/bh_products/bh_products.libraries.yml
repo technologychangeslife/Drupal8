@@ -1,0 +1,24 @@
+bh-products:
+  version: VERSION
+  js:
+    js/bh_products.js: {}
+bh-expand-collapse:
+  version: VERSION
+  js:
+    js/bh_expand_collapse.js: {}
+bh-products-services:
+  version: VERSION
+  js:
+    js/bh_products_services.js: {}
+bh-products-highlights-prefill:
+  version: VERSION
+  js:
+    js/bh_products_highlights_prefill.js: {}
+bh-products-hero:
+  version: VERSION
+  js:
+    js/bh_products_hero.js: {}
+bh-imageless-hero-cta:
+  version: VERSION
+  js:
+    js/bh_imageless-hero-cta.js: {}

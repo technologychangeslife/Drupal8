@@ -7,3 +7,12 @@ bh-share-price:
     - core/drupal
     - core/drupalSettings
     - core/drupal.ajax
+utility-bh-share-price:
+  version: 1.x
+  js:
+    js/utility_bh_share_price.js: {}
+  dependencies:
+  - core/jquery
+  - core/drupal
+  - core/drupalSettings
+  - core/drupal.ajax

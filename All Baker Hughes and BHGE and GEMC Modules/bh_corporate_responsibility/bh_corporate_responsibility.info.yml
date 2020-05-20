@@ -1,0 +1,6 @@
+name: BH Corporate Responsibility
+type: module
+description: 'Module for customization related to corporate responsibility'
+package: BH
+core: '8.x'
+core_version_requirement: ^8 || ^9

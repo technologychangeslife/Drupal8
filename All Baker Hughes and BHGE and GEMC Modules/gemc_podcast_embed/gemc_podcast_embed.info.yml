@@ -1,0 +1,5 @@
+name: 'GEMC Podcast Embed'
+type: module
+description: 'Provide framework for embeding podcasts, initial focus on BuzzSprout.'
+core: 8.x
+package: Custom

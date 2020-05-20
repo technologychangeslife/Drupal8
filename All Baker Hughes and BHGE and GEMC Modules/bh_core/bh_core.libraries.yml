@@ -1,0 +1,13 @@
+bh-resources:
+  version: VERSION
+  js:
+    js/bh_resources_keep_exploring.js: {}
+bh-entity-browser-views:
+  version: 1.x
+  css:
+    theme:
+      css/bh_entity_browser_views.css: {}
+bh-ckeditor:
+  version: VERSION
+  js:
+    js/bh_ckeditor-media-library.js: {}

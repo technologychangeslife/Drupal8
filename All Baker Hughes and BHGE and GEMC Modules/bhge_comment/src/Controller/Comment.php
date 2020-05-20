@@ -2,6 +2,7 @@
 
 namespace Drupal\bhge_comment\Controller;
 
+use Drupal\node\Entity\Node;
 use Drupal\user\Entity\User;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -100,7 +101,7 @@ class Comment extends ControllerBase {
       if ($comment->hasParentComment()) {
         $parent_comment_email = $comment->getParentComment()->getAuthorEmail();
       }
-      $node = entity_load('node', $eid);
+      $node = Node::load($eid);
       $node_content_type = $node->bundle();
       $content_types_with_comments_enabled = [
         'page',

@@ -3,6 +3,7 @@ description: 'Translator that connects the Translation Management Tool module wi
 core: 8.x
 package: 'Translation Management'
 version: '8.x-2.2'
+core_version_requirement: ^8 || ^9
 dependencies:
   - tmgmt
 type: module

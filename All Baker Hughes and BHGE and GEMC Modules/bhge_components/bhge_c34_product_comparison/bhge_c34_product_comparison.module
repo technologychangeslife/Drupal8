@@ -95,7 +95,7 @@ function bhge_c34_product_comparison_node_view(array &$build, EntityInterface $e
                   $fileId = $field_cta_download->first()
                     ->getValue()['target_id'];
                   $file = File::load($fileId);
-                  $download_url = $file->url();
+                  $download_url = $file->toUrl()->toString();
                   $download_title = $entity->getTitle() . ' ' . t('Brochure');
                 }
               }

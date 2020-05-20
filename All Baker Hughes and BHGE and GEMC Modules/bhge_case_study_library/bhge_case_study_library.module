@@ -166,15 +166,16 @@ function bhge_case_study_library_views_query_alter($view, $query) {
         'operator' => '=',
       ];
 
+      $db_conn = \Drupal::database();
       $join_obj = Views::pluginManager('join')
         ->createInstance('standard', $configuration);
       $query->addRelationship('node__body', $join_obj, 'entity_id');
-      $query->addWhere('1', 'node__body.body_value', '%' . db_like($view->exposed_widgets['title']['#value']) . "%", 'LIKE');
+      $query->addWhere('1', 'node__body.body_value', $db_conn->escapeLike($view->exposed_widgets['title']['#value']));
 
       $join_obj_2 = Views::pluginManager('join')
         ->createInstance('standard', $configuration_2);
       $query->addRelationship('paragraph__field_body_copy', $join_obj_2, 'entity_id');
-      $query->addWhere('1', 'paragraph__field_body_copy.field_body_copy_value', '%' . db_like($view->exposed_widgets['title']['#value']) . "%", 'LIKE');
+      $query->addWhere('1', 'paragraph__field_body_copy.field_body_copy_value', $db_conn->escapeLike($view->exposed_widgets['title']['#value']));
     }
   }
 }

@@ -16,7 +16,7 @@
     <hr class="bh-layouts__border bh-layouts__border--above"/>
     <div class="bh-layouts__container">
 
-      {% if content['#settings'].section_title is not empty %}
+     {% if content['#settings'].section_title is defined and content['#settings'].section_title != "" %}
           <div class="bh-layouts__title">
               <h2>{{ content['#settings'].section_title }}</h2>
           </div>

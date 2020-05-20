@@ -38,6 +38,7 @@ class ParagraphsC01HeroSlide extends GemcThemeEntityProcessorBase {
         $variables['data']['link'] = [
           'url' => $cta['url'],
           'label' => $cta['text'],
+          'target' => $cta['target']
         ];
       }
       $variables['data']['href'] = $cta['url'];

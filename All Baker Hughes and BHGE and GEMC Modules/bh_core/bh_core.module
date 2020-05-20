@@ -1,0 +1,129 @@
+<?php
+
+/**
+ * @file
+ * Contains bh_core.module.
+ */
+
+use Drupal\Core\Field\FieldFilteredMarkup;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_help().
+ */
+function bh_core_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the bh_core module.
+    case 'help.page.bh_core':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Core custom features for Baker Hughes site.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_entity_view_mode_alter().
+ */
+function bh_core_entity_view_mode_alter(&$view_mode, EntityInterface $entity, $context) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+
+  // Hero Component.
+  if ($entity->getEntityTypeId() == 'node' && ($entity->bundle() == 'hero')) {
+    $field_name = 'field_text_alignment';
+    if (!$entity->hasField($field_name)) {
+      return;
+    }
+
+    $field = $entity->get($field_name);
+    if (!$field->isEmpty() && $field->getString() == '--align-image-right-large') {
+      $view_mode = 'hero_compact';
+    }
+  }
+
+  // Product content type.
+  if (isset($node) && ($node->getType() == 'product' || $node->getType() == 'product_category')) {
+    // Marketo Form.
+    if ($entity->bundle() == 'marketo_form') {
+      $view_mode = 'product';
+    }
+
+    // Hero Component.
+    if ($entity->bundle() == 'hero') {
+      $view_mode = 'default';
+      $field_name = 'field_text_alignment';
+      if (!$entity->hasField($field_name)) {
+        return;
+      }
+
+      $field = $entity->get($field_name);
+      if (!$field->isEmpty() && $field->getString() == '--align-image-right') {
+        $view_mode = 'product';
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function bh_core_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'node_resources_form' || $form_id == 'node_resources_edit_form'  || $form_id == 'entity_browser_resources_entity_browser_form') {
+    $form['#attached']['library'][] = 'bh_core/bh-resources';
+  }
+
+  if ($form_id == 'node_case_study_form' || $form_id == 'node_case_study_edit_form') {
+    $form['#attached']['library'][] = 'bh_core/bh-ckeditor';
+  }
+}
+
+/**
+ * Implements hook_node_form_alter().
+ */
+function bh_core_form_node_form_alter(&$form, &$form_state, $form_id) {
+  // Exclude for these node.
+  // Change the title field for the content types that's not listed below.
+  $content_type = ['article',
+    'bh_carousel',
+    'basic_page',
+    'breakout_banner',
+    'case_study',
+    'contact',
+    'corporate_responsibility',
+    'event',
+    'horizontal_tab',
+    'our_commitment',
+    'product',
+    'product_category',
+    'resources',
+    'rig_count',
+    'section_heading',
+    'service_location',
+    'vertical_tab',
+    'marketo_form'
+    ];
+  $node = $form_state->getFormObject()->getEntity();
+  if (!in_array($node->getType(), $content_type)) {
+    // Add a description to the node title field.
+    if (isset($form['title'])) {
+      $form['title']['widget'][0]['value']['#title'] = FieldFilteredMarkup::create('Admin Title');
+      $form['title']['widget'][0]['value']['#description'] = FieldFilteredMarkup::create('This field is only being used for identification purpose for editors and admin. This will not be rendered on the frontend.');
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function bh_core_views_pre_render(ViewExecutable $view) {
+  // Add library to style the entity browser views.
+  // For add scroll inside view result the layout builder add block popup.
+  if (isset($view) && ($view->storage->id() == 'components_entity_browser_views')) {
+    $view->element['#attached']['library'][] = 'bh_core/bh-entity-browser-views';
+  }
+}

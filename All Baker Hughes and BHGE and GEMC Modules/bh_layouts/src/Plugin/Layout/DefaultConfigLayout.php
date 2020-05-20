@@ -7,7 +7,7 @@ use Drupal\Core\Layout\LayoutDefault;
 use Drupal\Core\Plugin\PluginFormInterface;
 
 /**
- *
+ * DefaultConfigLayout.
  */
 class DefaultConfigLayout extends LayoutDefault implements PluginFormInterface {
 
@@ -22,11 +22,10 @@ class DefaultConfigLayout extends LayoutDefault implements PluginFormInterface {
       'full-width' => 'Span Full Width',
       'contain-in-grid' => 'Contain In Grid (Full Width Only)',
       'remove-gutters' => 'Remove Column Gutters',
-      'color-primary' => 'Background Color Primary',
-      'color-secondary' => 'Background Color Secondary',
-      'color-tertiary' => 'Background Color Tertiary',
+      'color-primary' => 'Background Color Light Grey',
+      'color-secondary' => 'Background Color Dark Grey',
       'border-above' => 'Border Above',
-      'border-below' => 'Border Below'
+      'border-below' => 'Border Below',
     ];
 
     if ($this::getPluginDefinition()->getTemplate() == 'bh-twocol-section') {
@@ -51,23 +50,22 @@ class DefaultConfigLayout extends LayoutDefault implements PluginFormInterface {
   }
 
   /**
-   *
+   * DefaultConfiguration.
    */
   public function defaultConfiguration() {
     $width_classes = array_keys($this->getWidthClasses());
-    return [
-      'additional_classes' => array_shift($width_classes),
-    ];
+    return [];
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
+
     $form['section_title'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Section Title'),
-      '#default_value' => $this->configuration['section_title'],
+      '#default_value' => isset($this->configuration['section_title']) ? $this->configuration['section_title'] : '',
       '#maxlength' => 120,
       '#size' => 60,
       '#description' => $this->t('Title of the section.'),
@@ -77,7 +75,7 @@ class DefaultConfigLayout extends LayoutDefault implements PluginFormInterface {
       '#chosen' => TRUE,
       '#multiple' => TRUE,
       '#title' => $this->t('Section Options'),
-      '#default_value' => $this->configuration['additional_classes'],
+      '#default_value' => isset($this->configuration['additional_classes']) ? $this->configuration['additional_classes'] : '',
       '#options' => $this->getWidthClasses(),
       '#description' => $this->t('Choose the additional options for this layout.'),
     ];

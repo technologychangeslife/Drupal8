@@ -2,10 +2,13 @@
 
 namespace Drupal\bh_settings\Extension;
 
+use Symfony\Cmf\Component\Routing\RouteObjectInterface;
 use Drupal\Core\Url;
 use Drupal\file\Entity\File;
 use Drupal\node\NodeInterface;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Component\Utility;
+use Drupal\image\Entity\ImageStyle;
 
 /**
  * Create custom Twig UI extentions.
@@ -52,6 +55,14 @@ class UIUtilsExtension extends \Twig_Extension {
         $this,
         'showStockChangeIcon',
       ], ['is_safe' => ['html']]),
+      new \Twig_SimpleFunction('useMegaNav', [
+        $this,
+        'useMegaNav',
+      ], ['is_safe' => ['html']]),
+      new \Twig_SimpleFunction('useMegaFooter', [
+        $this,
+        'useMegaFooter',
+      ], ['is_safe' => ['html']]),
       new \Twig_SimpleFunction('getFileNameWithoutExtension', [
         $this,
         'getFileNameWithoutExtension',
@@ -75,6 +86,22 @@ class UIUtilsExtension extends \Twig_Extension {
       new \Twig_SimpleFunction('getNodeUrl', [
         $this,
         'getNodeUrl',
+      ], ['is_safe' => ['html']]),
+      new \Twig_SimpleFunction('getNodeType', [
+        $this,
+        'getNodeType',
+      ], ['is_safe' => ['html']]),
+      new \Twig_SimpleFunction('getPageTitle', [
+        $this,
+        'getPageTitle',
+      ], ['is_safe' => ['html']]),
+      new \Twig_SimpleFunction('getShopUrl', [
+        $this,
+        'getShopUrl',
+      ], ['is_safe' => ['html']]),
+      new \Twig_SimpleFunction('getViewName', [
+        $this,
+        'getViewName',
       ], ['is_safe' => ['html']]),
       new \Twig_SimpleFunction('getFileInformation', [
         $this,
@@ -103,6 +130,18 @@ class UIUtilsExtension extends \Twig_Extension {
       new \Twig_SimpleFunction('getTaxonomyTermName', [
         $this,
         'getTaxonomyTermName',
+      ], ['is_safe' => ['html']]),
+      new \Twig_SimpleFunction('getJumpNavContent', [
+        $this,
+        'getJumpNavContent',
+      ], ['is_safe' => ['html']]),
+      new \Twig_SimpleFunction('getResourceImage', [
+        $this,
+        'getResourceImage',
+      ], ['is_safe' => ['html']]),
+      new \Twig_SimpleFunction('getPinnedcasestudyImage', [
+        $this,
+        'getPinnedcasestudyImage',
       ], ['is_safe' => ['html']]),
     ];
   }
@@ -188,6 +227,22 @@ class UIUtilsExtension extends \Twig_Extension {
   }
 
   /**
+   * Determine if we should show new mega navigation menu.
+   */
+  public function useMegaNav() {
+    $config = \Drupal::configFactory()->get('bh.mega_nav_settings');
+    return $config->get('use_mega_nav');
+  }
+
+  /**
+   * Determine if we should show new mega navigation menu.
+   */
+  public function useMegaFooter() {
+    $config = \Drupal::configFactory()->get('bh.mega_nav_settings');
+    return $config->get('use_mega_footer');
+  }
+
+  /**
    * Determine if current site is internal.
    */
   public function isSiteInternal() {
@@ -233,6 +288,54 @@ class UIUtilsExtension extends \Twig_Extension {
       return $base_url . $nodeUrl;
     }
     return '#';
+  }
+
+  /**
+   * Get page title.
+   */
+  public function getPageTitle() {
+    $request = \Drupal::request();
+    if ($route = $request->attributes->get(RouteObjectInterface::ROUTE_OBJECT)) {
+      return \Drupal::service('title_resolver')->getTitle($request, $route);
+    }
+    return '';
+  }
+
+  /**
+   * Get Shop link.
+   *
+   * @return string
+   *   return Shop link
+   */
+  public function getShopUrl() {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $shopUrl = NULL;
+    if ($node instanceof NodeInterface) {
+      if ($node->bundle() == 'product') {
+        $shopUrl = $node->get('field_shop')->uri;
+      }
+    }
+    return $shopUrl;
+  }
+
+  /**
+   * Get View Name form view object.
+   *
+   * @param object $view
+   *   Drupal\views\ViewExecutable object.
+   *
+   * @return mixed
+   *   Return view title
+   */
+  public function getViewName($view) {
+    return isset($view) ? $view->getTitle() : NULL;
+  }
+
+  /**
+   * Get url of node.
+   */
+  public function getNodeType($node) {
+    return $node->bundle();
   }
 
   /**
@@ -304,6 +407,61 @@ class UIUtilsExtension extends \Twig_Extension {
       }
     }
     return $name;
+  }
+
+  /**
+   * Returns sorted content based on weight for jump nav.
+   *
+   * Return Content.
+   */
+  public function getJumpNavContent($content) {
+    // Clean up the array first there are attribiutes tag from the layout builder.
+    if (isset($content['#attributes'])) {
+      unset($content['#attributes']);
+    }
+
+    $weight = [];
+    foreach ($content as $k => $d) {
+      if (isset($d['#weight'])) {
+        $weight[$k] = $d['#weight'];
+      }
+    }
+    array_multisort($weight, SORT_ASC, $content);
+    return $content;
+  }
+
+  /**
+   * Get Resource Image.
+   */
+  public function getResourceImage($imageItem) {
+    $uri = NULL;
+    $url = NULL;
+    if (!empty($imageItem)) {
+      $img = $imageItem->toArray();
+      $file = File::load($img['target_id']);
+      $image_uri = $file->getFileUri();
+      $style = ImageStyle::load('product_services_thumbnail');
+      $uri = $style->buildUri($image_uri);
+      $url = $style->buildUrl($image_uri);
+    }
+    return $url;
+  }
+
+  /**
+   * Get Image for pinned case study.
+   */
+  public function getPinnedcasestudyImage($imageItem) {
+    $uri = NULL;
+    $url = NULL;
+    if (!empty($imageItem)) {
+      $img = $imageItem->toArray();
+      $file = File::load($img['target_id']);
+      $image_uri = $file->getFileUri();
+      $style = ImageStyle::load('pinned_case_study_555x370');
+      $uri = $style->buildUri($image_uri);
+      $url = $style->buildUrl($image_uri);
+    }
+    return $url;
   }
 
 }

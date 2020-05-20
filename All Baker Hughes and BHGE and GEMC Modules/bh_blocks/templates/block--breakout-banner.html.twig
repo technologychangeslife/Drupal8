@@ -1,0 +1,61 @@
+{%
+  set classes = [
+    'bh-breakoutbanner',
+   
+  ]
+%}
+<div {{ attributes.addClass(classes) }} >
+      <div class="bh-breakoutbanner__container--contact__left">
+      <div class="bh-breakoutbanner__content-container--content">
+         <div class="bh-breakoutbanner__container--contact__left-text">
+            <div class="bh-breakoutbanner__container--contact__left-text__title">
+               <span>{{ connectus.header }}</span>
+            </div>
+            <p class="caption">{{ connectus.description }}</p>
+         </div>
+         <div class="bh-breakoutbanner__container--contact__left-button">
+            <span class="article-tile__cta cta-new cta-new--secondary cta-new--icon-only cta-new--small">
+               <a href="{{ connectus.link }}" >
+                  <span class="cta-new__icon cta-new__icon--before">
+                     <svg width="15" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.683 2.924a.5.5 0 010-.706l.137-.137a.5.5 0 01.707 0l4.992 5a.5.5 0 010 .707l-.187.187-4.676 4.75a.5.5 0 01-.71.004l-.138-.139a.5.5 0 010-.707L9.222 7.47 4.683 2.924z" fill="#02A783"></path>
+                     </svg>
+                  </span>
+                  <span class="cta-new__icon cta-new__icon--after">
+                     <svg width="15" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.683 2.924a.5.5 0 010-.706l.137-.137a.5.5 0 01.707 0l4.992 5a.5.5 0 010 .707l-.187.187-4.676 4.75a.5.5 0 01-.71.004l-.138-.139a.5.5 0 010-.707L9.222 7.47 4.683 2.924z" fill="#02A783"></path>
+                     </svg>
+                  </span>
+               </a>
+            </span>
+         </div>
+         </div>
+      </div>
+      <div class="bh-breakoutbanner__container--media__right">
+      <div class="bh-breakoutbanner__content-container--content-right">
+         <div class="bh-breakoutbanner__container--media__right-text">
+            <div class="bh-breakoutbanner__container--media__right-text__title">
+               <span>{{ media.header }}</span>
+            </div>
+            <p>{{ media.description }}</p>
+         </div>
+         <div class="bh-breakoutbanner__container--media__right-button">
+            <span class="article-tile__cta cta-new cta-new--secondary cta-new--icon-only cta-new--small">
+               <a href="{{ media.link }}" >
+                  <span class="cta-new__icon cta-new__icon--after">
+                     <svg width="15" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.683 2.924a.5.5 0 010-.706l.137-.137a.5.5 0 01.707 0l4.992 5a.5.5 0 010 .707l-.187.187-4.676 4.75a.5.5 0 01-.71.004l-.138-.139a.5.5 0 010-.707L9.222 7.47 4.683 2.924z" fill="#02A783"></path>
+                     </svg>
+                  </span>
+                  <span class="cta-new__icon cta-new__icon--before">
+                     <svg width="15" height="15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4.683 2.924a.5.5 0 010-.706l.137-.137a.5.5 0 01.707 0l4.992 5a.5.5 0 010 .707l-.187.187-4.676 4.75a.5.5 0 01-.71.004l-.138-.139a.5.5 0 010-.707L9.222 7.47 4.683 2.924z" fill="#02A783"></path>
+                     </svg>
+                  </span>
+               </a>
+            </span>
+         </div>
+         </div>
+      </div>
+   </div>
+   {{ attach_library('bh_blocks/bh-blocks-library') }}

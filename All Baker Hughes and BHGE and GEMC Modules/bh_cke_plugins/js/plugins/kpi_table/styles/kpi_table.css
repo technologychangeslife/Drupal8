@@ -1,0 +1,16 @@
+div.bh-cke-kpi-table-wrapper {
+  display: table;
+  width: 100%;  
+  table-layout: fixed;
+}
+div.bh-cke-kpi-table-row-wrapper {
+  display: table-row;
+}
+div.bh-cke-kpi-table-col-wrapper {
+  display: table-cell;
+  padding: 3px 10px;
+  border: 1px solid #999999;
+}
+div.bh-cke-kpi-table-col-wrapper:first-child {
+  width: 50%;
+}

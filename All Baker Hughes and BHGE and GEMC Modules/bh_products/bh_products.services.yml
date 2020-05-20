@@ -1,0 +1,10 @@
+services:
+  bh_products.twig.uiutilsextension:
+    class: Drupal\bh_products\Extension\UIUtilsExtension
+    tags:
+    - { name: twig.extension }
+  bh_products.route_normalizer_request_subscriber:
+    class: Drupal\bh_products\EventSubscriber\RouteNormalizerRequestSubscriber
+    arguments: ['@config.factory']
+    tags:
+      - { name: event_subscriber }

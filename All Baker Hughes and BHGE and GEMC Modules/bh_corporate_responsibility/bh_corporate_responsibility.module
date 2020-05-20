@@ -1,0 +1,46 @@
+<?php
+
+/**
+ * @file
+ * Custom bh_corporate_responsibility.
+ */
+
+use Drupal\node\NodeInterface;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements HOOK_preprocess_page().
+ *
+ * Render hero component field in fixed place in page template
+ * for product category content type.
+ * Added flag to check whether page is viewing or not.
+ *
+ * @param array $variables
+ *   Rendered array.
+ */
+function bh_corporate_responsibility_preprocess_page(array &$variables) {
+  $route_match = \Drupal::routeMatch();
+  if ($route_match->getRouteName() == 'entity.node.canonical') {
+    $node = $route_match->getParameter('node');
+    if ($node instanceof NodeInterface) {
+      if ($node->getType() == 'corporate_responsibility') {
+        $variables['#attached']['library'][] = 'bh_corporate_responsibility/bh-corporate-responsibility';
+        // Flag to check whether page is view mode or not.
+        $variables['_is_page_view'] = TRUE;
+        $field_value = $node->get('field_hero_component')->getValue();
+        // Pass hero nid to render as fixed component.
+        $variables['hero_nid'] = $field_value[0]['target_id'];
+      }
+    }
+
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function bh_corporate_responsibility_views_pre_render(ViewExecutable $view) {
+  if (isset($view) && ($view->storage->id() == 'explore_further')) {
+    $view->element['#attached']['library'][] = 'bh_corporate_responsibility/bh-corporate-responsibility';
+  }
+}

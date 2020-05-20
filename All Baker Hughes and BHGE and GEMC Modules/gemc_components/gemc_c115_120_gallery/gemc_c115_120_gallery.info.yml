@@ -4,5 +4,6 @@ description: 'GEMC C115-C120 Content Gallery'
 package: GEMC Components
 version: 8.x
 core: 8.x
+core_version_requirement: ^8 || ^9
 dependencies:
   - gemc_components

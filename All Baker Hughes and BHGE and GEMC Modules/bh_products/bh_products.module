@@ -1,0 +1,544 @@
+<?php
+
+/**
+ * @file
+ * Custom bh_products.
+ */
+
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\views\ViewExecutable;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\Core\Database\Database;
+use Drupal\redirect\Entity\Redirect;
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * Implements hook_form_alter().
+ */
+function bh_products_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  if ($form_id == 'entity_browser_hero_entity_browser_form'
+    || $form_id === 'node_hero_edit_form'
+    || $form_id == 'node_product_category_edit_form'
+    || $form_id == 'node_product_edit_form'
+    || $form_id == 'node_product_form'
+    || $form_id == 'node_product_category_form'
+  ) {
+    $form['#attached']['library'][] = 'bh_products/bh-products';
+    $node_val = \Drupal::request()->query->get('destination');
+    if (isset($node_val)) {
+      $node_id = explode('/', $node_val);
+      if (isset($node_id[2]) && is_numeric($node_id[2])) {
+        $node = Node::load($node_id[2]);
+      }
+      if (isset($node)) {
+        if ($node->getType() === 'product_category' || $node->getType() === 'product') {
+          $form['#attached']['drupalSettings']['content_type'] = $node->getType();
+        }
+      }
+    }
+  }
+  // Imagelsess Hero Cta JS.
+  if ($form_id == 'node_hero_imageless_form' || $form_id == 'node_hero_imageless_edit_form'  || $form_id == 'entity_browser_hero_imageless_form') {
+    $form['#attached']['library'][] = 'bh_products/bh-imageless-hero-cta';
+  }
+  // Restricting access to change url Alias.
+  if ($form_id == 'node_product_category_edit_form'
+    || $form_id == 'node_product_edit_form'
+    || $form_id == 'node_product_form'
+    || $form_id == 'node_product_category_form') {
+    $userRoles = \Drupal::currentUser()->getRoles();
+    if (!in_array('administrator', $userRoles)) {
+      $form['path']['widget'][0]['pathauto']['#disabled'] = TRUE;
+    }
+  }
+
+  $view_names = ['products_services', 'supplier_resources'];
+  $view = $form_state->getStorage('view');
+
+  if ($form_id == 'views_exposed_form' && in_array($view['view']->id(), $view_names)) {
+    if ($view['view']->id() == 'products_services') {
+      // Hide the nid value.
+      $form['field_parent_categories_target_id']['#attributes']['disabled'][] = 'disabled';
+      $form['field_parent_categories_target_id']['#access'] = FALSE;
+
+      $options = bh_products_get_parent_categories_options();
+      $product_cat = [];
+      if (is_array($options) && count($options) > 0) {
+        foreach ($options as $key => $val) {
+          $product_cat[$key] = $val['title'];
+        }
+      }
+
+      if (!empty($product_cat)) {
+        // unset($form['field_parent_categories_target_id']);.
+        $product_field = 'field_parent_categories_target_id_2';
+        $form[$product_field]['#title'] = 'Category';
+        $form[$product_field]['#options']['All'] = t('Select Product/Service');
+        $form[$product_field]['#type'] = 'checkboxes';
+        $form[$product_field]['#multiple'] = TRUE;
+        // Specify the empty option for our select list.
+        $form[$product_field]['#empty_option'] = t('--Any--');
+        $form[$product_field]['#options'] = $product_cat;
+        $form[$product_field]['#weight'] = -1;
+        unset($form[$product_field]['#size']);
+
+        $form['field_parent_categories_child_id_2'] = [
+          '#type' => 'hidden',
+          '#attributes' => ['id' => 'field_parent_categories_child_list'],
+        ];
+      }
+      $form['#attached']['library'][] = 'bh_products/bh-products-services';
+    }
+    elseif ($view['view']->id() == 'supplier_resources') {
+      $current_nodeId = bh_products_get_current_node_id();
+      $node = Node::load($current_nodeId);
+      if (!empty($node)) {
+        if ($node->hasField('field_display_the_category_filte') && !$node->get('field_display_the_category_filte')->isEmpty()) {
+          $show_category_filter = $node->field_display_the_category_filte->value;
+          if ($show_category_filter == 0) {
+            unset($form['field_category_target_id']);
+          }
+        }
+        if ($node->hasField('field_display_the_second_filter_') && !$node->get('field_display_the_second_filter_')->isEmpty()) {
+          $show_second_filter = $node->field_display_the_second_filter_->value;
+          if ($show_second_filter == 0) {
+            unset($form['field_tags_target_id']);
+          }
+          elseif ($show_second_filter == 1) {
+            $second_cat_options = bh_products_get_supplier_resources_second_cat_options($node);
+            if (!empty($second_cat_options)) {
+              foreach ($form['field_tags_target_id']['#options'] as $key => $option) {
+                if ($key !== 'All') {
+                  unset($form['field_tags_target_id']['#options'][$key]);
+                  foreach ($second_cat_options as $tid => $tname) {
+                    $form['field_tags_target_id']['#options'][$tid] = $tname;
+                  }
+                }
+              }
+            }
+            else {
+              unset($form['field_tags_target_id']);
+            }
+            if ($node->hasField('field_description') && !$node->get('field_description')->isEmpty()) {
+              $second_filter_label = $node->field_description->value;
+              $form['#info']['filter-field_tags_target_id']['label'] = t($second_filter_label);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Prefill the default text in product highlights sub heading field.
+  if ($form_id == 'entity_browser_highlight_product_browser_form'
+    || $form_id === 'node_highlight_product_form'
+    || $form_id == 'node_highlight_product_edit_form'
+  ) {
+    $form['#attached']['library'][] = 'bh_products/bh-products-highlights-prefill';
+  }
+
+}
+
+/**
+ * Implements HOOK_menu_local_tasks_alter().
+ *
+ * Altering the view tab for the product
+ * and product category content type.
+ */
+function bh_products_menu_local_tasks_alter(&$data, $route_name) {
+  if ($route_name == 'entity.node.canonical') {
+    $route_match = \Drupal::routeMatch();
+    $node = $route_match->getParameter('node');
+    if ($node instanceof NodeInterface) {
+      if ($node->getType() == 'product_category' || $node->getType() == 'product') {
+        $page = \Drupal::request()->getRequestUri();
+        $data['tabs'][0]['entity.node.canonical'] = [
+          '#theme' => 'menu_local_task',
+          '#link' => [
+            'title' => t('View'),
+            'url' => Url::fromUri('internal:' . $page),
+          ],
+        ];
+      }
+    }
+  }
+}
+
+/**
+ * Implements HOOK_preprocess_page().
+ *
+ * Render hero component field in fixed place in page template
+ * for product category content type.
+ * Added flag to check whether page is viewing or not.
+ *
+ * @param array $variables
+ *   Rendered array.
+ */
+function bh_products_preprocess_page(array &$variables) {
+  $route_match = \Drupal::routeMatch();
+
+  if ($route_match->getRouteName() == 'entity.node.canonical') {
+    $node = $route_match->getParameter('node');
+    if ($node instanceof NodeInterface) {
+      if ($node->getType() == 'product_category' || $node->getType() == 'product') {
+        // Flag to check whether page is view mode or not.
+        $variables['_is_page_view'] = TRUE;
+        $field_value = $node->get('field_hero_component')->getValue();
+        // Pass hero nid to render as fixed component.
+        $variables['hero_nid'] = $field_value[0]['target_id'];
+        $variables['#attached']['library'][] = 'bh_products/bh-products-hero';
+        if ($node->getType() == 'product_category') {
+          // Attach library for expand/collapse for category explorer.
+          $variables['#attached']['library'][] = 'bh_products/bh-expand-collapse';
+          // $variables['#attached']['library'][] = 'bh_products/bh-products-services';.
+        }
+      }
+    }
+
+  }
+}
+
+/**
+ * Implements HOOK_preprocess_node().
+ *
+ * Render current path alias for to be used to match the product multiple url
+ * for product & services section in the product category content type .
+ *
+ * @param array $variables
+ *   Rendered array.
+ */
+function bh_products_preprocess_node(array &$variables) {
+  $current_path = Url::fromRoute('<current>');
+  $current_nodeid = bh_products_get_current_node_id();
+  $variables['current_path'] = $current_path;
+  $variables['current_nid'] = $current_nodeid;
+}
+
+/**
+ * Render filter options for the product and services view for product category.
+ *
+ * Return options.
+ */
+function bh_products_get_parent_categories_options() {
+  $current_nodeId = bh_products_get_current_node_id();
+  $nids = bh_products_get_parent_categories_referenced($current_nodeId);
+  if (!$nids) {
+    return FALSE;
+  }
+  // Start building out the options for our select list.
+  $product_cat = [];
+
+  // Push titles into select list.
+  foreach ($nids as $node) {
+    $product_cat[$node->id()]['title'] = $node->getTitle();
+    $subchild_nids = bh_products_get_parent_categories_referenced($node->id());
+    $child_cat = [];
+    if (!empty($subchild_nids)) {
+      foreach ($subchild_nids as $sub_node) {
+        $child_cat[$sub_node->id()] = $sub_node->getTitle();
+      }
+      if (count($child_cat) > 0) {
+        $product_cat[$node->id()]['child'] = $child_cat;
+      }
+    }
+
+  }
+  return $product_cat;
+}
+
+/**
+ * Fetch the parent category referenced nodeIds for product category content.
+ *
+ * Return array.
+ */
+function bh_products_get_parent_categories_referenced($nid) {
+  $storage = Drupal::getContainer()
+    ->get('entity_type.manager')
+    ->getStorage('node');
+  $nids = $storage->getQuery();
+  $result = $nids->condition('type', 'product_category')
+    ->condition('status', 1)
+    ->condition('field_parent_categories.target_id', $nid)
+    ->sort('field_weight')
+    ->sort('title')
+    ->execute();
+  $nodes = $storage->loadMultiple($result);
+
+  // If there are no nodes, move on.
+  if (!$nids) {
+    return FALSE;
+  }
+  return $nodes;
+}
+
+/**
+ * Hook_views_query_alter for product and services.
+ */
+function bh_products_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  // Make sure we're altering the correct view.
+  if ($view->storage->get('id') === 'products_services') {
+    /* condition for category filter */
+    $product_field = 'field_parent_categories_child_id_2';
+    if (!empty($view->exposed_widgets[$product_field]['#value'])) {
+      $selected_cat_list = $view->exposed_widgets[$product_field]['#value'];
+      $selected_cat_arr = explode(',', $selected_cat_list);
+      $product_cat_nids = [];
+      /* get all child product category hirarchichal array for selected category */
+      foreach ($selected_cat_arr as $selected_cat) {
+        if (!in_array($selected_cat, $product_cat_nids)) {
+          $product_cat_nids = bh_products_get_parent_categories_referenced_nids($selected_cat, $product_cat_nids);
+          $product_cat_nids[] = $selected_cat;
+        }
+      }
+      $query->addWhere('5', 'node__field_parent_categories.field_parent_categories_target_id', $product_cat_nids, 'IN');
+    }
+    else {
+      /* get current product category id */
+      $current_nodeId = bh_products_get_current_node_id();
+
+      /* get all child product category node ids of current node */
+      $product_cat_nids = [];
+      $product_cat_nids = bh_products_get_parent_categories_referenced_nids($current_nodeId, $product_cat_nids);
+
+      /* keeping current product category id into array */
+      $product_cat_nids[] = $current_nodeId;
+
+      if (count($product_cat_nids) > 0) {
+        $query->addWhere('5', 'node__field_parent_categories.field_parent_categories_target_id', $product_cat_nids, 'IN');
+      }
+
+    }
+  }
+}
+
+/**
+ * Function helps to get current node id .
+ *
+ * Return integer.
+ */
+function bh_products_get_current_node_id() {
+  $current_nodeId = '';
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if (!empty($node)) {
+    $current_nodeId = $node->id();
+  }
+  else {
+    if (isset($_SERVER['HTTP_REFERER'])) {
+      $referer_url = parse_url($_SERVER['HTTP_REFERER']);
+      $referer_url = $referer_url['path'];
+      $params = Url::fromUri("internal:" . $referer_url)->getRouteParameters();
+      $entity_type = key($params);
+      $node = \Drupal::entityTypeManager()
+        ->getStorage($entity_type)
+        ->load($params[$entity_type]);
+      $current_nodeId = $node->id();
+    }
+  }
+  return $current_nodeId;
+}
+
+/**
+ * Fuction helps to get nids of all child product category ids.
+ *
+ * Returns array.
+ */
+function bh_products_get_parent_categories_referenced_nids($nid, $product_cat_nids) {
+  $referenced_nodes = bh_products_get_parent_categories_referenced($nid);
+  if (!$referenced_nodes) {
+    return $product_cat_nids;
+  }
+  foreach ($referenced_nodes as $referenced_node) {
+    $referenced_nid = $referenced_node->id();
+    if (!in_array($referenced_nid, $product_cat_nids)) {
+      $product_cat_nids[] = $referenced_nid;
+      /* get all child product category hirarchichal array */
+      $product_cat_nids = bh_products_get_parent_categories_referenced_nids($referenced_nid, $product_cat_nids);
+    }
+  }
+  return $product_cat_nids;
+}
+
+/**
+ * Implements hook_pathauto_alias_alter().
+ */
+function bh_products_pathauto_alias_alter(&$alias, array &$context) {
+  $original_alias = $alias;
+  $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+  $source = $context['source'];
+
+  if ($context['bundle'] == 'product' || $context['bundle'] == 'product_category') {
+    $current_node_aliases = [];
+    $nid = $context['data']['node']->id();
+    $dbConn = Database::getConnection();
+    $path_alias_current = $dbConn->select('path_alias')
+      ->fields('path_alias')
+      ->condition('path', '/node/' . $nid, '=')
+      ->execute()
+      ->fetchAll();
+    foreach ($path_alias_current as $val) {
+      $current_node_aliases[] = $val->alias;
+    }
+
+    $node = Node::load($nid);
+    $parent = $node->field_parent_categories;
+    if (!$parent->isEmpty() && $parent->count() > 0) {
+      $alias = "";
+      foreach ($parent as $parent_category) {
+        $parent_nid = $parent_category->target_id;
+        $source = '/node/' . $parent_nid;
+        $parent_path_alias = $dbConn->select('path_alias')
+          ->fields('path_alias')
+          ->condition('path', '/node/' . $parent_nid, '=')
+          ->execute()
+          ->fetchAll();
+        foreach ($parent_path_alias as $parent_paths) {
+          $parent_alias = $parent_paths->alias;
+          if ($parent_alias != $source) {
+            $new_alias = $parent_alias . $original_alias;
+            if (!check_alias_exists($new_alias, $langcode)) {
+              \Drupal::service('path.alias_storage')
+                ->save('/node/' . $nid, $new_alias, $langcode);
+            }
+            else {
+              if (!in_array($new_alias, $current_node_aliases)) {
+                for ($index = 0; $index <= 50; $index++) {
+                  $current_alias = $new_alias . '-' . $index;
+                  if (in_array($current_alias, $current_node_aliases)) {
+                    break;
+                  }
+                  elseif (!check_alias_exists($current_alias, $langcode)) {
+                    \Drupal::service('path.alias_storage')
+                      ->save('/node/' . $nid, $current_alias, $langcode);
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+  if ($context['bundle'] == 'product_category') {
+    $prodCategoryNode = $context['data']['node'];
+    $nodeID = $prodCategoryNode->id();
+    $prodCategoryOldTitle = isset($prodCategoryNode->original) ? $prodCategoryNode->original->getTitle() : NULL;
+    $prodCategoryNewTitle = isset($prodCategoryNode) ? $prodCategoryNode->getTitle() : NULL;
+    if (!empty($prodCategoryOldTitle) && !empty($prodCategoryNewTitle) && ($prodCategoryOldTitle != $prodCategoryNewTitle)) {
+      $oldAlias = '/' . str_replace('---', '-', strtolower(str_replace(' ', '-', $prodCategoryOldTitle))) . '/';
+      $newAlias = '/' . str_replace('---', '-', strtolower(str_replace(' ', '-', $prodCategoryNewTitle))) . '/';
+      $dbConn = Database::getConnection();
+      $path_alias = $dbConn->select('path_alias')
+        ->fields('path_alias')
+        ->condition('alias', '%' . $oldAlias . '%', 'LIKE')
+        ->condition('path', '/node/' . $nodeID, '!=')
+        ->execute()
+        ->fetchAll();
+      foreach ($path_alias as $path) {
+        $oldPath = ltrim($path->alias, '/');
+        $newPath = strtolower(str_replace($oldAlias, $newAlias, $path->alias));
+        if (!check_alias_exists($newPath, $langcode)) {
+          $dbConn->update('path_alias')->fields([
+            'alias' => $newPath,
+          ])
+            ->condition('alias', $path->alias)
+            ->execute();
+          create_redirect($oldPath, $path->path);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Check if URL alias exists or not.
+ *
+ * Return boolean.
+ */
+function check_alias_exists($url_alias, $langcode) {
+  $alias_exists = \Drupal::service('path.alias_storage')
+    ->aliasExists($url_alias, $langcode);
+  return $alias_exists;
+}
+
+/**
+ * Add redirect url in product and product category.
+ *
+ * @param string $sourceUrl
+ *   Source Url.
+ * @param string $id
+ *   Destination Url or Node path.
+ *
+ * @throws \Drupal\Core\Entity\EntityStorageException
+ */
+function create_redirect($sourceUrl, $id) {
+  $rid = \Drupal::entityQuery('redirect')
+    ->condition('redirect_source.path', $sourceUrl)
+    ->execute();
+  if (empty($rid)) {
+    Redirect::create([
+      'redirect_source' => $sourceUrl,
+      'redirect_redirect' => 'internal:' . $id,
+      'language' => 'en',
+      'status_code' => '301',
+    ])->save();
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function bh_products_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'products_services') {
+    $view->filter_input = !empty($view->getExposedInput()) ? TRUE : FALSE;
+  }
+  elseif ($view->id() == 'supplier_resources' && $view->current_display == 'block_1') {
+    $view->filter_input = !empty($view->getExposedInput()) ? TRUE : FALSE;
+    $current_nodeId = bh_products_get_current_node_id();
+    $node = Node::load($current_nodeId);
+    if (!empty($node) &&  $node->hasField('field_subheading') && !$node->get('field_subheading')->isEmpty()) {
+      $title = $node->field_subheading->value;
+      $view->setTitle($title);
+    }
+  }
+  elseif ($view->id() == 'policies' && $view->current_display == 'block_1') {
+    $current_nodeId = bh_products_get_current_node_id();
+    $node = Node::load($current_nodeId);
+    if (!empty($node) &&  $node->hasField('field_cta_heading') && !$node->get('field_cta_heading')->isEmpty()) {
+      $title = $node->field_cta_heading->value;
+      $view->setTitle($title);
+    }
+  }
+}
+
+/**
+ * Render second filter options for the supplier resources.
+ *
+ * Return options.
+ */
+function bh_products_get_supplier_resources_second_cat_options($node) {
+  $resources_nids = $node->field_supplier_resources->referencedEntities();
+  if (!$resources_nids) {
+    return FALSE;
+  }
+  // Start building out the options for our select list.
+  $second_cat_opt = [];
+  foreach ($resources_nids as $resources) {
+    if ($resources->hasField('field_tags') && !$resources->get('field_tags')->isEmpty()) {
+      // Print $resources->nid->value;.
+      $tag_terms = $resources->field_tags->referencedEntities();
+      if (!empty($tag_terms)) {
+        foreach ($tag_terms as $term) {
+          $second_cat_opt[$term->tid->value] = $term->name->value;
+        }
+      }
+    }
+  }
+  return $second_cat_opt;
+}

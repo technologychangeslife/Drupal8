@@ -1,0 +1,6 @@
+name: 'BH Core'
+type: module
+description: 'Core custom features for Baker Hughes site.'
+core: 8.x
+package: 'BH'
+core_version_requirement: ^8 || ^9

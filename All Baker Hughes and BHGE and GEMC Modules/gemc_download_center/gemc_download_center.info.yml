@@ -4,3 +4,4 @@ description: 'Download Center module for GEMC'
 package: Custom
 version: 8.x
 core: 8.x
+core_version_requirement: ^8 || ^9

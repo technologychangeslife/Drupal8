@@ -23,13 +23,6 @@ use Drupal\Core\Language\LanguageManagerInterface;
 class ParagraphsBlockC14CaseStudies extends GemcThemeEntityProcessorBase {
 
   /**
-   * Data helpers.
-   *
-   * @var object
-   */
-  private $dataHelpers;
-
-  /**
    * Language manager.
    *
    * @var \Drupal\Core\Language\LanguageManagerInterface
@@ -47,7 +40,6 @@ class ParagraphsBlockC14CaseStudies extends GemcThemeEntityProcessorBase {
       $container->get('plugin.manager.handlebars_theme_handler_entity_processor'),
       $container->get('plugin.manager.handlebars_theme_handler_field_processor'),
       $container->get('gemc_components.field_data_service'),
-      $container->get('bhge_core.data_helpers'),
       $container->get('language_manager')
     );
   }
@@ -55,9 +47,8 @@ class ParagraphsBlockC14CaseStudies extends GemcThemeEntityProcessorBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, ThemeEntityProcessorManager $themeEntityProcessorManager, ThemeFieldProcessorManager $themeFieldProcessorManager, FieldDataService $fieldDataService, $dataHelpers, LanguageManagerInterface $languageManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, ThemeEntityProcessorManager $themeEntityProcessorManager, ThemeFieldProcessorManager $themeFieldProcessorManager, FieldDataService $fieldDataService, LanguageManagerInterface $languageManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $themeEntityProcessorManager, $themeFieldProcessorManager, $fieldDataService);
-    $this->dataHelpers = $dataHelpers;
     $this->languageManager = $languageManager;
   }
 
@@ -77,11 +68,12 @@ class ParagraphsBlockC14CaseStudies extends GemcThemeEntityProcessorBase {
         if ($caseStudy->hasTranslation($langCode)) {
           $caseStudy = $caseStudy->getTranslation($langCode);
         }
-        $image = $this->dataHelpers->getImage($caseStudy, 'field_image', 'field_dam_main_img', 'c14_carousel_image');
+        $image_small = $this->fieldDataService->getStyleUrl($caseStudy->field_image->entity->uri->value, 'c14_carousel_image');
+        $image_normal = $this->fieldDataService->getStyleUrl($caseStudy->field_image->entity->uri->value, 'thumbnail_normal');
         $items[] = [
           'image' => [
-            'normal' => $image,
-            'small' => $image,
+            'normal' => $image_normal,
+            'small' => $image_small,
             'alt' => !empty($caseStudy->field_image) ? $caseStudy->field_image->alt : '',
           ],
           'title' => $caseStudy->title->value,

@@ -79,11 +79,14 @@ class BhgePageAccess extends ContentEntityBase implements BhgePageAccessInterfac
    * @param int $nid
    *   Node id of the content.
    *
-   * @return \Drupal\Core\Entity\EntityInterface[]
+   * @return \Drupal\Core\Entity\EntityInterface|mixed
    *   Return Entity object of the node.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function loadByNid($nid) {
-    $bhge_page_access_storage = \Drupal::entityManager()->getStorage('bhge_page_access');
+    $bhge_page_access_storage = \Drupal::entityTypeManager()->getStorage('bhge_page_access');
     $bhge_page_access = $bhge_page_access_storage->loadByProperties(['nid' => $nid]);
     $bhge_page_access_entity = array_shift($bhge_page_access);
     return $bhge_page_access_entity;
@@ -94,6 +97,8 @@ class BhgePageAccess extends ContentEntityBase implements BhgePageAccessInterfac
    *
    * @return mixed
    *   Return value.
+   *
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function value() {
     return $this->get('value')->get(0)->toArray();

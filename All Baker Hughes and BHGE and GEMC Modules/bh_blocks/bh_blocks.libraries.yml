@@ -1,0 +1,5 @@
+## YAML Template.
+bh-blocks-library:
+  version: 1.x
+  js:
+    js/BreakoutBanner.js: {}

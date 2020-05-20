@@ -1,0 +1,4 @@
+bh-corporate-responsibility:
+  version: VERSION
+  js:
+    js/bh-corporate-responsibility.js: {}

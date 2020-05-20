@@ -1,0 +1,15 @@
+/* clearfix */
+
+.ckeditor-readmore:before,
+ckeditor-readmore:after {
+  content: " "; /* 1 */
+  display: table; /* 2 */
+}
+.ckeditor-readmore:after {
+  clear: both;
+}
+.ckeditor-readmore {
+  padding: 20px;
+  position: relative;
+  border: 1px solid #0091ea;
+}

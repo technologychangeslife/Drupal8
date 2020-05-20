@@ -4,3 +4,4 @@ description: 'BHGE Content Category Cards is used for product category and conte
 package: Custom
 version: 8.x
 core: 8.x
+core_version_requirement: ^8 || ^9

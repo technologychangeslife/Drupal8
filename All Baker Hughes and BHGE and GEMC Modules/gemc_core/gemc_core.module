@@ -5,17 +5,20 @@
  * Custom gemc_core.
  */
 
+use Drupal\node\Entity\Node;
 use Drupal\Core\Extension\Extension;
 use Drupal\search_api\Entity\Index;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Entity\ContentEntityInterface;
-use Drupal\Core\Entity\ContentEntityType;
-use Drupal\search_api\Plugin\search_api\datasource\ContentEntity;
 use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
 use Drupal\field\Entity\FieldConfig;
+use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\node\NodeInterface;
+use Drupal\views\ViewExecutable;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_form_alter().
@@ -24,7 +27,6 @@ function gemc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
 
   if ($form_id === 'node_download_edit_form' || $form_id === 'node_download_form') {
     $form['#attached']['library'][] = 'gemc_core/gemc-core';
-
   }
 
   $forms = [
@@ -42,6 +44,10 @@ function gemc_core_form_alter(&$form, FormStateInterface $form_state, $form_id) 
     $form['field_asset']['#disabled'] = 'disabled';
   }
 
+  if ($form_id === 'workbench_moderation_entity_moderation_form') {
+    // Just change the label from Apply to Submit.
+    $form['submit']['#value'] = t('Submit');
+  }
 }
 
 /**
@@ -55,7 +61,6 @@ function gemc_core_entity_view(array &$build, EntityInterface $entity, EntityVie
 
   $remove_contexts = [
     'url.query_args',
-    'url.path',
     'user'
   ];
 
@@ -204,8 +209,7 @@ function gemc_core_node_predelete($node) {
   $type = $node->getType();
 
   if ($type == 'download') {
-    $all_revision_ids = \Drupal::entityManager()->getStorage('node')->revisionIds($node);
-
+    $all_revision_ids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
     $checked_files = $checked_media = [];
     foreach ($all_revision_ids as $revision_id) {
       $revised_node = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($revision_id);
@@ -339,6 +343,11 @@ function gemc_core_file_predelete($file) {
  * Helper function for file entity to purge url on create, update and delete.
  */
 function gemc_core_purge_file_entity($file) {
+  if (!$file->get('status')->value) {
+    // This is temporary file. We do not need to purge anything yet.
+    return;
+  }
+
   $purgeInvalidationFactory = \Drupal::service('purge.invalidation.factory');
   $purgeQueuers = \Drupal::service('purge.queuers');
   $purgeQueue = \Drupal::service('purge.queue');
@@ -354,4 +363,169 @@ function gemc_core_purge_file_entity($file) {
   ];
 
   $purgeQueue->add($queuer, $invalidations);
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function gemc_core_entity_base_field_info(EntityTypeInterface $entity_type) {
+  $fields = [];
+
+  if ($entity_type->id() == 'menu_link_content') {
+
+    $fields['open_in_new_tab'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Open in new tab'))
+      ->setDescription(t('Check this to open the link in a new tab'))
+      ->setDisplayOptions('form', [
+        'weight' => 28,
+      ]);
+  }
+  return $fields;
+}
+
+/**
+ * Implements hook_field_group_build_pre_render_alter().
+ */
+function gemc_core_field_group_build_pre_render_alter(&$element) {
+  $error_messages = \Drupal::messenger()->addMessage('error', FALSE);
+
+  // Check for error messages.
+  if (count($error_messages)) {
+    foreach ($element as &$item) {
+
+      if (is_array($item) && isset($item['#open'])) {
+        // Expand all field_group wrappers if error.
+        $item['#open'] = TRUE;
+      }
+    }
+  }
+}
+
+/**
+ * Helper to validate form submit.
+ */
+function gemc_core_node_form_validate($form, FormStateInterface $form_state) {
+  $node = $form_state->getFormObject()->getEntity();
+  if (!empty($node)) {
+    $section_parents = $form_state->getValue('field_section_parents');
+    foreach ($section_parents as $parent) {
+      if (is_array($parent) && !empty($parent['target_id']) && $parent['target_id'] == $node->id()) {
+        $form_state->setErrorByName("field_section_parents", t("Field parent sections can\'t reference the same page as current"));
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_access_records_alter().
+ *
+ * Alter the grants array to support language code.
+ */
+function gemc_core_node_access_records_alter(&$grants, NodeInterface $node) {
+  // Skip when node is not translatable or $grants array is empty.
+  if (!$node->isTranslatable() || empty($grants)) {
+    return;
+  }
+
+  // Assemble $grants arrays with langcode when node is published.
+  $access_grants = [];
+  foreach ($grants as $grant) {
+    // $grant with langcode.
+    if (isset($grant['langcode'])) {
+      $access_grants[] = $grant;
+      continue;
+    }
+    // $grant without langcode.
+    foreach ($node->getTranslationLanguages(TRUE) as $langcode => $language) {
+      $translated_node = $node->getTranslation($langcode);
+      if ($translated_node->isPublished() === TRUE) {
+        $grant['langcode'] = $langcode;
+        $access_grants[] = $grant;
+      }
+    }
+  }
+
+  if (count($access_grants) > 0) {
+    $grants = $access_grants;
+  }
+}
+
+/**
+ * Implements hook_views_pre_view().
+ */
+function gemc_core_views_pre_view(ViewExecutable $view) {
+  // Do not display the bulk operations for advanced builder.
+  if ($view->id() === 'content') {
+    $account = \Drupal::currentUser();
+    $is_employee = in_array('advanced_builder', $account->getRoles());
+
+    if ($is_employee) {
+      $view->removeHandler($view->current_display, 'field', 'node_bulk_form');
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_field to change download cta node link to download asset link.
+ */
+function gemc_core_preprocess_field(&$variables) {
+  $field_name_arr = ['field_brand_card_cta',
+    'field_brand_grid_cta',
+    'field_brand_text_card_cta',
+    'field_carousel_slide_cta',
+    'field_cta_link',
+    'field_kaon_cta',
+    'field_narrative_cta',
+    'field_solutions_cta',
+    'field_c133_call_me_cta',
+    'field_link_list',
+    'field_product_feature_cta'
+  ];
+
+  if (in_array($variables['element']['#field_name'], $field_name_arr)) {
+    foreach ($variables['items'] as $index => $item) {
+      if (isset($item['content']) && isset($item['content']['#url'])) {
+        $item_url = $item['content']['#url']->toString();
+        $file_url = gemc_core_get_download_cta_asset_url($item_url);
+        if (strlen($file_url) > 0) {
+          $url = Url::fromUri($file_url);
+          $variables['items'][$index]['content']['#url'] = $url;
+          $variables['items'][$index]['content']['#attributes']['target'] = '_blank';
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Helper function to get download asset url from download node link.
+ */
+function gemc_core_get_download_cta_asset_url($node_url) {
+  $path = \Drupal::service('path.alias_manager')->getPathByAlias($node_url);
+  $file_url = '';
+  if (preg_match('/node\/(\d+)/', $path, $matches)) {
+    if ($matches[1]) {
+      $node = Node::load($matches[1]);
+      if ($node && $node->bundle() == 'download') {
+        $file = NULL;
+        $media_val = $node->get('field_download_dam_media')->getValue();
+        if (count($media_val) > 0 && isset($media_val[0]['target_id'])) {
+          $media_id = $media_val[0]['target_id'];
+          $media = Media::load($media_id);
+          if ($media) {
+            $fid = $media->field_asset->target_id;
+            $file = File::load($fid);
+          }
+        }
+        if (!isset($file) && !empty($node->get('field_file')->entity)) {
+          $file = $node->get('field_file')->entity;
+        }
+        if ($file) {
+          $uri = $file->getFileUri();
+          $file_url = file_create_url($uri);
+        }
+      }
+    }
+  }
+  return $file_url;
 }

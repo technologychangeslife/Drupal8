@@ -26,6 +26,7 @@ class ParagraphsBlockC19CopyBlock extends ThemeEntityProcessorBase {
       $cta = [
         'label' => $cta['text'],
         'href' => $cta['url'],
+        'target' => $cta['target']
       ];
     }
     $variables['data'] = [

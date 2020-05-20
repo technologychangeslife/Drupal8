@@ -1,0 +1,9 @@
+bhge_training_video_api.configapi:
+  path: '/admin/config/bhge_training_video_api/config_api'
+  defaults:
+    _form: '\Drupal\bhge_training_video_api\Form\ApiConfigForm'
+    _title: 'Valves Training Video API Config'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE

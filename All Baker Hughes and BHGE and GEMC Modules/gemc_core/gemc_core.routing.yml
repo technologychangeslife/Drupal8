@@ -1,0 +1,14 @@
+gemc_core.general_settings_form:
+  path: '/admin/config/ge-general-settings'
+  defaults:
+    _form: '\Drupal\gemc_core\Form\GemcGeneralSettingsForm'
+    _title: 'GE settings'
+  requirements:
+    _permission: 'administer bhge settings'
+gemc_core.social_settings_form:
+  path: '/admin/config/ge-social-settings'
+  defaults:
+    _form: '\Drupal\gemc_core\Form\GemcSocialSettingsForm'
+    _title: 'GE Social settings'
+  requirements:
+    _permission: 'administer bhge settings'

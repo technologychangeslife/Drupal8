@@ -1,0 +1,19 @@
+## YAML Template.
+bh-menu-js:
+  version: 1.x
+  js:
+    js/bh_menu.js: {}
+  dependencies:
+  - core/jquery
+  - core/drupal
+  - core/drupalSettings
+  - core/drupal.ajax
+bh-menu-footer-js:
+  version: 1.x
+  js:
+    js/bh_menu_footer.js: {}
+  dependencies:
+  - core/jquery
+  - core/drupal
+  - core/drupalSettings
+  - core/drupal.ajax

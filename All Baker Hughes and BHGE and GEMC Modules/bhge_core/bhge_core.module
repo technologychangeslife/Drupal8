@@ -20,7 +20,7 @@ function bhge_core_theme($existing, $type, $theme, &$path) {
   $theme = [
     'ical_template' => [
       'variables' => [
-        'timezone' => drupal_get_user_timezone(),
+        'timezone' => date_default_timezone_get(),
         'startdate' => NULL,
         'enddate' => NULL,
         'location' => NULL,
@@ -179,7 +179,7 @@ function bhge_core_form_alter(&$form, FormStateInterface &$form_state, $form_nam
  * Implements hook_field_group_build_pre_render_alter().
  */
 function bhge_core_field_group_build_pre_render_alter(&$element) {
-  $error_messages = drupal_get_messages('error', FALSE);
+  $error_messages = \Drupal::messenger()->addMessage('error', FALSE);
 
   // Check for error messages.
   if (count($error_messages)) {

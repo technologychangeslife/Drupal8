@@ -4,3 +4,11 @@
  * @file
  * Custom bh_blocks.
  */
+function bh_blocks_theme($existing,$type,$theme,$path) {
+    return [
+      'breakout_banner'=>[
+        'variables'=>['connectus'=> NULL,'media'=> NULL,'attached' => NULL],
+        'template'=>'block--breakout-banner',
+      ],
+    ];
+}

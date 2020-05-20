@@ -1,0 +1,24 @@
+bh_cke_plugins:
+  version: 1.x
+  css:
+    theme:
+        css/bh_cke_plugins.css: {}
+bh-cke_rm-readmore:
+  version: 1.x
+  js:
+    js/bh-cke-readmore.js: {}
+  css:
+    theme:
+      css/bh_cke_readmore.css: {} 
+  dependencies:
+    - core/jquery
+    - core/ckeditor
+    - editor/drupal.editor
+bh-cke_downlaod_cta:
+  version: 1.x
+  js:
+    js/bh-cke-download-cta.js: {}
+  dependencies:
+    - core/jquery
+    - core/ckeditor
+    - editor/drupal.editor

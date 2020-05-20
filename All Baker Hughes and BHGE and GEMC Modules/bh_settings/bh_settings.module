@@ -5,9 +5,13 @@
  * Custom bh_settings module.
  */
 
+use Drupal\Core\Field\FieldFilteredMarkup;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Render\BubbleableMetadata;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
 use Drupal\views\ViewExecutable;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Implements hook_token_info().
@@ -20,6 +24,10 @@ function bh_settings_token_info() {
   $bh_tokens['bh_news_no_results_messaging'] = [
     'name' => t('No Results Messaging'),
     'description' => t('A token to render the "No Results" messaging for the News Landing component.'),
+  ];
+  $bh_tokens['bh_article_type'] = [
+    'name' => t('BH Article Type'),
+    'description' => t('A token to replace with custom path in article url aliases based on article type selection. By default path is "news", when article type is "Energy Forward" then path is "energy-forward"'),
   ];
   return [
     'types' => $types,
@@ -47,6 +55,24 @@ function bh_settings_tokens($type, $tokens, array $data, array $options, Bubblea
           ];
           $replacements[$original] = render($message);
           break;
+
+        case 'bh_article_type':
+          // Token to custom path for Article contents.
+          if (isset($data['node']) && $data['node']->bundle() == 'article') {
+            // Default by path.
+            $path_part = "news";
+
+            $node = $data['node'];
+            if (!$node->get('field_article_type')->isEmpty()) {
+              $term = Term::load($node->get('field_article_type')->target_id);
+              // Article type selected as Energy Forward.
+              if (isset($term) && ($term->getName() == 'Energy Forward')) {
+                $path_part = $term->getName();
+              }
+            }
+            $replacements[$original] = $path_part;
+          }
+          break;
       }
     }
   }
@@ -61,6 +87,7 @@ function bh_settings_form_views_exposed_form_alter(&$form, FormStateInterface $f
   if ($form['#id'] == 'views-exposed-form-contacts-block-1') {
     bh_settings_contacts_team_list_exposed_filter_overrides($form);
   }
+
 }
 
 /**
@@ -122,4 +149,239 @@ function bh_settings_set_contacts_team_list_default_tab(ViewExecutable $view) {
       $view->setExposedInput([$filter_id => $default_tab]);
     }
   }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bh_settings_form_node_article_form_alter(&$form, &$form_state, $form_id) {
+  bh_settings_toggle_energy_forward_fields($form);
+  bh_settings_set_title_description($form);
+
+  $form['#validate'][] = '_bh_settings_form_node_article_validate';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bh_settings_form_node_article_edit_form_alter(&$form, &$form_state, $form_id) {
+  bh_settings_toggle_energy_forward_fields($form);
+  bh_settings_set_title_description($form);
+
+  $form['#validate'][] = '_bh_settings_form_node_article_validate';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bh_settings_form_node_rig_count_form_alter(&$form, &$form_state, $form_id) {
+  $form['#attached']['library'][] = 'bh_settings/bh-settings';
+
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bh_settings_form_node_rig_count_edit_form_alter(&$form, &$form_state, $form_id) {
+  $form['#attached']['library'][] = 'bh_settings/bh-settings';
+
+}
+
+/**
+ * Perform additional form validations for the article content type.
+ */
+function _bh_settings_form_node_article_validate(&$form, FormStateInterface $form_state) {
+
+  // Pinned article validations.
+  if ($form_state->hasValue('field_pinned_article')) {
+
+    $field_pinned_article = $form_state->getValue('field_pinned_article');
+
+    // Check if article has been pinned.
+    if ($field_pinned_article['value']) {
+      $field_pinned_article_image = $form_state->getValue('field_pinned_article_image');
+
+      // Check that an pinned image has been selected.
+      if (!isset($field_pinned_article_image['selection'])) {
+        $form_state->setErrorByName('field_pinned_article_image', t('The pinned article image is required.'));
+      }
+    }
+  }
+}
+
+/**
+ * Adding title help text programmatically.
+ *
+ * NOTE: Drupal's core UI does not provide this ability.
+ */
+function bh_settings_set_title_description(&$form) {
+  $title_text = t('
+    For better visual representation article title should not wrap more than 3-4 
+    lines as it is displaying on Pinned Article and Article list items.');
+  $form['title']['widget'][0]['value']['#description'] = $title_text;
+}
+
+/**
+ * Hide show fields in entity form.
+ */
+function bh_settings_toggle_energy_forward_fields(&$form) {
+
+  $vid = 'article_type';
+  $term = 'Energy Forward';
+
+  if ($term = bh_settings_get_term_id($vid, $term)) {
+    // Display the pinned article checkbox if energy forward type is selected.
+    $form['field_pinned_article']['#states'] = [
+      'visible' => [
+        'select[name="field_article_type"]' => ['value' => $term->id()]
+      ]
+    ];
+
+    // Display the move author section to top if energy forward is selected.
+    $form['field_move_author_section_to_the']['#states'] = [
+      'visible' => [
+        'select[name="field_article_type"]' => ['value' => $term->id()]
+      ]
+    ];
+
+    // Display the energy forward format dropdown if energy forward type is
+    // selected.
+    $form['field_energy_forward_format']['#states'] = [
+      'visible' => [
+        'select[name="field_article_type"]' => ['value' => $term->id()]
+      ]
+    ];
+
+    // Display the energy forward topic if energy forward type is selected.
+    $form['field_energy_forward_topics']['#states'] = [
+      'visible' => [
+        'select[name="field_article_type"]' => ['value' => $term->id()]
+      ]
+    ];
+
+    // Display the energy forward short desc if energy forward type is selected.
+    $form['field_article_short_desc']['#states'] = [
+      'visible' => [
+        'select[name="field_article_type"]' => ['value' => $term->id()]
+      ]
+    ];
+
+    // Display the pinned article image if the article is pinned.
+    $form['field_pinned_article_image']['#states'] = [
+      'visible' => [
+        ':input[name="field_pinned_article[value]"]' => ['checked' => TRUE]
+      ]
+    ];
+
+    // Display the list item tile image if energy forward type is selected.
+    $form['field_tile_image_list_item']['#states'] = [
+      'visible' => [
+        'select[name="field_article_type"]' => ['value' => $term->id()]
+      ]
+    ];
+
+    // Display the list item tile size if energy forward type is selected.
+    $form['field_tile_size_list_item']['#states'] = [
+      'visible' => [
+        'select[name="field_article_type"]' => ['value' => $term->id()]
+      ]
+    ];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update() for node entities.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity being edited.
+ */
+function bh_settings_node_update(EntityInterface $entity) {
+
+  // Uncheck all previous pinned energy forward articles.
+  bh_settings_unset_previous_pinned_article($entity);
+}
+
+/**
+ * Uncheck all other pinned energy forward articles if relevant.
+ */
+function bh_settings_unset_previous_pinned_article(EntityInterface $entity) {
+
+  $bundle = $entity->bundle();
+
+  // Do not continue if its not an article content type.
+  if ($bundle != 'article') {
+    return;
+  }
+
+  $vid = 'article_type';
+  $term = 'Energy Forward';
+
+  $article_type_term = bh_settings_get_term_id($vid, $term);
+
+  // Do not continue if the article type is not set.
+  if (!$article_type_term) {
+    return;
+  }
+
+  $pinned_value = $entity->get("field_pinned_article")->getString();
+
+  // Do not continue if this article is not pinned.
+  if ($pinned_value != 1) {
+    return;
+  }
+
+  $article_type_selected = (int) $entity->get("field_article_type")
+    ->getString();
+
+  // Do not continue if the article type is not set to Energy Forward.
+  if ($article_type_selected != $article_type_term->id()) {
+    return;
+  }
+
+  $current_nid = $entity->nid->getString();
+
+  // Find other pinned energy forward articles besides this one.
+  $query = \Drupal::entityQuery('node');
+  $query->condition('status', 1);
+  $query->condition('type', $bundle);
+  $query->condition('field_article_type', $article_type_term->id());
+  $query->condition('field_pinned_article', '1');
+  $query->condition('nid', $current_nid, '!=');
+  $entity_ids = $query->execute();
+
+  $node_storage = Drupal::entityTypeManager()->getStorage('node');
+
+  // Update to unset pin for all others.
+  foreach ($entity_ids as $entity_id) {
+    $node = $node_storage->load($entity_id);
+    $node->set('field_pinned_article', 0);
+    $node->save();
+  }
+}
+
+/**
+ * Return the term ID based on the vocabulary ID and term name.
+ *
+ * @param string $vid
+ *   A vocabulary machine name.
+ * @param string $term
+ *   A term name belonging to the vocabulary.
+ *
+ * @return mixed
+ *   A term ID or false if no term was found.
+ */
+function bh_settings_get_term_id($vid, $term) {
+  $properties['name'] = $term;
+  $properties['vid'] = $vid;
+
+  $term = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadByProperties($properties);
+
+  if ($term) {
+    $term = reset($term);
+    return $term;
+  }
+
+  return FALSE;
 }

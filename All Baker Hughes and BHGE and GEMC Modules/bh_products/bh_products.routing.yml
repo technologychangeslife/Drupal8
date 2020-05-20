@@ -1,0 +1,8 @@
+bh_products.child_data.call:
+  path: '/ajax/get_product_cat_child_data'
+  defaults:
+    _controller: '\Drupal\bh_products\Controller\ProductController::getProductCatChildData'
+    _title: 'Get Product Category Child Data'
+  methods:  [GET]
+  requirements:
+    _permission: 'access content'

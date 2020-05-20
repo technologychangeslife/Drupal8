@@ -38,7 +38,8 @@ function bhge_n02_global_nav_preprocess_region__navigation(&$variables) {
       $entity_ref = $node->get('field_announcement');
       // If announcement field has data.
       if ($entity_ref->count() > 0) {
-        $variables['announcement'] = entity_view($entity_ref->entity, 'default');
+        $view_builder = \Drupal::entityTypeManager()->getViewBuilder($entity_ref->entity->getEntityTypeId());
+        $variables['announcement'] = $view_builder->view($entity_ref->entity, 'default');
       }
     }
   }

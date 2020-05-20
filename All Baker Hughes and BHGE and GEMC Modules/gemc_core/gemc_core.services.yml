@@ -1,0 +1,5 @@
+services:
+  gemc_core.twig.uiutilsextension:
+    class: Drupal\gemc_core\Extension\UIUtilsExtension
+    tags:
+      - { name: twig.extension }

@@ -1,0 +1,50 @@
+<?php
+
+/**
+ * @file
+ * Module file for gemc_podcast_embed.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_theme().
+ */
+function gemc_podcast_embed_theme() {
+  return [
+    'gemc_podcast_embed_script' => [
+      'variables' => [
+        'url' => '',
+        'query' => [],
+        'target_container_attributes' => [],
+        'attributes' => [],
+        'fragment' => '',
+      ],
+    ],
+    'gemc_podcast_embed_missing_provider' => [
+      'variables' => [],
+    ],
+  ];
+}
+
+/**
+ *  Implements hook_help().
+ */
+function gemc_podcast_embed_help($route_name, RouteMatchInterface $route_match) {
+  if ($route_name !== 'help.page.gemc_podcast_embed') {
+    return;
+  }
+  $links = [
+    ':field_help' => \Drupal::moduleHandler()->moduleExists('field_ui') ? Url::fromRoute('help.page', ['name' => 'field_ui'])->toString() : '#',
+    ':field_ui_help' => Url::fromRoute('help.page', ['name' => 'field'])->toString(),
+    //TODO
+    ':gemc_podcast_embed_docs' => 'https://www.drupal.org/node/2322455',
+    ':project_page' => 'http://drupal.org/project/gemc_podcast_embed',
+  ];
+  $output = '';
+  $output .= '<h3>' . t('About') . '</h3>';
+  //TODO
+  $output .= '<p>' . t('The Podcast Embed Field module provides a simple field type you can use to embed podcasts and their preview thumbnails from YouTube, Vimeo and other providers. See the <a href=":field_help">Field module help</a> and the <a href=":field_ui_help">Field UI help</a> pages for general information on fields and how to create and manage them. For more Podcast Embed Field help, see the <a href=":gemc_podcast_embed_docs">online community documentation</a> or the <a href=":project_page">module project page</a>.', $links) . '</p>';
+  return $output;
+}

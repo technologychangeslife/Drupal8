@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Custom bh_cke_plugins.
+ */
+
+use Drupal\editor\Entity\Editor;
+
+/**
+ * Implements hook_ckeditor_css_alter().
+ *
+ * Injects our CSS sheets anytime CKEditor has loaded.
+ *
+ * @param array $css
+ *   CSS files array.
+ * @param Drupal\editor\Entity\Editor $editor
+ *   CKE editor instance.
+ */
+function bh_cke_plugins_ckeditor_css_alter(array &$css, Editor $editor) {
+  if (!$editor->hasAssociatedFilterFormat()) {
+    return;
+  }
+
+  $known_formats = [
+    'rich_editor',
+    'full_html',
+  ];
+
+  if (in_array($editor->getFilterFormat()->id(), $known_formats)) {
+    $css[] = drupal_get_path('module', 'bh_cke_plugins') . '/css/bh_cke_plugins.css';
+  }
+}
+
+/**
+ * Hook_attachnents_alter used to add js library.
+ *
+ * Code for ckeditor_readmore module.
+ */
+function bh_cke_plugins_page_attachments_alter(array &$attachments) {
+  $attachments['#attached']['library'][] = 'bh_cke_plugins/bh-cke_rm-readmore';
+  $attachments['#attached']['library'][] = 'bh_cke_plugins/bh-cke_downlaod_cta';
+}

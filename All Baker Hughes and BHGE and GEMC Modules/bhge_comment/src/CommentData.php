@@ -6,6 +6,7 @@ use Drupal\Core\Database\Database;
 use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Url;
 use Drupal\Node\Entity\Node;
+use Drupal\user\Entity\User;
 
 /**
  * Defines the storage handler class for comments.
@@ -22,7 +23,7 @@ class CommentData implements CommentDataInterface {
   /**
    * Load the comment tree.
    *
-   * @param \Drupal\node\Entity\Node $entity
+   * @param \Drupal\Node\Entity\Node $entity
    *   Node entity.
    * @param string $fieldName
    *   Field name.
@@ -31,6 +32,10 @@ class CommentData implements CommentDataInterface {
    *
    * @return array
    *   Nested list of comment data for theming.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function loadCommentTree(Node $entity, $fieldName, $commentStatus) {
     $comments = [];
@@ -118,12 +123,16 @@ class CommentData implements CommentDataInterface {
    *
    * @return array
    *   Array of values per comment for theme usage.
+   *
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   * @throws \Drupal\Core\TypedData\Exception\MissingDataException
    */
   public function loadCommentData(array $cids = []) {
     $uid = \Drupal::currentUser()->id();
-    $user = user_load($uid);
+    $user = User::load($uid);
     $return = [];
-    $comments = entity_load_multiple('comment', $cids);
+    $comments = \Drupal::entityTypeManager()->getStorage('comment')->loadMultiple($cids);
     $countBack = count($comments);
     $count = 0;
 

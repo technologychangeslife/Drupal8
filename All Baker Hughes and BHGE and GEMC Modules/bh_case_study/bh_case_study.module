@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Custom bh_corporate_responsibility.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_form_alter().
+ */
+function bh_case_study_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $component_forms = [
+    'entity_browser_middle_stack_hero_form',
+    'entity_browser_highlight_feature_browser_form',
+    'entity_browser_callout_button_browser_form',
+    'node_middle_stack_hero_edit_form',
+    'node_highlight_feature_edit_form',
+    'node_callout_button_edit_form'
+  ];
+
+  // Case study edit page, hide published section and collapsed icon.
+  // For the matched component form.
+  if (in_array($form_id, $component_forms)) {
+    $form['#attached']['library'][] = 'bh_case_study/bh-case-study-form';
+  }
+
+  // Prefill the default text in feature highlights sub heading field.
+  if ($form_id == 'entity_browser_highlight_feature_browser_form'
+    || $form_id === 'node_highlight_feature_form'
+    || $form_id == 'node_highlight_feature_edit_form'
+  ) {
+    $form['#attached']['library'][] = 'bh_case_study/bh-feature-highlights-prefill';
+  }
+}

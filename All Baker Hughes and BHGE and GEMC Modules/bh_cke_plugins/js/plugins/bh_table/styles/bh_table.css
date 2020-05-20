@@ -1,0 +1,12 @@
+div.bh-cke-bh-table-wrapper {
+  display: table;
+  width: 100%;
+}
+div.bh-cke-bh-table-row-wrapper {
+  display: table-row;
+}
+div.bh-cke-bh-table-col-wrapper {
+  display: table-cell;
+  padding: 3px 10px;
+  border: 1px solid #999999
+}

@@ -8,3 +8,8 @@ bh_settings.external_api_settings_form:
   title: External API Settings
   base_route: bh_settings.general_settings_form
   weight: 20
+bh_settings.mega_navigation_settings_form:
+  route_name: bh_settings.mega_navigation_settings_form
+  title: Mega Navigation Settings
+  base_route: bh_settings.general_settings_form
+  weight: 60

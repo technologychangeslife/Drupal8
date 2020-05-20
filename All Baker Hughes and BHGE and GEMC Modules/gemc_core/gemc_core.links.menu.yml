@@ -1,0 +1,20 @@
+gemc_core.general_settings_form:
+  title: 'GE Settings'
+  description: 'Manage GE settings.'
+  route_name: gemc_core.general_settings_form
+  parent: system.admin_config_system
+  menu_name: gemc_core
+  weight: 1
+gemc_core.social_settings_form:
+  title: 'GE Social Settings'
+  description: 'Manage GE Social settings.'
+  route_name: gemc_core.social_settings_form
+  parent: gemc_core.general_settings_form
+  menu_name: gemc_core
+  weight: 2
+gemc_core.taxonomy_overview_page:
+  title: 'Taxonomy'
+  description: 'Taxonomy overview page'
+  route_name: entity.taxonomy_vocabulary.collection
+  parent: 'system.admin_content'
+  weight: 5

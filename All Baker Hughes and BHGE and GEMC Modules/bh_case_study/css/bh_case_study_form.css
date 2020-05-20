@@ -1,0 +1,10 @@
+.ui-widget-content .node-middle-stack-hero-edit-form .layout-region-node-secondary,
+.ui-widget-content .node-highlight-feature-edit-form .layout-region-node-secondary,
+.ui-widget-content .node-callout-button-edit-form .layout-region-node-secondary {
+  display: none;
+}
+.ui-widget-content .node-middle-stack-hero-edit-form .layout-region-node-main,
+.ui-widget-content .node-highlight-feature-edit-form .layout-region-node-main,
+.ui-widget-content .node-callout-button-edit-form .layout-region-node-main {
+  width: 100%;
+}

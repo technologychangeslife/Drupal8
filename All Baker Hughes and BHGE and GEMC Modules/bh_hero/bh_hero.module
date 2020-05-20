@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains bh_hero.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function bh_hero_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the bh_hero module.
+    case 'help.page.bh_hero':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Hero component features.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

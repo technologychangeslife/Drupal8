@@ -87,12 +87,16 @@ class ParagraphsBlockC105LatestNews extends ThemeEntityProcessorBase {
       }
     }
 
-    $currentNode = $this->routeMatch->getParameter('node');
-    if (in_array($currentNode->getType(), ['industry', 'industry_segment'])) {
-      $newsItems = $this->contentLists->getContentList('news_item', 2, $currentNode->id());
-    }
-    elseif ($currentNode->getType == 'section') {
-      $newsItems = $this->contentLists->getContentList('news_item', 2, NULL, $currentNode->id());
+    if (($currentNode = $this->routeMatch->getParameter('node')) && $currentNode instanceof NodeInterface) {
+      if (in_array($currentNode->getType(), ['industry', 'industry_segment'])) {
+        $newsItems = $this->contentLists->getContentList('news_item', 2, $currentNode->id());
+      }
+      elseif ($currentNode->getType == 'section') {
+        $newsItems = $this->contentLists->getContentList('news_item', 2, NULL, $currentNode->id());
+      }
+      else {
+        $newsItems = $this->contentLists->getContentList('news_item', 4);
+      }
     }
     else {
       $newsItems = $this->contentLists->getContentList('news_item', 4);
@@ -119,6 +123,7 @@ class ParagraphsBlockC105LatestNews extends ThemeEntityProcessorBase {
         $variables['data']['featureBlock']['cta'] = [
           'description' => $cta['text'],
           'href' => $cta['url'],
+          'target' => $cta['target']
         ];
       }
     }
@@ -131,6 +136,7 @@ class ParagraphsBlockC105LatestNews extends ThemeEntityProcessorBase {
       if (!empty($cta)) {
         $variables['data']['featureBlock']['cta'] = [
           'href' => $cta['url'],
+          'target' => $cta['target']
         ];
       }
     }

@@ -4,3 +4,4 @@ description: 'Custom Settings Container for BH'
 package: BH
 version: 8.x
 core: 8.x
+core_version_requirement: ^8 || ^9

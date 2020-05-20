@@ -1,0 +1,9 @@
+bh-case-study-form:
+  version: 1.x
+  css:
+    theme:
+      css/bh_case_study_form.css: {}
+bh-feature-highlights-prefill:
+  version: VERSION
+  js:
+    js/bh_feature_highlights_prefill.js: {}

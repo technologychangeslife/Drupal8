@@ -76,7 +76,7 @@ class IcalController extends ControllerBase {
         }
 
         if (!empty($data)) {
-          $data['#timezone'] = drupal_get_user_timezone();
+          $data['#timezone'] = date_default_timezone_get();
           $data['#theme'] = 'ical_template';
           $data = render($data);
           var_dump($data); die();

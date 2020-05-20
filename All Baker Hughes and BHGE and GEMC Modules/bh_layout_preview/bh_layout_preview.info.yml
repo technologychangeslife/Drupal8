@@ -9,3 +9,4 @@ dependencies:
   - bh_layouts
 libraries:
   - bh_layout_preview
+core_version_requirement: ^8 || ^9

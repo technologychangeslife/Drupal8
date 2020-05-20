@@ -4,6 +4,7 @@ namespace Drupal\bhge_search_api\Controller;
 
 use Drupal\Component\Utility\Xss;
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\search_api\Entity\Index;
 use Drupal\search_api\Query\Query;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -79,7 +80,7 @@ class SearchApiController extends ControllerBase {
   /**
    * {@inheritdoc}
    */
-  public function __construct($request, $searchHelpers, $cache, $configFactory, $searchTerm, $requestFacets, $productPage, $searchPage, $sortFieldProducts, $sortOrderProducts, $sortFieldOther, $sortOrderOther) {
+  public function __construct($request, $searchHelpers, $cache, $configFactory, $searchTerm, $requestFacets, $productPage, $searchPage, $sortFieldProducts, $sortOrderProducts, $sortFieldOther, $sortOrderOther, DateFormatterInterface $date_formatter) {
 
     global $base_url;
 
@@ -96,6 +97,7 @@ class SearchApiController extends ControllerBase {
     $this->sortFieldOther = !empty($sortFieldOther) ? Xss::filter($sortFieldOther) : '';
     $this->sortOrderProducts = !empty($sortOrderProducts) ? Xss::filter($sortOrderProducts) : '';
     $this->sortOrderOther = !empty($sortOrderOther) ? Xss::filter($sortOrderOther) : '';
+    $this->dateFormatter = $date_formatter;
   }
 
   /**
@@ -115,7 +117,8 @@ class SearchApiController extends ControllerBase {
       $request->get('sort_by-products'),
       $request->get('sort_order-products'),
       $request->get('sort_by-other-results'),
-      $request->get('sort_order-other-results')
+      $request->get('sort_order-other-results'),
+      $container->get('date.formatter')
     );
   }
 
@@ -282,7 +285,9 @@ class SearchApiController extends ControllerBase {
    * Retrieving products and services.
    *
    * @return array
-   *   Returns product and services.
+   *   Retrieving products and services.
+   *
+   * @throws \Drupal\search_api\SearchApiException
    */
   private function getProductsAndServices() {
     $searchIndex = $this->searchHelpers->getSearchIndex();
@@ -366,7 +371,7 @@ class SearchApiController extends ControllerBase {
         'download_link' => $this->searchHelpers->getDownloadLink($result),
         'cta_link' => $this->searchHelpers->getCtaLink($result),
         'file' => $this->searchHelpers->getFileData($result),
-        'created' => format_date($result['created']->getValues()[0], '', $format = 'F j, Y', $timezone = NULL, $langcode = NULL),
+        'created' => $this->dateFormatter->format($result['created']->getValues()[0], '', $format = 'F j, Y', $timezone = NULL, $langcode = NULL),
         'event_details' => $this->searchHelpers->getEventDetails($result),
       ];
     }

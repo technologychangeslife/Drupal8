@@ -43,7 +43,7 @@ function gemc_product_tokens($type, $tokens, array $data, array $options, Bubble
     foreach ($tokens as $name => $original) {
       switch ($name) {
         case 'gemc_rma':
-          $dt = date("YmdG", $webform_submission->completed->value);
+          $dt = date("Ymd", $webform_submission->completed->value);
           // $replacements[$original] = $dt . $webform_submission->sid->value;.
           $totalreqnumber = 14;
           $generatedvalue = $dt . $webform_submission->sid->value;

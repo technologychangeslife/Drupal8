@@ -5,6 +5,7 @@
  * GEMC Core install functions.
  */
 
+use Drupal\media\Entity\Media;
 use Drupal\Core\Database\Database;
 use Drupal\Core\Entity\Sql\SqlEntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
@@ -267,4 +268,36 @@ function gemc_core_update_8008() {
   ];
 
   batch_set($batch);
+}
+
+/**
+ * Resolve any mismatched assets for DAM.
+ */
+function gemc_core_update_8009(&$sandbox) {
+  // Script provided by Acquia.
+  $field_name = "field_asset";
+  $file_target_id_column = "${field_name}_target_id";
+  $file_table_name = "media__${field_name}";
+  $ids = \Drupal::database()->query("select entity_id from {$file_table_name}  where $file_target_id_column in (select $file_target_id_column from {$file_table_name} group by $file_target_id_column having count($file_target_id_column) > 1)")->fetchAll();
+  if (!empty($ids)) {
+    foreach ($ids as $id) {
+      $media = Media::load($id->entity_id);
+      $media->set($field_name, NULL);
+      $media->save();
+    }
+  }
+}
+
+/**
+ * Adding custom block for the alert banner.
+ */
+function gemc_core_update_8010() {
+  $storage = \Drupal::entityTypeManager()->getStorage('block_content');
+  $block_content = [
+    'uuid' => '59704129-6eec-48a4-9474-99c141a333d9',
+    'info' => 'Urgent update banner',
+    'type' => 'alert_banner',
+  ];
+  $entity = $storage->create($block_content);
+  $entity->save();
 }

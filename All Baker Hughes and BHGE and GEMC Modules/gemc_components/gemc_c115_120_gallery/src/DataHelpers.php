@@ -120,7 +120,7 @@ class DataHelpers {
     $row['videoIFrame'] = '';
     $row['videoFacebookVideo'] = '';
 
-    $uiUtils = \Drupal::service('bhge_core.twig.uiutilsextension');
+    $videoHelper = \Drupal::service('gemc_components.video_helper');
     if (strpos($row['video'], 'youtu.be') !== FALSE) {
       $videoParts = explode('/', $row['video']);
       $row['videoYoutubeId'] = end($videoParts);
@@ -134,12 +134,12 @@ class DataHelpers {
     }
     elseif (strpos($row['video'], 'brightcove') !== FALSE || strpos($row['video'], 'bcove') !== FALSE) {
       $video_id = end(explode('=', $row['video']));
-      $row['videoBrightCoveAccount'] = $uiUtils->getBrightcoveAccount($row['video']);
-      $row['videoBrightCovePlayer'] = $uiUtils->getBrightcovePlayer($row['video']);
+      $row['videoBrightCoveAccount'] = $videoHelper->getBrightcoveAccount($row['video']);
+      $row['videoBrightCovePlayer'] = $videoHelper->getBrightcovePlayer($row['video']);
       $row['videoBrightCoveVideo'] = $video_id;
     }
     else {
-      $office365Data = $uiUtils->getOffice365Data($row['video']);
+      $office365Data = $videoHelper->getOffice365Data($row['video']);
       $row['videoOffice365Chid'] = !empty($office365Data['chId']) ? $office365Data['chId'] : '';
       $row['videoOffice365Vid'] = !empty($office365Data['vId']) ? $office365Data['vId'] : '';
     }

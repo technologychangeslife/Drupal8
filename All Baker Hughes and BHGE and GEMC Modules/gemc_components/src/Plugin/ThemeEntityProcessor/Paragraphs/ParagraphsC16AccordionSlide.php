@@ -29,6 +29,7 @@ class ParagraphsC16AccordionSlide extends GemcThemeEntityProcessorBase {
       'link' => [
         'label' => $link_data['text'],
         'url' => $link_data['url'],
+        'target' => $link_data['target']
       ],
       'image' => $this->fieldDataService->getResponsiveImageData($variables['elements']['field_image'], 'accordion_image_normal', 'accordion_image_small'),
     ];

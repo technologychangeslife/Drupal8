@@ -1,0 +1,9 @@
+name: CKEditor Trademark
+type: module
+description: 'This plugin module adds the trademark dagger feature to CKEditor in Drupal 8'
+package: CKEditor
+dependencies:
+  - ckeditor
+version: VERSION
+core: '8.x'
+core_version_requirement: ^8 || ^9

@@ -1,0 +1,5 @@
+.view-components-entity-browser-views table.views-table {
+  overflow: scroll;
+  max-height:800px;
+  display:block;
+}

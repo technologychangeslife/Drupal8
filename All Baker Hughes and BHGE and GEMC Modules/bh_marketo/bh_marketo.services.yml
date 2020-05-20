@@ -1,0 +1,9 @@
+services:
+  bh_marketo.helpers:
+    class: Drupal\bh_marketo\MarketoHelpers
+  bh_marketo.product_data:
+    class: Drupal\bh_marketo\ProductData
+    arguments: ['@database']
+  bh_marketo.section_trail:
+    class: Drupal\bh_marketo\SectionTrail
+    arguments: ['@bh_marketo.product_data', '@entity_type.manager']

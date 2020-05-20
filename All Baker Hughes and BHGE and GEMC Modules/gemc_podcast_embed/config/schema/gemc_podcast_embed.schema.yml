@@ -1,0 +1,33 @@
+field.formatter.settings.gemc_podcast_embed_podcast:
+  type: mapping
+  label: 'Podcast formatter settings.'
+  mapping:
+    autoplay:
+      type: boolean
+      label: 'Autoplay'
+    responsive:
+      type: boolean
+      label: 'Responsive'
+    width:
+      type: integer
+      label: 'Width'
+    height:
+      type: integer
+      label: 'Height'
+
+field.field_settings.gemc_podcast_embed:
+  type: mapping
+  label: 'Podcast field settings.'
+  mapping:
+    allowed_providers:
+      type: sequence
+      label: 'Allowed Providers'
+      sequence:
+        type: string
+
+field.value.gemc_podcast_embed:
+  type: mapping
+  mapping:
+    value:
+      type: string
+      label: 'Podcast URL'

@@ -72,7 +72,7 @@ function bhge_dynamic_filter_comp_form_alter(&$form, FormStateInterface $form_st
             foreach ($nodes as $node) {
               $date = $node->getCreatedTime();
               if ($date) {
-                $year = format_date($date, '', $format = 'Y', $timezone = NULL, $langcode = NULL);
+                $year = \Drupal::service('date.formatter')->format($date, '', $format = 'Y', $timezone = NULL, $langcode = NULL);
                 if (!isset($options[$year])) {
                   $options[$year] = $year;
                 }
@@ -134,10 +134,11 @@ function bhge_dynamic_filter_comp_views_query_alter(ViewExecutable $view, Sql $q
         'left_field' => 'nid',
         'operator' => '=',
       ];
+      $db_conn = \Drupal::database();
       $join_obj = Views::pluginManager('join')
         ->createInstance('standard', $configuration);
       $query->addRelationship('node__body', $join_obj, 'entity_id');
-      $query->addWhere('1', 'node__body.body_value', '%' . db_like($view->exposed_widgets['title']['#value']) . "%", 'LIKE');
+      $query->addWhere('1', 'node__body.body_value', $db_conn->escapeLike($view->exposed_widgets['title']['#value']));
     }
     // If the year filter is selected. Use this only for news item.
     if (in_array("News item", $view->exposed_widgets['type']['#options'])) {
@@ -236,7 +237,7 @@ function bhge_dynamic_filter_comp_node_presave(EntityInterface $entity) {
       $options = $data->data;
       $date = $entity->created->value;
       if ($date) {
-        $year = format_date($date, '', $format = 'Y', $timezone = NULL, $langcode = NULL);
+        $year = \Drupal::service('date.formatter')->format($date, '', $format = 'Y', $timezone = NULL, $langcode = NULL);
         if (!isset($options[$year])) {
           Cache::invalidateTags(['node:news_item:year']);
         }

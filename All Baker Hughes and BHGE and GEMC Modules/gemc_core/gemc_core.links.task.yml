@@ -1,0 +1,10 @@
+gemc_core.general_settings_form:
+  route_name : gemc_core.general_settings_form
+  title: General Settings
+  base_route: gemc_core.general_settings_form
+  weight: 10
+gemc_core.social_settings_form:
+  route_name: gemc_core.social_settings_form
+  title: Social Settings
+  base_route: gemc_core.general_settings_form
+  weight: 20

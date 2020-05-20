@@ -1,0 +1,9 @@
+name: BH Global Nav
+type: module
+description: 'Customization needed for global nav for bakerhughes.com'
+package: BH
+dependencies:
+  - icon_select:icon_select
+version: 8.x
+core: 8.x
+core_version_requirement: ^8 || ^9

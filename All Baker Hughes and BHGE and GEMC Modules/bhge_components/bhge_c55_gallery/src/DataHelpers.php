@@ -1,8 +1,9 @@
 <?php
-
+// phpcs:ignoreFile
 namespace Drupal\bhge_c55_gallery;
 
 use Drupal\Component\Utility\Unicode;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -13,7 +14,7 @@ class DataHelpers {
   protected $dataHelpers;
 
   /**
-   * Constructor.
+   * DataHelpers constructor.
    *
    * @param \Drupal\bhge_core\DataHelpers $dataHelpers
    *   Class with helper methods.
@@ -42,7 +43,7 @@ class DataHelpers {
       'type' => $this->getLabel($node),
       'links' => $this->getLinks($node),
       'buttons' => [],
-      'created' => format_date($node->getCreatedTime(), '', $format = 'F j, Y', $timezone = NULL, $langcode = NULL),
+      'created' =>  \Drupal::service('date.formatter')->format($node->getCreatedTime(), '', $format = 'F j, Y', $timezone = NULL, $langcode = NULL),
       'target' => '',
     ];
     $image = $this->dataHelpers->getImage($node);

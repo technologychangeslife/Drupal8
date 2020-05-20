@@ -1,0 +1,5 @@
+bh_filters.filter_views_settings_form:
+  route_name : bh_filters.filter_views_settings_form
+  title: Filter Settings
+  base_route: bh_settings.general_settings_form
+  weight: 50

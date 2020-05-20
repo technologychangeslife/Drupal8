@@ -15,11 +15,9 @@
   <div{{ attributes.addClass(classes) }}>
     <hr class="bh-layouts__border bh-layouts__border--above"/>
     <div class="bh-layouts__container">
-      {% if content['#settings'].section_title is not empty %}
+      {% if content['#settings'].section_title is defined and content['#settings'].section_title != "" %}
         <div class="bh-layouts__header">
-          {% if content['#settings'].section_title is not empty %}
             <h2 class="bh-layouts__title">{{ content['#settings'].section_title }}</h2>
-          {% endif %}
         </div>
       {% endif %}
       <div class="bh-layouts__grid">

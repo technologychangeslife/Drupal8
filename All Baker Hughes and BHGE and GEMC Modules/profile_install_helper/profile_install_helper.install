@@ -42,6 +42,6 @@ function profile_install_helper_install() {
     // Set valid path as home, else home will WSOD.
     $config->set('page.front', '/node/add/page')->save();
 
-    drupal_set_message(t('Please <a href="/user/login">login</a>, <a href="/node/add/page">create a page</a> and <a href="/admin/config/system/site-information">set configurations</a> after install.'));
+    \Drupal::messenger()->addMessage(t('Please <a href="/user/login">login</a>, <a href="/node/add/page">create a page</a> and <a href="/admin/config/system/site-information">set configurations</a> after install.'));
   }
 }

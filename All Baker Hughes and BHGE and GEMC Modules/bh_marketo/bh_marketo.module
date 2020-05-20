@@ -1,0 +1,111 @@
+<?php
+
+/**
+ * @file
+ * The marketo module.
+ */
+
+use Drupal\node\NodeInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook preprocess_node().
+ */
+function bh_marketo_preprocess_node(array &$variables) {
+  $node = $variables['node'];
+  if ($node instanceof NodeInterface) {
+    if ($node->getType() == 'marketo_form') {
+      $entity = \Drupal::routeMatch()->getParameter('node');
+
+      if ($entity instanceof NodeInterface) {
+
+        // Product page marketo popup form.
+        if ($entity->getType() == 'product' || $entity->getType() == 'product_category') {
+          /** @var \Drupal\bh_marketo\MarketoHelpers $marketoHelpers */
+          $marketoHelpers = \Drupal::service('bh_marketo.helpers');
+          // Populate meta.
+          $variables['marketo_meta'] = $marketoHelpers->populateMarketoMeta([], $entity);
+        }
+        else {
+          // Contact us page.
+          $options = \Drupal::request()->query->all();
+          if (!empty($options)) {
+            // Populate meta.
+            $variables['marketo_meta'] = $options;
+          }
+        }
+      }
+      // Autofill marketo meta values.
+      $variables['#attached']['library'][] = 'bh_marketo/bh-marketo';
+
+      // No cache.
+      $variables['#cache']['max-age'] = 0;
+      $variables['#cache']['contexts'][] = 'url.path';
+      $variables['#cache']['contexts'][] = 'url.query_args';
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function bh_marketo_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if (isset($form['#webform_id'])) {
+    if ($form['#webform_id'] == 'contact_us' || $form['#webform_id'] == 'product_contact_us') {
+
+      $entity = \Drupal::routeMatch()->getParameter('node');
+
+      if ($entity instanceof NodeInterface) {
+
+        // Product and product category page marketo popup form.
+        if ($entity->getType() == 'product' || $entity->getType() == 'product_category') {
+          /** @var \Drupal\bh_marketo\MarketoHelpers $marketoHelpers */
+          $marketoHelpers = \Drupal::service('bh_marketo.helpers');
+          // Populate meta.
+          $data['marketo_meta'] = $marketoHelpers->populateMarketoMeta([], $entity);
+        }
+        else {
+          // Contact us page.
+          $options = \Drupal::request()->query->all();
+          if (!empty($options)) {
+            // Populate meta.
+            $data['marketo_meta'] = $options;
+          }
+        }
+      }
+
+      // Load values to marketo form.
+      if (isset($data['marketo_meta']) && isset($form['elements'])) {
+        $form_elements = $form['elements'];
+        // Product and product category will have overlay container.
+        if (isset($form['elements']['overlay_container'])) {
+          $form_elements = $form['elements']['overlay_container'];
+        }
+        $mapping = [
+          'product_category' => 'mCProductCategoryGEMkto',
+          'product_sub_category' => 'mCProductSubCategoryGEMkto',
+          'product_of_interest' => 'mCProductofInterestGEMKTO',
+          'application' => 'mCProductApplicationGEMkto',
+        ];
+        foreach ($mapping as $field_name => $meta_key) {
+          if (isset($data['marketo_meta'][$meta_key])) {
+            $form_elements[$field_name]['#default_value'] = $data['marketo_meta'][$meta_key];
+          }
+        }
+        $form['elements'] = $form_elements;
+      }
+      $form['#attached']['library'][] = 'bh_marketo/jquery-validation';
+      $form['#attached']['library'][] = 'bh_marketo/jquery-validation-additional';
+    }
+    if ($form['#webform_id'] == 'contact_us') {
+      $form['#attached']['library'][] = 'bh_marketo/contact-us-validation';
+    }
+  }
+
+  // Pre-fill webform selection and adding css.
+  if ($form_id == 'layout_builder_add_block' || $form_id == 'layout_builder_update_block') {
+    if (isset($form['settings']['provider']) && $form['settings']['provider']['#value'] == 'webform') {
+      $form['#attached']['library'][] = 'bh_marketo/bh-marketo';
+    }
+  }
+}

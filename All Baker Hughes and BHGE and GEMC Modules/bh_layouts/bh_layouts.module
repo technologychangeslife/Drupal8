@@ -5,6 +5,7 @@
  * Bh layout module file.
  */
 
+use Drupal\node\NodeInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\block_content\BlockContentInterface;
@@ -28,6 +29,12 @@ function bh_layouts_form_alter(&$form, FormStateInterface $form_state, $form_id)
       'Drupal\bh_layouts\Form\EntityBrowserBlockEdit',
       'processTable',
     ];
+  }
+
+  if (strpos($form_id, '_layout_builder_form') !== FALSE) {
+    if (isset($form['actions']['revert'])) {
+      $form['actions']['revert']['#access'] = FALSE;
+    }
   }
 }
 
@@ -61,12 +68,32 @@ function bh_layouts_views_pre_render(ViewExecutable $view) {
  *
  * @TODO: Need to remove function after this error fixed in core.
  */
-function bh_layouts_preprocess_block(&$variables) {
+function bh_layouts_preprocess_block(array &$variables) {
   $content = $variables['elements']['content'];
   if (isset($content['#block_content']) && $content['#block_content'] instanceof BlockContentInterface) {
     if (in_array($content['#block_content']->bundle(), ['image_with_cta', 'text_content'])) {
       $block_id = $content['#block_content']->id();
       $variables['attributes']['data-quickedit-entity-id'] = "block_content/$block_id";
+    }
+  }
+}
+
+/**
+ * Implements HOOK_preprocess_layout().
+ *
+ * @param array $variables
+ *   Rendered array.
+ */
+function bh_layouts_preprocess_layout(array &$variables) {
+  if (isset($variables['content']) && isset($variables['content']['#layout']) && ($variables['content']['#layout']->id() == 'bh_jump_nav_section')) {
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $variables['show_jump_nav_icons'] = TRUE;
+    $without_icon_content_types = ['corporate_responsibility'];
+    if ($node && $node instanceof NodeInterface) {
+      if (in_array($node->bundle(), $without_icon_content_types)) {
+        /* hide jump nav icons in this content type nodes */
+        $variables['show_jump_nav_icons'] = FALSE;
+      }
     }
   }
 }

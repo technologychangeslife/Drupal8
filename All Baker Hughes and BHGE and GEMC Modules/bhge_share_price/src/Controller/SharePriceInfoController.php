@@ -2,6 +2,7 @@
 
 namespace Drupal\bhge_share_price\Controller;
 
+use Drupal\Component\FileSystem\FileSystem;
 use Drupal\Component\Serialization\Json;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
@@ -48,8 +49,10 @@ class SharePriceInfoController extends ControllerBase {
   /**
    * Get json data from url.
    *
-   * @return null|string
+   * @return string|null
    *   json data.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   protected function fetchJsonFromUrl() {
     if ($this->config->get('stock_info_url')) {
@@ -68,11 +71,14 @@ class SharePriceInfoController extends ControllerBase {
   /**
    * Get json file from disk.
    *
-   * @return null|string
+   * @return false|string|null
    *   Data from JSON file.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   protected function fetchJsonFromDisk() {
-    $feedFile = file_directory_temp() . '/market-info.json';
+    $tempDir = new FileSystem();
+    $feedFile = $tempDir->getOsTemporaryDirectory() . '/market-info.json';
     if (is_file($feedFile)) {
       if ((filesize($feedFile) > 0) && (time() - filemtime($feedFile) <= 30)) {
         return file_get_contents($feedFile);
@@ -92,8 +98,10 @@ class SharePriceInfoController extends ControllerBase {
   /**
    * Get json feed from disk.
    *
-   * @return mixed
+   * @return object
    *   Returns the stock quote.
+   *
+   * @throws \GuzzleHttp\Exception\GuzzleException
    */
   public function getFeed() {
     $data = $this->fetchJsonFromDisk();

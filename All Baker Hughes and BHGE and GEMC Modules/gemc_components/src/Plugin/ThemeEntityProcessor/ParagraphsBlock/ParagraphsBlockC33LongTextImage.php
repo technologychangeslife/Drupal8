@@ -35,6 +35,7 @@ class ParagraphsBlockC33LongTextImage extends GemcThemeEntityProcessorBase {
       $variables['data']['cta'] = [
         'href' => $cta['url'],
         'label' => $cta['text'],
+        'target' => $cta['target']
       ];
     }
   }

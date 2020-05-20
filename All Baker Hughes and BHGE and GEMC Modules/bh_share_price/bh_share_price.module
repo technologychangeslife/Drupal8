@@ -20,3 +20,17 @@ function bh_share_price_preprocess_menu__main(&$vars) {
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_menu().
+ */
+function bh_share_price_preprocess_menu__external(&$vars) {
+  $marketInfoService = \Drupal::service('bh_share_price.share_price_info.class');
+  $stockData = $marketInfoService->getFeed();
+  if (isset($stockData)) {
+    if (!empty($stockData->lastTrade)) {
+      $vars['#attached']['library'][] = 'bh_share_price/utility-bh-share-price';
+      $vars['#attached']['drupalSettings']['bh_share_price']['share_val'] = number_format($stockData->lastTrade, 2);
+    }
+  }
+}

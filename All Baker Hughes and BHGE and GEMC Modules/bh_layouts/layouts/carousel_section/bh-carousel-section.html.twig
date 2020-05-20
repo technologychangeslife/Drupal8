@@ -10,33 +10,51 @@
  * @ingroup themeable
  */
 #}
+{% set svg_path = directory ~ '/src/svg/' %}
+{% set cta_namespace = 'cta-new' %}
 
 {% if content %}
-    <div{{attributes.addClass(classes)}} data-module="CarouselFactory">
+
+  {% set contentType = '' %}
+  {% set count = 0 %}
+
+{% for key, item in content.first if key matches '/^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$/' %}
+    {% for node_count in item.content %}
+      {% if node_count['#node'] is defined and node_count['#node'] is not null %}
+        {% set contentType = getNodeType(node_count['#node']) %}
+
+	  {% set count = count + 1 %}
+    {% endif %}
+  {% endfor %}
+{% endfor %}
+    {% set attributes = attributes.addClass('bh_layouts__bh-carousel-section--' ~ contentType ) %}
+
+    <div{{ attributes.addClass(classes) }} data-module="CarouselFactory">
       <hr class="bh-layouts__border bh-layouts__border--above"/>
         <div class="bh-layouts__container">
             <div class="bh-layouts__grid">
                 <div class="glide">
-                  <div class="bh-layouts__header">
-                    {% if content['#settings'].section_title is not empty %}
+                  {% if content['#settings'].section_title is defined and content['#settings'].section_title != "" %}
+                    <div class="bh-layouts__header">
                       <h2 class="bh-layouts__title">{{ content['#settings'].section_title }}</h2>
+                    </div>
+                  {% endif %}
+                  <div class="bh-layouts__carousel-header">
+                    {% if count > 1 %}
+                      <span class="bh-layouts__carousel-count"><span class="bh-layouts__carousel-current">1</span>/{{ count }}</span>
                     {% endif %}
                     <div class="glide__arrows" data-glide-el="controls">
-                      <svg class="icon icon--arrow-circle glide__arrow glide__arrow-left" data-glide-dir="<">
-                        <use xlink:href="/{{directory}}/dist/svg/sprite-symbol.svg#arrow-circle"></use>
-                      </svg>
-                      <svg class="icon icon--arrow-circle-gray glide__arrow glide__arrow-left--gray" data-glide-dir="<">
-                        <use xlink:href="/{{directory}}/dist/svg/sprite-symbol.svg#arrow-circle-gray"></use>
-                      </svg>
-                      <svg class="icon icon--arrow-circle glide__arrow glide__arrow-right" data-glide-dir=">">
-                        <use xlink:href="/{{directory}}/dist/svg/sprite-symbol.svg#arrow-circle"></use>
-                      </svg>
-                      <svg class="icon icon--arrow-circle-gray glide__arrow glide__arrow-right--gray" data-glide-dir=">">
-                        <use xlink:href="/{{directory}}/dist/svg/sprite-symbol.svg#arrow-circle-gray"></use>
-                      </svg>
-                    </div>
+                        <span class="{{ cta_namespace }} {{ cta_namespace }}--circle glide__arrow glide__arrow-left" data-glide-dir="<">
+                          {{ source(svg_path ~ 'chevron-left' ~ '.svg') }}
+                        </span>
+                        <span class="{{ cta_namespace }} {{ cta_namespace }}--circle glide__arrow glide__arrow-right" data-glide-dir=">">
+                          {{ source(svg_path ~ 'chevron-right' ~ '.svg') }}
+                        </span>
+                      </div>
                   </div>
-
+                  <div class ="carousel-add-block">
+                    {{ content.first['layout_builder_add_block'] }}
+                  </div>
                   <div class="bh-layouts__carousel-track">
                     {% if content.first %}
                       <div {{ region_attributes.first.addClass('bh-layouts__carousel') }}>

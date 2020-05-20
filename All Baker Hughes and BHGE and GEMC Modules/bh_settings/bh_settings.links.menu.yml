@@ -12,3 +12,17 @@ bh_settings.external_api_settings_form:
   parent: bh_settings.general_settings_form
   menu_name: bh_settings
   weight: 2
+bh_settings.change_block_content:
+  title: 'BH Breakout Banner Settings'
+  description: 'BH Breakout Banner Settings'
+  route_name: bh_settings.breakout_settings_form
+  parent: bh_settings.general_settings_form
+  menu_name: bh_settings
+  weight: 3
+bh_settings.mega_navigation_settings_form:
+  title: 'BH Mega Navigation Settings'
+  description: 'Manage BH Mega Navigation settings.'
+  route_name: bh_settings.mega_navigation_settings_form
+  parent: bh_settings.general_settings_form
+  menu_name: bh_settings
+  weight: 4

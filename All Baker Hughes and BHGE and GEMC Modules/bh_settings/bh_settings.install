@@ -54,7 +54,7 @@ function bh_settings_update_8702() {
  * Remove unused modules.
  */
 function bh_settings_update_8703() {
-  //Uninstall bhge modules.
+  // Uninstall bhge modules.
   \Drupal::service('module_installer')->uninstall(['bhge_rigcount']);
   \Drupal::service('module_installer')->uninstall(['bhge_commodities_info']);
   \Drupal::service('module_installer')->uninstall(['bhge_market_info']);

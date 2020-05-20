@@ -1,0 +1,7 @@
+bh_filters.filter_views_settings_form:
+  title: 'BH Filter Views Settings'
+  description: 'Manage views which should be treated as our custom style of filter.'
+  route_name: bh_filters.filter_views_settings_form
+  parent: bh_settings.general_settings_form
+  menu_name: bh_settings
+  weight: 1

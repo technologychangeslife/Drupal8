@@ -318,7 +318,7 @@ function bhge_blog_page_preprocess_node(&$variables) {
     elseif (!empty($_GET['display']) && $_GET['display'] == 'question-form' && $is_internal) {
       $author = $node->get('uid')->entity;
       $variables['blog_page_display'] = 'question-form';
-      $topics = $terms = \Drupal::entityManager()->getStorage('taxonomy_term')->loadTree('blog_topic');
+      $topics = $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('blog_topic');
       $variables['topic_options'] = $topics;
       $variables['user_name'] = $author->mail->value;
       $variables['user_image'] = '';

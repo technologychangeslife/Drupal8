@@ -1,0 +1,6 @@
+name: 'BH Hero Component'
+type: module
+description: 'Hero component features.'
+core: 8.x
+package: 'BH'
+core_version_requirement: ^8 || ^9

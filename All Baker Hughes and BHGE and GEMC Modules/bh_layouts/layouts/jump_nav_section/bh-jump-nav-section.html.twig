@@ -1,0 +1,270 @@
+{#
+/**
+ * @file
+ * Default theme implementation for a jump-nav layout.
+ *
+ * Available variables:
+ * - content: The content for this layout.
+ * - attributes: HTML attributes for the layout <div>.
+ *
+ * @ingroup themeable
+ */
+#}
+{% set svg_path = directory ~ '/src/svg/' %}
+{% set cta_namespace = 'cta-new' %}
+{% if content.first %}
+{%  set finalContent=getJumpNavContent(content.first) %}
+  {% set contentType = '' %}
+  {% set count = 0 %}
+  {% set shopUrl = getShopUrl() %}
+  {% for key, item in finalContent if key matches '/^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$/' %}
+    {% if item.content['0']['#node'] is defined and item.content['0']['#node'] is not null %}
+      {% set contentType = getNodeType(item.content['0']['#node']) %}
+    {% endif %}
+    {% set count = count + 1 %}
+  {% endfor %}
+  
+
+  {% set attributes = attributes.addClass('bh_layouts__bh-jump-nav-section--' ~ contentType ) %}
+
+  <div{{ attributes.addClass(classes) }} data-module="JumpNav">
+    <hr class="bh-layouts__border bh-layouts__border--above"/>
+    <div class="bh-layouts__container">
+      <div class="bh-layouts__jump-nav">
+        <div class="jump-nav_section_title">
+          {% if content['#settings'].section_title is defined and content['#settings'].section_title != "" %}
+            <div class="bh-layouts__header">
+              <h2
+                class="bh-layouts__title">{{ content['#settings'].section_title }}</h2>
+            </div>
+          {% endif %}
+          {% set noIconClass = (show_jump_nav_icons == false) ? 'bh-layouts__jump-nav-no-icons' : ''  %}
+          <div class="bh-layouts__jump-nav-header">
+              <div class="bh-layouts__jump-nav-header_wrapper">
+            <nav class="navigation {{ noIconClass }}" id="mainNav">
+              {% for key, item in finalContent if key matches '/^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$/' %}
+                {% if loop.index == 1 %}
+                  <div
+                    class="bh-jump-nav__content-item bh-jump-nav__content-item--active">
+                    {% if item['#configuration']['label'] is empty  and item['#base_plugin_id'] == 'views_block' %}
+                      <a class="navigation__link" style="padding-left: 4px;"
+                         href="#{{ item['#weight'] }}"> {{ getViewName(item['content']['#view']) }}</a>
+                    {% else %}
+                      <a class="navigation__link" style="padding-left: 4px;"
+                         href="#{{ item['#weight'] }}"> {{ item['#configuration']['label'] }}</a>
+                    {% endif %}
+                  </div>
+                {% else %}
+                  <div class="bh-jump-nav__content-item">
+                    {% if item['#configuration']['label'] is empty  and item['#base_plugin_id'] == 'views_block' %}
+                      <a class="navigation__link"
+                         href="#{{ item['#weight'] }}"> {{ getViewName(item['content']['#view']) }}</a>
+                    {% else %}
+                      <a class="navigation__link"
+                         href="#{{ item['#weight'] }}"> {{ item['#configuration']['label'] }}</a>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </nav>
+            {% if show_jump_nav_icons %}
+              <div class="bh-layouts__jump-nav-icon">
+                <div class="bh-layouts__jump-nav-icon-wrapper">
+                <span class="bh-layouts__jump-nav-icon-chat">
+                <span
+                  class="cta-new cta-new--secondary cta-new--icon-only cta-new--round cta-new-icon--chat">
+                <span class="cta-new__icon cta-new__icon--before">
+                {{ source(directory ~ '/src/svg/chat.svg') }}
+                </span>
+                <span
+                  class="cta-new__text">Talk to an Expert</span>
+                <span class="cta-new__icon cta-new__icon--after">
+                {{ source(directory ~ '/src/svg/chat.svg') }}
+                </span>
+                </span>
+                </span>
+                    {% if shopUrl is not empty %}
+                  <a href="{{ shopUrl }}"
+                     class="bh-layouts__jump-nav-icon-cart">
+                <span
+                  class="cta-new cta-new--secondary cta-new--icon-only cta-new--round cta-new-icon--cart">
+                <span class="cta-new__icon cta-new__icon--before">
+                {{ source(directory ~ '/src/svg/cart.svg') }}
+                </span>
+                <span class="cta-new__text">Shop Online</span>
+                <span class="cta-new__icon cta-new__icon--after">
+                {{ source(directory ~ '/src/svg/cart.svg') }}
+                </span>
+                </span>
+                  </a>
+                    {% endif %}
+                </div>
+              </div>
+            {% endif %}
+              </div>
+
+          </div>
+          <div class="bh-layouts__jump-nav-header-mobile">
+            <div class="navigation-mobile" id="mainNavMob">
+              {% for key, item in finalContent  if item is not empty %}
+                {% if loop.index == 1 %}
+                  <div data-attribute="{{ item['#weight'] }}"
+                       class="bh-jump-nav__content-item bh-jump-nav__content-item--active">
+                    <span class=" bh-jump-nav-menu-icons">
+                      <span
+                        class="up">{{ source(directory ~ '/src/svg/arrow_up_gray.svg') }}</span>
+                    </span>
+                    {% if item['#configuration']['label'] is empty  and item['#base_plugin_id'] == 'views_block' %}
+                      <a class="navigation__link bh-jump-nav-menu-icons-link"
+                         href="#{{ item['#weight'] }}"> {{ getViewName(item['content']['#view']) }}</a>
+                    {% else %}
+                      <a class="navigation__link bh-jump-nav-menu-icons-link"
+                         href="#{{ item['#weight'] }}"> {{ item['#configuration']['label'] }}</a>
+                    {% endif %}
+                  </div>
+                {% else %}
+                  <div data-attribute="{{ item['#weight'] }}"
+                       class="bh-jump-nav__content-item bh-jump-nav-open-menu">
+                    <span class=" bh-jump-nav-menu-icons">
+                      <span
+                        class="up">{{ source(directory ~ '/src/svg/arrow_up_gray.svg') }}</span>
+                    </span>
+                    {% if item['#configuration']['label'] is empty  and item['#base_plugin_id'] == 'views_block' %}
+                      <a class="navigation__link bh-jump-nav-menu-icons-link"
+                         href="#{{ item['#weight'] }}"> {{ getViewName(item['content']['#view']) }}</a>
+                    {% else %}
+                      <a class="navigation__link bh-jump-nav-menu-icons-link"
+                         href="#{{ item['#weight'] }}"> {{ item['#configuration']['label'] }}</a>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% if show_jump_nav_icons %}
+              <div class="bh-layouts__jump-nav-icon">
+              <span
+                class="cta-new cta-new--secondary cta-new--icon-only cta-new--round cta-new-icon--chat bh-layouts__jump-nav-icon-chat">
+                <span class="cta-new__icon cta-new__icon--before">
+                  {{ source(directory ~ '/src/svg/chat.svg') }}
+                </span>
+                <span class="cta-new__icon cta-new__icon--after">
+                  {{ source(directory ~ '/src/svg/chat.svg') }}
+                </span>
+              </span>
+                  {% if shopUrl is not empty %}
+                <a href="{{ shopUrl }}"
+                   class="cta-new cta-new--secondary cta-new--icon-only cta-new--round cta-new-icon--cart bh-layouts__jump-nav-icon-cart">
+                <span class="cta-new__icon cta-new__icon--before">
+                 {{ source(directory ~ '/src/svg/cart.svg') }}
+                </span>
+                  <span class="cta-new__icon cta-new__icon--after">
+                 {{ source(directory ~ '/src/svg/cart.svg') }}
+                </span>
+                </a>
+                  {% endif %}
+              </div>
+            {% endif %}
+
+          </div>
+          <div class="bh-layouts__jump-nav-header-mobile-expand">
+            <ul class="navigation-mobile" id="mainNavMob">
+              {% for key, item in finalContent  if item is not empty %}
+                <li data-attribute="{{ item['#weight'] }}"
+                    class="bh-jump-nav__content-item bh-jump-nav-open-menu">
+                    <span class=" bh-jump-nav-menu-icons">
+                      <span
+                        class="down">{{ source(directory ~ '/src/svg/arrow_down_gray.svg') }}</span>
+                    </span>
+                  {% if item['#configuration']['label'] is empty  and item['#base_plugin_id'] == 'views_block' %}
+                    <a class="navigation__link bh-jump-nav-menu-icons-link"
+                       href="#{{ item['#weight'] }}"> {{ getViewName(item['content']['#view']) }}</a>
+                  {% else %}
+                    <a class="navigation__link bh-jump-nav-menu-icons-link"
+                       href="#{{ item['#weight'] }}">{{ item['#configuration']['label'] }}</a>
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+            {% if show_jump_nav_icons %}
+              <div class="bh-layouts__jump-nav-icon">
+              <span
+                class="cta-new cta-new--secondary cta-new--icon-only cta-new--round cta-new-icon--chat bh-layouts__jump-nav-icon-chat">
+                <span class="cta-new__icon cta-new__icon--before">
+                  {{ source(directory ~ '/src/svg/chat.svg') }}
+                </span>
+                <span class="cta-new__icon cta-new__icon--after">
+                  {{ source(directory ~ '/src/svg/chat.svg') }}
+                </span>
+              </span>
+                {% if shopUrl is not empty %}
+                <a href="{{ shopUrl }}"
+                   class="cta-new cta-new--secondary cta-new--icon-only cta-new--round cta-new-icon--cart bh-layouts__jump-nav-icon-cart">
+                <span class="cta-new__icon cta-new__icon--before">
+                 {{ source(directory ~ '/src/svg/cart.svg') }}
+                </span>
+                  <span class="cta-new__icon cta-new__icon--after">
+                 {{ source(directory ~ '/src/svg/cart.svg') }}
+                </span>
+                </a>
+                {% endif %}
+              </div>
+            {% endif %}
+          </div>
+          <div class="bh-layouts__jump-nav-track">
+            {% if content.first %}
+              {% set arr = { 'video_entity_browser' : 'video_entity_browser', 'interactive_brochure_entity_browser' : 'interactive_brochure_entity_browser',
+			  'd_i_council-block_1' : 'd_i_council-block_1', 'case_studies-block_1' : 'case_studies-block_1'} %}
+              <div {{ region_attributes.first.addClass('bh-layouts__jump-nav-content-section') }}>
+                {% for key, item in finalContent if key matches '/^[0-9a-f]{8}-([0-9a-f]{4}-){3}[0-9a-f]{12}$/' %}
+                  {% if not (item['#derivative_plugin_id']  in arr) %}
+                    {% set centerAlign = 'jump-nav_center' %}
+                  {% else %}
+                    {% set centerAlign = '' %}
+                  {% endif %}
+                  {% if item['#derivative_plugin_id'] == 'video_entity_browser' %}
+                    {% set video = 'video' %}
+                  {% else %}
+                    {% set video = '' %}
+                  {% endif %}
+                  {% if item['#derivative_plugin_id'] == 'interactive_brochure_entity_browser' %}
+                    {% set interactive_brochure = 'bh-interactive-brochure' %}
+                  {% else %}
+                    {% set interactive_brochure = '' %}
+                  {% endif %}
+                  {% if item['#derivative_plugin_id'] == 'd_i_council-block_1' %}
+                    {% set di_council = 'bh-di-council' %}
+                  {% else %}
+                    {% set di_council = '' %}
+                  {% endif %}
+                  {% if item['#derivative_plugin_id'] == 'case_studies-block_1' %}
+                    {% set case_stuy_carousel = 'bh-case-study-carousel' %}
+                  {% else %}
+                    {% set case_stuy_carousel = '' %}
+                  {% endif %}
+                  {% if (loop.index == 1) and (item is not empty) %}
+                    <div
+                      class="bh-jump-nav__content-item-section {{ centerAlign }} {{ video }} {{ interactive_brochure }} {{ di_council }} {{ case_stuy_carousel }}"
+                      id="{{ item['#weight'] }}">
+                      {{ item }}
+                    </div>
+                  {% else %}
+                    {% if item is not empty %}
+                    <div
+                      class="bh-jump-nav__content-item-section {{ centerAlign }} {{ video }} {{ interactive_brochure }} {{ di_council }} {{ case_stuy_carousel }}"
+                      id="{{ item['#weight'] }}">
+                      {{ item }}
+                    </div>
+                      {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+      {{ content.first['layout_builder_add_block'] }}
+    <hr class="bh-layouts__border bh-layouts__border--below"/>
+  </div>
+{% endif %}

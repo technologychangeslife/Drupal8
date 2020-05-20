@@ -1,0 +1,3 @@
+'never autoplay podcasts':
+  title: Never autoplay podcasts
+  description: Disables autoplay for every podcast viewed by users with the given role.

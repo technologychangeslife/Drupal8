@@ -1,0 +1,41 @@
+.ckeditor-readmore-wrapper .ckeditor-readmore {
+  display: none;
+}
+
+.ckeditor-readmore-wrapper .bh-full-html__pager-holder {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border-top: solid thin #e2e2e2;
+}
+
+.ckeditor-readmore-wrapper .bh-full-html__pager-holder .pager {
+  margin-top: 60px;
+}
+
+.ckeditor-readmore-wrapper .bh-full-html__pager-holder .pager .button:active {
+  background-color: #007d62;
+  border-color: #007d62;
+}
+
+.ckeditor-readmore-wrapper .bh-full-html__pager-holder .pager .button:hover {
+  background-color: #02a783;
+  border-color: #02a783;
+  color: #fff;
+}
+
+.ckeditor-readmore-wrapper .bh-full-html__pager-holder .pager .button {
+  background-color: #fff;
+  border-color: #ccc;
+  color: #02a783;
+  padding: 18px 37.5px;
+}
+
+.ckeditor-readmore-wrapper .bh-full-html-show-less {
+  display: none;
+}
+
+.ckeditor-readmore-wrapper .bh-full-html__pager-holder li {
+  list-style: none !important;
+}

@@ -1,0 +1,6 @@
+name: BH Products
+type: module
+description: 'Module for customization releted to products and product category'
+package: BH
+core: '8.x'
+core_version_requirement: ^8 || ^9

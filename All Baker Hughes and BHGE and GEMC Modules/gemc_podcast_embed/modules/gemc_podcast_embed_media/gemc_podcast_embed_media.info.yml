@@ -1,0 +1,8 @@
+name: GEMC Podcast Embed Media
+type: module
+description: 'Integrates gemc_podcast_embed with the Media module, creating a new media type tailored to display embedded podcasts. Useful for websites which are using the media suite of modules.'
+package: gemc podcast embed
+core_version_requirement: ^8.8 || ^9
+dependencies:
+  - drupal:media (>= 8.4)
+  - gemc_podcast_embed:gemc_podcast_embed

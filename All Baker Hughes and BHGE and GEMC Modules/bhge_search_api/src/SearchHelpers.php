@@ -183,26 +183,26 @@ class SearchHelpers {
 
         if ($event_start == $event_end) {
           // Event start date.
-          $event_start_date = format_date($result['field_eventdate']->getValues()[0], '', $format = 'j F Y ', $timezone = NULL, $langcode = NULL);
+          $event_start_date = \Drupal::service('date.formatter')->format($result['field_eventdate']->getValues()[0], '', $format = 'j F Y ', $timezone = NULL, $langcode = NULL);
           $event_single_day = TRUE;
         }
         else {
           // Event start date.
-          $event_start_date = format_date($result['field_eventdate']->getValues()[0], '', $format = 'j F - ', $timezone = NULL, $langcode = NULL);
+          $event_start_date = \Drupal::service('date.formatter')->format($result['field_eventdate']->getValues()[0], '', $format = 'j F - ', $timezone = NULL, $langcode = NULL);
           // Event end date.
-          $event_end_date = format_date($result['field_event_end_date']->getValues()[0], '', $format = 'j F Y', $timezone = NULL, $langcode = NULL);
+          $event_end_date = \Drupal::service('date.formatter')->format($result['field_event_end_date']->getValues()[0], '', $format = 'j F Y', $timezone = NULL, $langcode = NULL);
         }
       }
       // Event start date
       /* $event_start_date = '';
       if (!empty($result['field_eventdate']) && !empty($result['field_eventdate']->getValues())) {
-      $event_start_date = format_date($result['field_eventdate']->getValues()[0], '', $format = 'j F - ', $timezone = NULL, $langcode = NULL);
+      $event_start_date = \Drupal::service('date.formatter')->format($result['field_eventdate']->getValues()[0], '', $format = 'j F - ', $timezone = NULL, $langcode = NULL);
       }
 
       //Event end date
       $event_end_date = '';
       if (!empty($result['field_event_end_date']) && !empty($result['field_event_end_date']->getValues())) {
-      $event_end_date = format_date($result['field_event_end_date']->getValues()[0], '', $format = 'j F Y', $timezone = NULL, $langcode = NULL);
+      $event_end_date = \Drupal::service('date.formatter')->format($result['field_event_end_date']->getValues()[0], '', $format = 'j F Y', $timezone = NULL, $langcode = NULL);
       }*/
 
       // Event description.

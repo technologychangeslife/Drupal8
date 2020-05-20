@@ -1,0 +1,8 @@
+{#
+/**
+ * @file
+ * Display an script with alterable components.
+ */
+#}
+<div{{ target_container_attributes }}></div>
+<script{{ attributes }}{% if url is not empty %} src="{{ url }}{% if query is not empty %}?{{ query | url_encode }}{% endif %}{% if fragment is not empty %}#{{ fragment }}{% endif %}"{% endif %}></script>

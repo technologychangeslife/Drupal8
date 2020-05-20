@@ -1,0 +1,3 @@
+media.source.gemc_podcast_embed:
+  type: media.source.field_aware
+  label: '"gemc podcast embed" media source configuration'

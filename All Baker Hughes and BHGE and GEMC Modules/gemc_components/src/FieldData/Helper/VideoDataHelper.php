@@ -101,4 +101,21 @@ class VideoDataHelper {
     return $result[1];
   }
 
+  /**
+   * Get Office365 video chid and vid from url.
+   */
+  public function getOffice365Data($url) {
+    $parts = parse_url(urldecode(htmlspecialchars_decode($url)));
+    if (array_key_exists('query', $parts)) {
+      parse_str($parts['query'], $queryParameters);
+      return [
+        'chId' => $queryParameters['chId'],
+        'vId' => $queryParameters['vId'],
+      ];
+    }
+    else {
+      return '';
+    }
+  }
+
 }

@@ -5,6 +5,7 @@ namespace Drupal\bhge_social_feeds\Form;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Link;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
 
@@ -90,10 +91,10 @@ class BhgeSocialFeedsForm extends ConfigFormBase {
             ->set('instagram_bhge_social_feeds_username', $result->user->username)
             ->save();
           $access_key = $result->access_token;
-          drupal_set_message(t('Instagram authentication successful'));
+          $this->messenger()->addMessage(t('Instagram authentication successful'));
         }
         else {
-          drupal_set_message($result->error_message, 'error');
+          $this->messenger()->addError($result->error_message);
         }
       }
     }
@@ -137,7 +138,7 @@ class BhgeSocialFeedsForm extends ConfigFormBase {
         '#maxlength' => 255,
         '#description' => $this->t('Set the redirect URI to :url </br>
             After a succesful authentication you should see here the authorized Instagram username.', [
-              ':url' => $base_url . \Drupal::url('bhge_social_feeds_form'),
+              ':url' => $base_url . Url::fromRoute('bhge_social_feeds_form'),
             ]),
       ];
       $url = Url::fromUri('https://api.instagram.com/oauth/authorize/?client_id=' .
@@ -148,9 +149,9 @@ class BhgeSocialFeedsForm extends ConfigFormBase {
         $this->config->get('instagram_bhge_social_feeds_redirect_uri') != '') {
         $form['authenticate'] = [
           '#markup' =>
-          \Drupal::l(t('Click here to authenticate via Instagram and create an access token'),
+          Link::fromTextAndUrl(t('Click here to authenticate via Instagram and create an access token'),
           $url
-          ),
+          )->toString(),
         ];
       }
     }
@@ -178,10 +179,10 @@ class BhgeSocialFeedsForm extends ConfigFormBase {
         'code' => '',
       ]);
       $form['authenticate'] = [
-        '#markup' => \Drupal::l(
+        '#markup' => Link::fromTextAndUrl(
             $this->t('Click here to remove the access key and re-authenticate
               via Instagram'), $url
-        ),
+        )->toString(),
       ];
     }
     $form['instagram_item_to_fetch'] = [

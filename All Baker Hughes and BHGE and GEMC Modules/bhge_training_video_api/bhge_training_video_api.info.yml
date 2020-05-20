@@ -2,5 +2,6 @@ name: BHGE TRAINING VIDEOS API
 type: module
 description: 'BHGE Training Videos API'
 package: BHGE Components
-version: 8.x
 core: 8.x
+core_version_requirement: ^8 || ^9
+configure: bhge_training_video_api.configapi

@@ -2,4 +2,5 @@ name: 'GEMC webform'
 type: module
 description: 'GEMC webform related customizations'
 core: 8.x
+core_version_requirement: ^8 || ^9
 package: Custom

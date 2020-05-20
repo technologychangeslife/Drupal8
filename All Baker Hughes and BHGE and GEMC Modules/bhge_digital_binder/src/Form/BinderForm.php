@@ -71,9 +71,9 @@ class BinderForm extends BinderPrivateSession {
     }
 
     $query = \Drupal::entityQuery('node')
-    // Published or not.
+      // Published or not.
       ->condition('status', 1)
-    // Content type.
+      // Content type.
       ->condition('type', 'section');
     // ->pager(100); //specify results to return.
     $query->sort('field_weight', 'DESC');
@@ -127,9 +127,9 @@ class BinderForm extends BinderPrivateSession {
       '#suffix' => '</ul></div>',
     ];
     $query_product = \Drupal::entityQuery('node')
-    // Published or not.
+      // Published or not.
       ->condition('status', 1)
-    // Content type.
+      // Content type.
       ->condition('type', 'product');
     // ->pager(100); //specify results to return.
     $query_product->sort('field_weight', 'DESC');
@@ -379,7 +379,7 @@ class BinderForm extends BinderPrivateSession {
             // Brand ID.
             $brand_id = $reference->target_id;
             // 546 is the ID of Becker Products but all the docs are atteched to Becker with ID 1186
-            // So adjusting the ID for that
+            // So adjusting the ID for that.
             if ($brand_id == 546) {
               $brand_id = 1186;
             }
@@ -502,7 +502,7 @@ class BinderForm extends BinderPrivateSession {
             'method' => 'replace',
           ],
           '#prefix' => '<li class="model-number-li' . $parent_ids . '"><span class="box" id="' . $keys . '"><span class="regular-checkbox"></span>' . $values . '</span>
-                                            			<ul class="nested ' . $keys . '">',
+                                                <ul class="nested ' . $keys . '">',
           '#suffix' => '</ul></li>',
         ];
         $model_number_sequence = [];
@@ -587,25 +587,25 @@ class BinderForm extends BinderPrivateSession {
         $name = $term->getName();
       }
       $default_search_results_items[$document_nid] = '<div class="file-details">
-				<div class="file-title-info file-search-results">
-				<div class="binder-title">
-					<div class="download-type"></div>
-					<div class="file-title">' . $document_node->title->value . '</div>
-				</div>
-					<div class="file-info"><span class="file-name">' . $name . '</span><span class="file-size">' . $file_size_format . '</span></div>
-				</div>';
+      <div class="file-title-info file-search-results">
+      <div class="binder-title">
+        <div class="download-type"></div>
+        <div class="file-title">' . $document_node->title->value . '</div>
+      </div>
+        <div class="file-info"><span class="file-name">' . $name . '</span><span class="file-size">' . $file_size_format . '</span></div>
+      </div>';
       if ($file_size_format != "File not found.") {
         $default_search_results_items[$document_nid] .= '<div class="file-search-results search-results-btn">
-					<span class="btn-add btn-add-' . $document_nid . '" data-id = ' . $document_nid . '>ADD</span> 
-					<span class="btn-remove btn-remove-' . $document_nid . '" data-id = ' . $document_nid . '>ADDED</span>
-				</div>';
+        <span class="btn-add btn-add-' . $document_nid . '" data-id = ' . $document_nid . '>ADD</span>
+        <span class="btn-remove btn-remove-' . $document_nid . '" data-id = ' . $document_nid . '>ADDED</span>
+      </div>';
       }
       $default_search_results_items[$document_nid] .= '</div>';
     }
 
     if (!empty($form_state->getValue('file_types')) || !empty($form_state->getValue('document_title')) || !empty($form_state->getValue('brands'))
-    || !empty($form_state->getValue('model_number')) || !empty($form_state->getValue('product_types')) || !empty($form_state->getValue('file_types'))
-        ) {
+      || !empty($form_state->getValue('model_number')) || !empty($form_state->getValue('product_types')) || !empty($form_state->getValue('file_types'))
+    ) {
       $all_fields = $form_state->getValues();
       $model_number_new_filter = [];
       $product_type_id_array = [];
@@ -749,18 +749,18 @@ class BinderForm extends BinderPrivateSession {
         $dam_field_file = $document_node->get('field_dam_file')->getValue();
         $document_title = $x . ':-' . $dt . '  <a href="#' . $dam_url . '">Add</a><div>' . $document_title . ' </div></br>';
         $search_results_items[$document_nid] = '<div class="file-details">
-	 <div class="file-title-info file-search-results">
-	 <div class="binder-title">
-		 <div class="download-type"></div>
-		 <div class="file-title">' . $document_node->title->value . '</div>
-	 </div>
-		 <div class="file-info"><span class="file-name">' . $name . '</span><span class="file-size">' . $file_size_format . '</span></div>
-	 </div>';
+ <div class="file-title-info file-search-results">
+ <div class="binder-title">
+   <div class="download-type"></div>
+   <div class="file-title">' . $document_node->title->value . '</div>
+ </div>
+   <div class="file-info"><span class="file-name">' . $name . '</span><span class="file-size">' . $file_size_format . '</span></div>
+ </div>';
         if ($file_size_format != "File not found.") {
           $search_results_items[$document_nid] .= '<div class="file-search-results search-results-btn">
-		 	 <span class="btn-add btn-add-' . $document_nid . '" data-id = ' . $document_nid . '>ADD</span> 
-			 <span class="btn-remove btn-remove-' . $document_nid . '" data-id = ' . $document_nid . '>ADDED</span>
-		 </div>';
+     <span class="btn-add btn-add-' . $document_nid . '" data-id = ' . $document_nid . '>ADD</span>
+     <span class="btn-remove btn-remove-' . $document_nid . '" data-id = ' . $document_nid . '>ADDED</span>
+   </div>';
         }
         $search_results_items[$document_nid] .= '</div>';
         $field_topic = $document_node->get('field_topic')->getValue();

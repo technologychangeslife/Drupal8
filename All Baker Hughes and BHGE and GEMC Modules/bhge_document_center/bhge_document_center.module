@@ -124,16 +124,17 @@ function bhge_document_center_views_query_alter($view, $query) {
         'operator' => '=',
       ];
       // Search part number.
+      $db_conn = \Drupal::database();
       $join_obj = Views::pluginManager('join')
         ->createInstance('standard', $configuration);
       $query->addRelationship('node__field_part_number', $join_obj, 'entity_id');
-      $query->addWhere('1', 'node__field_part_number.field_part_number_value', '%' . db_like($view->exposed_widgets['title']['#value']) . "%", 'LIKE');
+      $query->addWhere('1', 'node__field_part_number.field_part_number_value', $db_conn->escapeLike($view->exposed_widgets['title']['#value']));
 
       // Also search document description field.
       $join_obj_1 = Views::pluginManager('join')
         ->createInstance('standard', $configuration_1);
       $query->addRelationship('node__field_description', $join_obj_1, 'entity_id');
-      $query->addWhere('1', 'node__field_description.field_description_value', '%' . db_like($view->exposed_widgets['title']['#value']) . "%", 'LIKE');
+      $query->addWhere('1', 'node__field_description.field_description_value', $db_conn->escapeLike($view->exposed_widgets['title']['#value']));
     }
   }
 }

@@ -123,3 +123,16 @@ bh_twocoloffset_section:
       label: First
     second:
       label: Second
+bh_jump_nav_section:
+  label: 'BH Jump Navigation'
+  path: layouts/jump_nav_section
+  template: bh-jump-nav-section
+  library: bh_layouts/bh_layouts_library
+  class: '\Drupal\bh_layouts\Plugin\Layout\DefaultConfigLayout'
+  category: 'BH'
+  default_region: first
+  icon_map:
+    - [first]
+  regions:
+    first:
+      label: First

@@ -1,0 +1,7 @@
+.form-item-settings-default-data, 
+.form-item-settings-redirect {
+	display:none;
+}
+.form-item.form-item-settings-webform-id {
+	display:block;
+}

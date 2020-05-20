@@ -1,0 +1,129 @@
+<?php
+
+/**
+ * @file
+ * Custom bh_filters module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Render\BubbleableMetadata;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Render\Element;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Bh theme overrides.
+ */
+function bh_filters_theme($existing, $type, $theme, $path) {
+  return [
+    'bh_bef_checkboxes' => [
+      'render element' => 'element',
+    ],
+    'bh_bef_hidden' => [
+      'render element' => 'element',
+    ],
+    'bh_bef_links' => [
+      'render element' => 'element',
+    ],
+    'bh_bef_radios' => [
+      'render element' => 'element',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function bh_filters_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  // Tag filter form elements for front end. Override field templates.
+  $config = Drupal::config('bh.filter_settings')->get('bh_filters_formids');
+  $form_ids = preg_split("/\r\n|\n|\r/", $config);
+  array_walk($form_ids, function ($id) {
+    return trim($id);
+  });
+
+  if ($form['#id'] && in_array($form['#id'], $form_ids)) {
+
+    // Overriding bef templates with our own version.
+    foreach ($form as &$item) {
+      if (isset($item['#type']) && $item['#type'] == 'radios') {
+        $item['#theme'] = 'bh_bef_radios';
+        $item['#isFilterForm'] = TRUE;
+      }
+      if (isset($item['#type']) && $item['#type'] == 'checkboxes') {
+        $item['#theme'] = 'bh_bef_checkboxes';
+        $item['#isFilterForm'] = TRUE;
+      }
+      if (isset($item['#type']) && $item['#type'] == 'links') {
+        $item['#theme'] = 'bh_bef_links';
+        $item['#isFilterForm'] = TRUE;
+      }
+      if (isset($item['#type']) && $item['#type'] == 'hidden') {
+        $item['#theme'] = 'bh_bef_hidden';
+        $item['#isFilterForm'] = TRUE;
+      }
+    }
+  }
+}
+
+/*
+ * Preprocess functions for overridden BEF themed elements.
+ */
+
+/**
+ * Using bef's version of the preprocess since I'm just overriding the template.
+ */
+function template_preprocess_bh_bef_checkboxes(&$variables) {
+  return template_preprocess_bef_checkboxes($variables);
+}
+
+/**
+ * Using bef's version of the preprocess since I'm just overriding the template.
+ */
+function template_preprocess_bh_bef_radios(&$variables) {
+  return template_preprocess_bef_radios($variables);
+}
+
+/**
+ * Using bef's version of the preprocess since I'm just overriding the template.
+ */
+function template_preprocess_bh_bef_hidden(&$variables) {
+  return template_preprocess_bef_hidden($variables);
+
+}
+
+/**
+ * Using bef's version of the preprocess since I'm just overriding the template.
+ */
+function template_preprocess_bh_bef_links(&$variables) {
+  return template_preprocess_bef_links($variables);
+
+}
+
+/**
+ * Implements template_preprocess_fieldset().
+ */
+function bh_filters_preprocess_fieldset(&$variables) {
+  // TODO verify this is even needed.
+  // Pass along a flag to template and FE for any field set with element in a filter form.
+  if (isset($variables['element']) && isset($variables['element']['#isFilterForm'])) {
+    $variables['isFilter'] = $variables['element']['#isFilterForm'];
+  }
+}
+
+/**
+ * Add suggestion for form element template with element parent id.
+ */
+function bh_filters_theme_suggestions_form_element_alter(array &$suggestions, array $variables, $hook) {
+  if (isset($variables['element']) && isset($variables['element']['#parents']) && count($variables['element']['#parents']) > 0) {
+    $suggestions[] = $hook . '__' . $variables['element']['#parents'][0];
+  }
+}
+
+/**
+ * Add suggestion for fieldset template with element parent id.
+ */
+function bh_filters_theme_suggestions_fieldset_alter(array &$suggestions, array $variables, $hook) {
+  $suggestions[] = $hook . '__' . $variables['element']['#parents'][0];
+}

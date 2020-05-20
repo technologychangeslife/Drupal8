@@ -1,0 +1,4 @@
+services:
+  gemc_podcast_embed.provider_manager:
+    class: Drupal\gemc_podcast_embed\ProviderManager
+    parent: default_plugin_manager

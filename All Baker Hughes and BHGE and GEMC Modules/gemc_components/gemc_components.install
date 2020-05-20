@@ -524,7 +524,7 @@ function gemc_components_update_8513(&$sandbox) {
 }
 
 /**
- * Delete paragraph content for related_posts components.
+ * Delete paragraph content.
  */
 function gemc_components_update_8514() {
 
@@ -1207,7 +1207,7 @@ function gemc_components_update_8525(&$sandbox) {
           'target_revision_id' => $duplicate->getRevisionId(),
         ];
 
-         $field_items->removeItem($index);
+        $field_items->removeItem($index);
       }
     }
 
@@ -1229,5 +1229,151 @@ function gemc_components_update_8525(&$sandbox) {
   }
   else {
     $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}
+
+/**
+ * Move paragraphs content from c109 to c103.
+ */
+function gemc_components_update_8526(&$sandbox) {
+  $sandbox['last_nid'] = isset($sandbox['last_nid']) ? $sandbox['last_nid'] : 0;
+  $query = \Drupal::entityQuery('node')
+    ->accessCheck(FALSE)
+    ->condition('type', ['case_study', 'page', 'news_item'], 'IN')
+    ->condition('nid', $sandbox['last_nid'], '>')
+    ->sort('nid');
+
+  // Initialize some variables during the first pass through.
+  if (!isset($sandbox['total'])) {
+    $sandbox['current'] = 0;
+    $sandbox['total'] = count($query->execute());
+  }
+  $nodes_per_batch = 10;
+
+  // Handle one pass through.
+  $nids = $query->range(0, $nodes_per_batch)->execute();
+  $components_field = 'field_components';
+
+  foreach ($nids as $nid) {
+    $node = Node::load($nid);
+    $sandbox['last_nid'] = $node->id();
+    $sandbox['current']++;
+
+    if (!$node->hasField($components_field)) {
+      continue;
+    }
+
+    $move_from = NULL;
+    $move_to = NULL;
+    if (!$node->get($components_field)->isEmpty()) {
+      foreach ($node->get($components_field) as $index => $item) {
+        if (!$item->entity) {
+          continue;
+        }
+        if ($item->entity->bundle() == 'c109_image_carousel') {
+          $move_from = $item->entity;
+          $move_from_position = $index;
+        }
+        if ($item->entity->bundle() == 'c103_media_gallery') {
+          $move_to = $item->entity;
+        }
+      }
+
+      if (!$move_from || !$move_from->hasField('field_c109_images')) {
+        continue;
+      }
+
+      $new_values = [];
+      foreach ($move_from->get('field_c109_images') as $item) {
+        $item_e = $item->entity;
+        if ($item_e->hasField('field_image') && !$item_e->get('field_image')->isEmpty()) {
+          $gallery_image = Paragraph::create([
+            'type' => 'c103_gallery_image',
+          ]);
+          $image = $item_e->get('field_image')->getValue();
+          $gallery_image->set('field_image', $image);
+          $gallery_image->save();
+          $new_values[] = [
+            'target_id' => $gallery_image->id(),
+            'target_revision_id' => $gallery_image->getRevisionId(),
+          ];
+        }
+      }
+
+      if ($new_values) {
+        if ($move_to) {
+          if ($move_to->hasField('field_media_items')) {
+            $gallery_paragraph_values = $move_to->get('field_media_items')
+              ->getValue();
+            $new_values = array_merge($gallery_paragraph_values, $new_values);
+
+            $move_to->set('field_media_items', $new_values);
+            $move_to->save();
+          }
+        }
+        else {
+          $gallery_images = Paragraph::create([
+            'type' => 'c103_media_gallery',
+          ]);
+          $gallery_images->set('field_media_items', $new_values);
+          $gallery_images->save();
+
+          $c103_media_gallery = [
+            'target_id' => $gallery_images->id(),
+            'target_revision_id' => $gallery_images->getRevisionId(),
+          ];
+          $comp_field_values = $node->get($components_field)->getValue();
+          $comp_field_values[$move_from_position] = $c103_media_gallery;
+          $node->set($components_field, $comp_field_values);
+          $node->save();
+        }
+      }
+    }
+  }
+
+  if ($sandbox['total'] == 0) {
+    $sandbox['#finished'] = 1;
+  }
+  else {
+    $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+  }
+}
+
+/**
+ * Delete paragraph content.
+ */
+function gemc_components_update_8527() {
+  // Delete paragraph content.
+  $paragraphTypes = [
+    'c109_image',
+    'c109_image_carousel'
+  ];
+
+  foreach ($paragraphTypes as $paragraphType) {
+    $paragraphs = \Drupal::entityTypeManager()
+      ->getStorage('paragraph')
+      ->loadByProperties(['type' => $paragraphType]);
+    foreach ($paragraphs as $paragraph) {
+      $paragraph->delete();
+    }
+  }
+}
+
+/**
+ * Delete paragraph content, remove modules.
+ */
+function gemc_components_update_8528() {
+  // Delete paragraph content.
+  $paragraphTypes = [
+    'c115_120_gallery',
+  ];
+
+  foreach ($paragraphTypes as $paragraphType) {
+    $paragraphs = \Drupal::entityTypeManager()
+      ->getStorage('paragraph')
+      ->loadByProperties(['type' => $paragraphType]);
+    foreach ($paragraphs as $paragraph) {
+      $paragraph->delete();
+    }
   }
 }

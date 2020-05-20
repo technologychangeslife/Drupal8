@@ -8,3 +8,4 @@ dependencies:
   - layout_discovery
 libraries:
   - bh_layouts_library
+core_version_requirement: ^8 || ^9

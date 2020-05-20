@@ -1,5 +1,7 @@
-admin-css:
+bh-settings:
   version: VERSION
   css:
     theme:
       css/admin.css: {}
+  js:
+    js/bh_settings.js: {}
