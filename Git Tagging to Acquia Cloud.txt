@@ -1,0 +1,39 @@
+create a tag
+
+git tag -a tagname -m "comments"
+
+---------------------------------------------
+see details of a tag
+
+git show tagname 
+
+---------------------------------------------
+
+see all tags
+
+git tag
+
+----------------------------------------------
+
+search a tag
+
+git tag -l "tagname*"
+
+---------------------------------------------
+push tag to acquia cloud
+
+git push origin tagname
+
+----------------------------------------------------
+
+checkout the tag you want like so:
+
+git checkout tags/1.1.4
+
+-----------------------------------------------------
+
+
+Save the file in the editor. If it's Emacs: CTRLX CTRLS to save then CTRLX CTRLC to quit or 
+if it's vi: :wq
+
+------------------------------------------------------
