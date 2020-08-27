@@ -3,6 +3,22 @@ create a tag
 git tag -a tagname -m "comments"
 
 ---------------------------------------------
+Identify the branch name on a enviroment with the hlep of tag deplpoyed to it.
+
+2 examples below -
+
+$ git branch -a --contains tags/drupal.8.9.3.without.settings.php.14.Aug.2020
+
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+
+$ git branch -a --contains tags/20200604.03
+
+* (HEAD detached at 20200604.03)
+  remotes/origin/HEAD -> origin/master
+  remotes/origin/master
+
+---------------------------------------------
 see details of a tag
 
 git show tagname 
