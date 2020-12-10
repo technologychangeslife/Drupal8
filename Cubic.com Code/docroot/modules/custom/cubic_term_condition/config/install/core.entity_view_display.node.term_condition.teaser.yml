@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.term_condition.field_pdf
+    - field.field.node.term_condition.field_supplier_reference
+    - node.type.term_condition
+  module:
+    - user
+id: node.term_condition.teaser
+targetEntityType: node
+bundle: term_condition
+mode: teaser
+content:
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_pdf: true
+  field_supplier_reference: true

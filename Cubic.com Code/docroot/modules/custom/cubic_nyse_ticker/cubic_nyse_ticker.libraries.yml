@@ -1,0 +1,5 @@
+cubic-nyse-ticker:
+  js:
+    js/cubic-nyse-ticker.js: {}
+  dependencies:
+    - core/jquery

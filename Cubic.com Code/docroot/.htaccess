@@ -1,0 +1,613 @@
+#
+# Apache/PHP/Drupal settings:
+#
+
+# Protect files and directories from prying eyes.
+<FilesMatch "\.(engine|inc|install|make|module|profile|po|sh|.*sql|theme|twig|tpl(\.php)?|xtmpl|yml)(~|\.sw[op]|\.bak|\.orig|\.save)?$|^(\.(?!well-known).*|Entries.*|Repository|Root|Tag|Template|composer\.(json|lock))$|^#.*#$|\.php(~|\.sw[op]|\.bak|\.orig|\.save)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+  </IfModule>
+</FilesMatch>
+
+# Don't show directory listings for URLs which map to a directory.
+Options -Indexes
+
+# Set the default handler.
+DirectoryIndex index.php index.html index.htm
+
+# Add correct encoding for SVGZ.
+AddType image/svg+xml svg svgz
+AddEncoding gzip svgz
+
+# Most of the following PHP settings cannot be changed at runtime. See
+# sites/default/default.settings.php and
+# Drupal\Core\DrupalKernel::bootEnvironment() for settings that can be
+# changed at runtime.
+
+# PHP 5, Apache 1 and 2.
+<IfModule mod_php5.c>
+  php_value assert.active                   0
+  php_flag session.auto_start               off
+  php_value mbstring.http_input             pass
+  php_value mbstring.http_output            pass
+  php_flag mbstring.encoding_translation    off
+  # PHP 5.6 has deprecated $HTTP_RAW_POST_DATA and produces warnings if this is
+  # not set.
+  php_value always_populate_raw_post_data   -1
+</IfModule>
+
+# Requires mod_expires to be enabled.
+<IfModule mod_expires.c>
+  # Enable expirations.
+  ExpiresActive On
+
+  # Cache all files for 2 weeks after access (A).
+  ExpiresDefault A1209600
+
+  <FilesMatch \.php$>
+    # Do not allow PHP scripts to be cached unless they explicitly send cache
+    # headers themselves. Otherwise all scripts would have to overwrite the
+    # headers set by mod_expires if they want another caching behavior. This may
+    # fail if an error occurs early in the bootstrap process, and it may cause
+    # problems if a non-Drupal PHP file is installed in a subdirectory.
+    ExpiresActive Off
+  </FilesMatch>
+</IfModule>
+
+# Set a fallback resource if mod_rewrite is not enabled. This allows Drupal to
+# work without clean URLs. This requires Apache version >= 2.2.16. If Drupal is
+# not accessed by the top level URL (i.e.: http://example.com/drupal/ instead of
+# http://example.com/), the path to index.php will need to be adjusted.
+<IfModule !mod_rewrite.c>
+  FallbackResource /index.php
+</IfModule>
+
+# Various rewrite rules.
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+
+  # Set "protossl" to "s" if we were accessed via https://.  This is used later
+  # if you enable "www." stripping or enforcement, in order to ensure that
+  # you don't bounce between http and https.
+  RewriteRule ^ - [E=protossl]
+  RewriteCond %{HTTPS} on
+  RewriteRule ^ - [E=protossl:s]
+
+  # Make sure Authorization HTTP header is available to PHP
+  # even when running as CGI or FastCGI.
+  RewriteRule ^ - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+  # Domain Redirects
+  RewriteRule ^ - [E=envsubdomain:www]
+
+  RewriteCond %{ENV:AH_SITE_ENVIRONMENT} ^$ [NC]
+  RewriteRule ^ - [E=envsubdomain:local]
+
+  RewriteCond %{HTTP_HOST} abraxascorp\.com$ [NC]
+  RewriteRule ^ http%{ENV:protossl}://%{ENV:envsubdomain}.cubic.com/solutions/training/cyber-security/c4isr-security [R=301,L]
+
+  RewriteCond %{HTTP_HOST} ^cals\.cubic\.com$ [NC]
+  RewriteRule ^ http%{ENV:protossl}://%{ENV:envsubdomain}.cubic.com/solutions/training/air/virtual-and-immersive/game-based-learning [R=301,L]
+
+  RewriteCond %{HTTP_HOST} deltenna\.com$ [NC]
+  RewriteRule ^ http%{ENV:protossl}://%{ENV:envsubdomain}.cubic.com/deltenna [R=301,L]
+
+  RewriteCond %{HTTP_HOST} ^developer\.cubic\.com$ [NC]
+  RewriteRule ^ http%{ENV:protossl}://%{ENV:envsubdomain}.cubic.com/coming-soon [R=301,L]
+
+  RewriteCond %{HTTP_HOST} ^(www\.)?gatr\.com$ [NC]
+  RewriteCond %{REQUEST_URI} ^\/support\/?$ [NC]
+  RewriteRule ^ http%{ENV:protossl}://%{ENV:envsubdomain}.cubic.com/technical-support#paragraph-tab-11031-3 [R=301,L,NE]
+
+  RewriteCond %{HTTP_HOST} ^(www\.)?gatr\.com$ [NC]
+  RewriteCond %{REQUEST_URI} ^\/gatrsupport\/?$ [NC]
+  RewriteRule ^ http%{ENV:protossl}://%{ENV:envsubdomain}.cubic.com/gatr-support [R=301,L]
+
+  RewriteCond %{HTTP_HOST} ^(www\.)?gatr\.com$ [NC]
+  RewriteRule ^ http%{ENV:protossl}://%{ENV:envsubdomain}.cubic.com/solutions/c4isr/secure-communications/expeditionary-satcom [R=301,L]
+
+  RewriteCond %{HTTP_HOST} nek\.?(cubic|servicesinc)\.com$ [NC]
+  RewriteRule ^ http%{ENV:protossl}://%{ENV:envsubdomain}.cubic.com/solutions/training/ground/unconventional-warfare [R=301,L]
+
+  RewriteCond %{HTTP_HOST} ^rangedesign\.cubic\.com$ [NC]
+  RewriteRule ^ http%{ENV:protossl}://%{ENV:envsubdomain}.cubic.com/solutions/training/ground/range-design [R=301,L]
+
+  RewriteCond %{HTTP_HOST} intific\.com$ [NC]
+  RewriteRule ^ http%{ENV:protossl}://%{ENV:envsubdomain}.cubic.com/solutions/training/air/virtual-and-immersive [R=301,L]
+
+  # Ensure HTTPS.
+  RewriteCond %{HTTP_HOST} cubic\.com$ [NC]
+  RewriteCond %{ENV:envsubdomain} !local [NC]
+  RewriteCond %{HTTPS} off
+  RewriteCond %{HTTP:X-Forwarded-Proto} !https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+
+  # 301s
+  Redirect 301 /2015-Blog /news/blogs
+  Redirect 301 /About-Us /about
+  Redirect 301 /About-Us/Awards-and-Recognition /news/awards
+  Redirect 301 /About-Us/Biographies/Anshooman-Aga /about/people/anshooman-aga
+  Redirect 301 /About-Us/Biographies/barry-long /about/people
+  Redirect 301 /About-Us/Biographies/Bob-Deiter /about/people/bob-deiter
+  Redirect 301 /About-Us/Biographies/Bradley-H-Feldmann /about/people/bradley-feldmann
+  Redirect 301 /About-Us/Biographies/Bruce-G-Blakley /about/people/bruce-g-blakley
+  Redirect 301 /About-Us/Biographies/Darryl-S-Albertson-PhD /about/people/darryl-albertson
+  Redirect 301 /About-Us/Biographies/David-H-Buss /about/people/david-buss
+  Redirect 301 /About-Us/Biographies/Denise-Brucker /about/people/denise-brucker
+  Redirect 301 /About-Us/Biographies/Edwin-A-Guiles /about/people/edwin-guiles
+  Redirect 301 /About-Us/Biographies/James-R-Edwards /about/people/james-edwards
+  Redirect 301 /About-Us/Biographies/Jan-L-Marshall /about/people/jan-marshall
+  Redirect 301 /About-Us/Biographies/Janice-M-Hamby /about/people/janice-m-hamby
+  Redirect 301 /About-Us/Biographies/John-E-Roberti /about/people/john-roberti
+  Redirect 301 /About-Us/Biographies/John-H-Warner-Jr /about/people/john-h-warner-jr
+  Redirect 301 /About-Us/Biographies/Kristen-Nielson /about/people
+  Redirect 301 /About-Us/Biographies/lisa-bahr /about/people/lisa-bahr
+  Redirect 301 /About-Us/Biographies/Mark-A-Harrison /about/people/mark-harrison
+  Redirect 301 /About-Us/Biographies/Matt-Cole /about/people/matt-cole
+  Redirect 301 /About-Us/Biographies/Maureen-Breakiron-Evans /about/people/maureen-breakiron-evans
+  Redirect 301 /About-Us/Biographies/Melanie-Hagerty /about/people/melanie-hagerty
+  Redirect 301 /About-Us/Biographies/Michael-R-Twyman /about/people/michael-twyman
+  Redirect 301 /About-Us/Biographies/Norman-R-Bishop /about/people/norman-bishop
+  Redirect 301 /About-Us/Biographies/Steven-J-Norris /about/people/steven-j-norris
+  Redirect 301 /About-Us/Biographies/Walter-C-Zable /about/people/walter-zable
+  Redirect 301 /About-Us/Board-of-Directors /about/people/all?role=2
+  Redirect 301 /About-Us/Corporate-Responsibility /corporate-responsibility
+  Redirect 301 /About-Us/Corporate-Responsibility/Policy /corporate-responsibility
+  Redirect 301 /About-Us/History /about/history
+  Redirect 301 /About-Us/Leadership /about/people/all?role=1
+  Redirect 301 /About-Us/Our-Founder /about/history/our-founder
+  Redirect 301 /About-Us/Our-Founder/Remember-Walter-J-Zable /about/history/our-founder
+  Redirect 301 /About-Us/Timeline /about/history/timeline
+  Redirect 301 /About-Us/Timeline/1951-1959 /about/history/timeline#1950
+  Redirect 301 /About-Us/Timeline/1960-1969 /about/history/timeline#1960
+  Redirect 301 /About-Us/Timeline/1970-1979 /about/history/timeline#1970
+  Redirect 301 /About-Us/Timeline/1980-1989 /about/history/timeline#1980
+  Redirect 301 /About-Us/Timeline/1990-1999 /about/history/timeline#1990
+  Redirect 301 /About-Us/Timeline/2000-2009 /about/history/timeline#2000
+  Redirect 301 /About-Us/Timeline/2010-2015 /about/history/timeline#2010
+  Redirect 301 /About-Us/Vision-Mission-Values /about/contact
+  Redirect 301 /About-Us/Vision-Mission-Values/Code-of-Business-Conduct /about
+  Redirect 301 /About-Us/Vision-Mission-Values/Spot-on-Ethics /about
+  Redirect 301 /Air-Combat-Training /solutions/training/air/air-combat
+  Redirect 301 /Blog /news/blogs
+  Redirect 301 /Careers/Events /careers
+  Redirect 301 /Careers/Transitioning-Military-Careers /careers/transitioning-military
+  Redirect 301 /Careers/University-Internships /careers/internships
+  Redirect 301 /Careers/Worldwide-Work-Locations /careers
+  Redirect 301 /Contact-Us /about/contact
+  Redirect 301 /Contact-Us/Locations /about/locations
+  Redirect 301 /Cubic-Helpline /about/contact
+  Redirect 301 /Global-Defense /solutions/training
+  Redirect 301 /Global-Defense/About-CGD /solutions/training
+  Redirect 301 /Global-Defense/About-CGD/Advisory-Board /about/people/all?role=7&business=5031
+  Redirect 301 /Global-Defense/About-CGD/CGD-Leadership /about/people/all?role=1&business=5031
+  Redirect 301 /Global-Defense/About-CGD/Customers-and-Contracts /customers-contracts
+  Redirect 301 /Global-Defense/About-CGD/Customers-and-Contracts/Customers/Customer-Support /customers-contracts
+  Redirect 301 /Global-Defense/Contact-Us /about/contact
+  Redirect 301 /Global-Defense/Contact-Us/Global-Defense-Locations /about/locations
+  Redirect 301 /Global-Defense/Contact-Us/Locations /about/locations
+  Redirect 301 /Global-Defense/Leading-edge-Solutions /solutions/training
+  Redirect 301 /Global-Defense/Leading-edge-Solutions/Brochures /solutions/training
+  Redirect 301 /Global-Defense/Leading-edge-Solutions/Domain-Knowledge /solutions/training
+  Redirect 301 /Global-Defense/Leading-edge-Solutions/Game-based-Learning /solutions/training/air/virtual-and-immersive/game-based-learning
+  Redirect 301 /Global-Defense/Leading-Edge-Solutions/Immersive-Simulation-intific /solutions/training/air/virtual-and-immersive
+  Redirect 301 /Global-Defense/Leading-edge-Solutions/Simulator-based-Training-and-Haptic-Training-Devices /solutions/training/air/air-combat/training-and-instruction/simulator-and-academic-instruction
+  Redirect 301 /Global-Defense/Leading-edge-Solutions/Simulator-based-Training-and-Haptic-Training-Devices/Commercial-I-O-Systems /solutions/training/air/air-combat/training-and-instruction/simulator-and-academic-instruction
+  Redirect 301 /Global-Defense/Leading-edge-Solutions/Simulator-based-Training-and-Haptic-Training-Devices/Mine-Resistant-Ambush-Protected-MRAP-Vehicle-Trainer /solutions/training
+  Redirect 301 /Global-Defense/Leading-edge-Solutions/Simulator-based-Training-and-Haptic-Training-Devices/Mission-Bay-Trainer /solutions/training/air/air-combat/training-and-instruction/simulator-and-academic-instruction
+  Redirect 301 /Global-Defense/Leading-edge-Solutions/Simulator-based-Training-and-Haptic-Training-Devices/Tabletop-Simulators /solutions/training/air/air-combat/training-and-instruction/simulator-and-academic-instruction
+  Redirect 301 /Global-Defense/Leading-edge-Solutions/Virtual-and-Immersive-Training-Systems /solutions/training/air/virtual-and-immersive
+  Redirect 301 /Global-Defense/Mission-Support /solutions/c4isr
+  Redirect 301 /Global-Defense/Mission-Support-Solutions/Courseware-Design-Development /solutions/c4isr
+  Redirect 301 /Global-Defense/Mission-Support/Defense-Reform-Modernization-and-Transformation /solutions/c4isr
+  Redirect 301 /Global-Defense/Mission-Support/Exercise-Support /solutions/training/air/air-combat/exercise-support
+  Redirect 301 /Global-Defense/Mission-Support/Flight-Simulator-Training /solutions/training/air/air-combat/flight-simulator-training
+  Redirect 301 /Global-Defense/Mission-Support/LVC-G-Training /solutions/training/air/engineering-analysis/lvc-g
+  Redirect 301 /Global-Defense/Mission-Support/Major-Mission-Training-Solutions /solutions/training
+  Redirect 301 /Global-Defense/Mission-Support/Operation-and-Maintenance-Support /solutions/training/air/air-combat/test-and-evaluation/simulator-training-device-operations-and
+  Redirect 301 /Global-Defense/National-Security /solutions/training
+  Redirect 301 /Global-Defense/National-Security-Solutions/Operations-Analysis /solutions/training/air/engineering-analysis
+  Redirect 301 /Global-Defense/National-Security/CBRNE-Solutions /solutions/training/ground/cbrne-solutions
+  Redirect 301 /Global-Defense/National-Security/Global-Security-Solutions /solutions/training/maritime/global-security
+  Redirect 301 /Global-Defense/National-Security/Intelligence-Solutions-Abraxas /solutions/training
+  Redirect 301 /Global-Defense/National-Security/Maritime-Security /solutions/training/maritime
+  Redirect 301 /Global-Defense/Range-Design /solutions/training/ground/range-design
+  Redirect 301 /Global-Defense/Range-Design/Brochures /solutions/training/ground/range-design
+  Redirect 301 /Global-Defense/Range-Design/Firearms-Training-Simulators /solutions/training/ground/range-design
+  Redirect 301 /Global-Defense/Range-Design/Firearms-Training-Simulators/Laser-Fire /solutions/training/ground/range-design
+  Redirect 301 /Global-Defense/Range-Design/Firearms-Training-Simulators/Live-Fire /solutions/training/ground/range-design
+  Redirect 301 /Global-Defense/Range-Design/Firearms-Training-Simulators/Multiscreen /solutions/training/ground/range-design
+  Redirect 301 /Global-Defense/Range-Design/Firearms-Training-Simulators/PRISim-Suite /solutions/training/ground/live-fire-ranges
+  Redirect 301 /Global-Defense/Range-Design/Live-Fire-Ranges /solutions/training/ground/live-fire-ranges
+  Redirect 301 /Global-Defense/Range-Design/Range-Design /solutions/training/ground/range-design
+  Redirect 301 /Global-Defense/Range-Design/Range-Equipment /solutions/training/ground/range-design/range-equipment
+  Redirect 301 /Global-Defense/Special-Operations /solutions/training/special-operations-forces
+  Redirect 301 /Global-Defense/Special-Operations-NEK/Contact-Us /solutions/training/special-operations-forces
+  Redirect 301 /Global-Defense/Special-Operations/Advanced-Tactical-Medicine /solutions/training/maritime/advanced-tactical-medicine
+  Redirect 301 /Global-Defense/Special-Operations/Contact-Us /solutions/training/special-operations-forces
+  Redirect 301 /Global-Defense/Special-Operations/Digital-Defense /solutions/training/cyber-security/c4isr-security/digital-defense
+  Redirect 301 /Global-Defense/Special-Operations/EOD-and-Explosives /solutions/training/maritime/eod-and-explosives-skills-training
+  Redirect 301 /Global-Defense/Special-Operations/Lone-Operator-Series /solutions/training/ground/unconventional-warfare/lone-operator-series
+  Redirect 301 /Global-Defense/Special-Operations/NEK-SOF-Open-Enrollment /solutions/training/ground/unconventional-warfare
+  Redirect 301 /Global-Defense/Special-Operations/Tactical-Mobility /solutions/training/ground/unconventional-warfare/tactical-mobility
+  Redirect 301 /Global-Defense/Special-Operations/Training-for-Institutions /solutions/training/ground/unconventional-warfare
+  Redirect 301 /Global-Defense/Special-Operations/Unit-Training /solutions/training/air/individual-and-unit-exercises
+  Redirect 301 /Global-Defense/Training-Solutions /solutions/training/air/exercise-support-services
+  Redirect 301 /Global-Defense/Training-Solutions/Air-Combat-Training/Aircrew-Mission-Readiness /solutions/training/air/air-combat
+  Redirect 301 /Global-Defense/Training-Solutions/Air-Combat-Training/Customized-Solutions /solutions/training/air/air-combat
+  Redirect 301 /Global-Defense/Training-Solutions/Ground-Combat-Training /solutions/training/air/exercise-support-services/combat-training-centers
+  Redirect 301 /Global-Defense/Training-Solutions/Ground-Combat-Training/Brochures /solutions/training/air/exercise-support-services/combat-training-centers
+  Redirect 301 /Global-Defense/Training-Solutions/Ground-Combat-Training/Domain-Knowledge /solutions/training/air/exercise-support-services/combat-training-centers
+  Redirect 301 /Global-Defense/Training-Solutions/Ground-Combat-Training/Major-Mission-Training-Solutions /solutions/training/air/exercise-support-services/combat-training-centers
+  Redirect 301 /Global-Defense/Training-Solutions/Ground-Combat-Training/Military-Operations-on-Urban-Terrain /solutions/training/air/exercise-support-services/combat-training-centers
+  Redirect 301 /Global-Defense/Training-Solutions/Ground-Combat-Training/Range-Instrumentation-Systems /solutions/training/ground/range-instrumentation
+  Redirect 301 /Global-Defense/Training-Solutions/Maritime-Training /solutions/training/maritime
+  Redirect 301 /Global-Defense/Training-Solutions/Maritime-Training/Domain-Knowledge /solutions/training/maritime
+  Redirect 301 /Global-Defense/Training-Solutions/Maritime-Training/Maritime-MILES /solutions/training/maritime
+  Redirect 301 /Global-Defense/Training-Systems-and-Solutions/Air-Combat-Training/Brochures /solutions/training/air/air-combat
+  Redirect 301 /Global-Defense/Training-Systems-and-Solutions/Air-Combat-Training/Domain-Knowledge /solutions/training/air/air-combat
+  Redirect 301 /Global-Defense/Training-Systems-and-Solutions/Ground-Combat-Training/Multiple-Integrated-Laser-Engagement-System /solutions/training/air/exercise-support-services/combat-training-centers
+  Redirect 301 /Home/Employees /about/people/all
+  Redirect 301 /Investor-Relations/Company-Overview /investor-relations/corporate-overview
+  Redirect 301 /Investor-Relations/Company-Overview/Organization /investor-relation/corporate-overview
+  Redirect 301 /Investor-Relations/Company-Overview/Reporting-Segments /investor-relations/annual-reports
+  Redirect 301 /Investor-Relations/Company-Overview/Vision-and-Strategy /about
+  Redirect 301 /Investor-Relations/Corporate-Governance /investor-relations/governance
+  Redirect 301 /Investor-Relations/Financial-Information /investor-relations/stock-information
+  Redirect 301 /Investor-Relations/Financial-Information/Annual-Reports /investor-relations/annual-reports
+  Redirect 301 /Investor-Relations/Financial-Information/Interactive-Financials /investor-relations/financials
+  Redirect 301 /Investor-Relations/Financial-Information/Non-GAAP-Reconciliation /investor-relations/stock-information
+  Redirect 301 /Investor-Relations/Financial-Information/Printed-Material-Request /investor-relations/stock-information
+  Redirect 301 /Investor-Relations/News-and-Events /investor-relations
+  Redirect 301 /Investor-Relations/Shareholder-Services /investor-relations/shareholder-faqs
+  Redirect 301 /Investor-Relations/Shareholder-Services/Investor-Contacts /investor-realtions/investor-contacts
+  Redirect 301 /Investor-Relations/Shareholder-Services/Shareholder-FAQ /investor-realtions/shareholder-faqs
+  Redirect 301 /Mission-Solutions /solutions/c4isr
+  Redirect 301 /Mission-Solutions/About-CMS /solutions/c4isr
+  Redirect 301 /Mission-Solutions/About-CMS/Customers-and-Contracts /customers-contracts
+  Redirect 301 /Mission-Solutions/About-CMS/Leadership /about/people/all?role=1&business=5026
+  Redirect 301 /Mission-Solutions/Communications-and-Electronics /solutions/c4isr/secure-communications/secure-wideband-datalinks
+  Redirect 301 /Mission-Solutions/Communications-and-Electronics/Brochures /solutions/c4isr/c2isr
+  Redirect 301 /Mission-Solutions/Communications-and-Electronics/Communications-Signal-Intelligence /solutions/c4isr/secure-communications/secure-wideband-datalinks
+  Redirect 301 /Mission-Solutions/Communications-and-Electronics/Free-Space-Optical-Communications /solutions/c4isr/c2isr
+  Redirect 301 /Mission-Solutions/Communications-and-Electronics/ISR-Data-Links /solutions/c4isr/secure-communications/secure-wideband-datalinks
+  Redirect 301 /Mission-Solutions/Communications-and-Electronics/Mini-Common-Data-Link /solutions/c4isr/secure-communications/secure-wideband-datalinks
+  Redirect 301 /Mission-Solutions/Communications-and-Electronics/Search-and-Rescue-Avionics /solutions/c4isr/secure-communications/personnel-locator-systems
+  Redirect 301 /Mission-Solutions/Communications-and-Electronics/Tactical-Data-Links /solutions/c4isr/secure-communications/secure-wideband-datalinks
+  Redirect 301 /Mission-Solutions/Contact-Us /about/contact
+  Redirect 301 /Mission-Solutions/Contact-Us/Mission-Solutions-Locations /about/locations
+  Redirect 301 /Mission-Solutions/Real-time-Full-Motion-Video-TeraLogics /solutions/c4isr
+  Redirect 301 /Mission-Solutions/Satellite-Communications-GATR /solutions/c4isr/secure-communications/expeditionary-satcom
+  Redirect 301 /Mission-Solutions/Secure-Networking/Cross-Domain-XD /solutions/c4isr/secure-networking/cross-domain
+  Redirect 301 /Mission-Solutions/Secure-Networking/DTECH-Labs /technical-support
+  Redirect 301 /Mission-Solutions/Vocality /solutions/c4isr/secure-networking
+  Redirect 301 /News/Blog/Articles/articleType/ArchiveView/year/2007 /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/ArchiveView/year/2008 /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/ArchiveView/year/2009 /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/ArchiveView/year/2010 /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/ArchiveView/year/2011 /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/ArchiveView/year/2012 /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/ArchiveView/year/2013 /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/ArchiveView/year/2014 /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/ArchiveView/year/2015 /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/ArchiveView/year/2016 /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/ArchiveView/year/2017 /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/CategoryView/categoryId/33/Cubic-Transportation-Systems /news/blogs?business=5036
+
+  RewriteCond %{REQUEST_URI} ^\/News\/Blog\/Articles\/articleType\/TagView$
+  RewriteCond %{QUERY_STRING} Tag=\+CTS [OR]
+  RewriteCond %{QUERY_STRING} Tag=\+Cubic\+Transportation\+Systems
+  RewriteRule (.*) /news/blogs?business=5036 [R=301,L,NC,NE,QSD]
+
+  Redirect 301 /News/Blog/Articles/articleType/TagView /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/TagView/Tag/Cubic /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/TagView/Tag/sequestration /news/blogs
+  Redirect 301 /News/Blog/Articles/articleType/TagView/Tag/technology /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/1235/Collection-Point--February-2011 /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/1236/Collection-Point--April-2011 /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/1237/Collection-Point--August-2011 /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/1238/Collection-Point--September-2011 /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/1239/Collection-Point--December-2011 /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/1272/Congratulations-to-Sir-Peter-Hendy-TfL-Commissioner-on-receiving-a-knighthood /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/1273/London-Buses-Enabled-For-Open-Payment /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/1274/Cities-Take-Steps-to-Smarter-Transportation /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/1746/Operating-Global-Acting-Local /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/1764/Five-Trends-in-Road-Pricing-to-Come /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/1802/From-the-Highlands-to-the-Lowlands-Cubic-and-Transport-Scotland-Deliver-Intelligent-Solutions /innovation/success-stories/transport-scotland-its-case-study
+  Redirect 301 /News/Blog/Articles/ID/1826/Intelligent-Solutions-Beyond-Technology /intelligent-solutions-beyond-technology
+  Redirect 301 /News/Blog/Articles/ID/1901/Diversity-and-Inclusion-Why-it-Matters /diversity-and-inclusion-why-it-matters
+  Redirect 301 /News/Blog/Articles/ID/1913/Collection-Point-October-2017 /collection-point-october-2017
+  Redirect 301 /News/Blog/Articles/ID/1916/Good-News-All-Around /news
+  Redirect 301 /News/Blog/Articles/ID/680/Honoring-our-Military-and-Wounded-Warriors /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/681/Cubic-Constantly-Adjusts-to-Changing-Budget-Realities /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/682/The-Cashless-Society-is-Coming-Soon /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/686/Cubic-is-bringing-contactless-bank-card-payment-to-London-buses /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/692/Cubic-Expands-its-National-Security-Business-with-purchase-of-Special-Programs-Group /news/blogs
+  Redirect 301 /News/Blog/Articles/ID/698/Cubic-Wins-Connect-Most-Innovative-New-Product-Award /news/blogs
+  Redirect 301 /News/Blog/Corporate /news/blogs?business=4921
+  Redirect 301 /News/Blog/Global-Defense /news/blogs?business=5031
+  Redirect 301 /News/Blog/Mission-Solutions /news/blogs?business=5026
+  Redirect 301 /News/Blog/Transportation /news/blogs?business=5036
+  Redirect 301 /News/Email-Alerts /news/blogs
+  Redirect 301 /News/Media-Contacts /about/contact
+  Redirect 301 /News/Press-Releases /news
+  Redirect 301 /News/Press-Releases/ID/1899/Cubic-Aids-Hurricane-Disaster-Relief-Efforts-with-Satellite-Communications-Technology /news/cubic-aids-hurricane-disaster-relief-efforts-satellite-communications-technology-0
+  Redirect 301 /News/Press-Releases/ID/1910/Cubic-NextBus-Next-Generation-Real-Time-Passenger-Transit-Information-and-Cloud-Platform-Begins-Market-Rollout /news/cubic-nextbus-next-generation-real-time-passenger-transit-information-and-cloud-platform
+  Redirect 301 /News/Press-Releases/ID/1911/Cubic-Helps-Residents-and-First-Responders-Get-Connected-in-Puerto-Rico /news/cubic-helps-residents-and-first-responders-get-connected-puerto-rico
+  Redirect 301 /News/Press-Releases/ID/1918/Cubic-Wins-Contract-from-New-York-MTA-to-Replace-Iconic-MetroCard-System-with-World-Class-New-Fare-Payment-System /news/cubic-wins-contract-new-york-mta-replace-iconic-metrocard-system-world-class-new-fare-payment
+  Redirect 301 /News/Press-Releases/ID/1931/Cubic-Selected-for-Contract-from-Boston-MBTA-to-Deliver-Next-Generation-Fare-Payment-System /news/cubic-selected-contract-boston-mbta-deliver-next-generation-fare-payment-system
+  Redirect 301 /News/Press-Releases/ID/1937/Cubic-Awarded-61-Million-Contract-to-Continue-Support-of-US-Armys-Joint-Readiness-Training-Center /news/cubic-awarded-61-million-contract-continue-support-us-armys-joint-readiness-training-center
+  Redirect 301 /News/Press-Releases/ID/1938/Cubic-Selected-to-Support-US-Armys-Mission-Training-Complex-Capabilities-Support-Program /news/cubic-awarded-major-new-contract-supply-army-mobile-instrumented-training-system
+  Redirect 301 /News/Press-Releases/ID/1939/Cubics-DTECH-Labs-Completes-VMware-Testing /news
+  Redirect 301 /News/RSS-Subscriptions /news
+  Redirect 301 /Privacy-Policy /privacy/cubic-website-privacy-policy
+  Redirect 301 /Privacy-Policy/General-EEA-Safe-Harbor-Notice /privacy/cubic-website-privacy-policy
+  Redirect 301 /Terms-of-Use /privacy/cubic-website-privacy-policy
+  Redirect 301 /Transportation /solutions/transportation
+  Redirect 301 /Transportation-Systems/About-CTS /solutions/transportation
+  Redirect 301 /Transportation/About-CTS/Advisory-Board /about/people/all?role=7&business=5036
+  Redirect 301 /Transportation/About-CTS/Awards /news/awards
+  Redirect 301 /Transportation/About-CTS/Community-Affairs /about/businesses#paragraph-tab-5566-3
+  Redirect 301 /Transportation/About-CTS/Executive-Leadership /about/people/all?role=1&business=5036
+  Redirect 301 /Transportation/About-CTS/NextCity /solutions/transportation
+  Redirect 301 /Transportation/About-CTS/Supplier-Diversity /suppliers
+  Redirect 301 /Transportation/Contact-Us /solutions/transportation
+  Redirect 301 /Transportation/Contact-Us/Inquiry-Form /solutions/transportation
+  Redirect 301 /Transportation/Contact-Us/Locations /about/locations
+  Redirect 301 /Transportation/News /news?business=5036
+  Redirect 301 /Transportation/Resources /solutions/transportation
+  Redirect 301 /Transportation/Resources/Brochures /solutions/transportation
+  Redirect 301 /Transportation/Resources/Case-Studies /innovation/success-stories?business=5036
+  Redirect 301 /Transportation/Resources/Collection-Point /news/blogs?business=5036&post_type=71
+  Redirect 301 /Transportation/Resources/Videos /solutions/transportation
+  Redirect 301 /Transportation/Resources/White-Papers /solutions/transportation
+  Redirect 301 /Transportation/Services /solutions/transportation/revenue-management#paragraph-tab-671-6
+  Redirect 301 /Transportation/Services/Asset-Management /solutions/transportation
+  Redirect 301 /Transportation/Services/Financial /solutions/transportation/revenue-management
+  Redirect 301 /Transportation/Services/IT-Operation /solutions/transportation/revenue-management#paragraph-tab-671-6
+  Redirect 301 /Transportation/Services/Professional /solutions/transportation/revenue-management#paragraph-tab-671-6
+  Redirect 301 /Transportation/Services/Support /solutions/transportation
+  Redirect 301 /Transportation/Solutions /solutions/transportation
+  Redirect 301 /Transportation/Solutions/Analytics /solutions/transportation/revenue-management#paragraph-tab-671-5
+  Redirect 301 /Transportation/Solutions/Real-Time-Passenger-Information /solutions/transportation/nextbus
+  Redirect 301 /Transportation/Solutions/Revenue-Management /solutions/transportation/revenue-management
+  Redirect 301 /Transportation/Solutions/Tolling /solutions/transportation/tolling
+  Redirect 301 /Transportation/Solutions/Transport-Management /solutions/transportation/surface-transport-management
+  Redirect 301 /Twitter https://twitter.com/CubicCorp
+  Redirect 301 /Virtual-Tradeshow-Videos /solutions/training/air/virtual-and-immersive
+  Redirect 301 /Virtual-Tradeshow-Videos/Virtual-Tradeshow-Literature /solutions/training/air/virtual-and-immersive
+
+  # PDFs
+  Redirect 301 /sites/default/files/M3-EXT_Datasheet_3.0.pdf /solutions/c4isr/secure-networking/networking-products/m3-ext-products
+  Redirect 301 /sites/default/files/M3-EXT_Datasheet_3.0_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-ext-products
+  Redirect 301 /sites/default/files/M3-EXT_MOD1_MOD2_2.pdf /solutions/c4isr/secure-networking/networking-products/m3-ext-products
+  Redirect 301 /sites/default/files/M3-EXT_MOD1_MOD2_2_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-ext-products
+  Redirect 301 /sites/default/files/M3-EXT_MOD1_MOD2_Auxiliary_Modules_Datasheet_1.0.pdf /solutions/c4isr/secure-networking/networking-products/m3-ext-products
+  Redirect 301 /sites/default/files/M3-SE-ACDC_7.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-ACDC_7_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-AMP1_Datasheet__8.0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-APP3_10.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-APP3_10_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-APP3_Datasheet_1.0_Polish.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-APP3_datasheet_11.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-APP4_4.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-APP4_4_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-APP4_datasheet_5.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-ASA-P_7.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-ASA-P_7_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-C3560-P_4.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-C3560-P_4_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-C3560-P_Datasheet_3.0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-C3560-P_datasheet_5.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-LMR4_Datasheet_1.0_Czech.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-LMR4_Datasheet_1.0_Czech_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-LMR4_Datasheet_1.0_Czech_1.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-LMR4_Datasheet_1.0_Polish.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-LMR4_Datasheet_1.0_Polish_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-LMR_Modules_6.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-LMR_Modules_6_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-LMR_Modules_6_1.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-LMR_Modules_7.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-LMR_Modules_datasheet_7.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA-P_8.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA-P_8.pdf.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA-P_8_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA-P_Datasheet_1.0_Czech.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA-P_Datasheet_1.0_Czech_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA-P_Datasheet_1.0_Polish.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA-P_datasheet_9.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA-P_Interactive.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA2_10.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA2_10_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA2_11.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA2_Datasheet_1.0_Czech.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA2_Datasheet_1.0_Polish.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA_8.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA_8_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA_9_datasheet_.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-PA_Datasheet_1.0_Polish.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-RAID_10.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-RAID_10_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-RAID_Datasheet_1.0_Czech.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-RAID_Datasheet_1.0_Polish.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-RAID_Datasheet_9.0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-RTR2.RTR2A_Datasheet_1.0_Czech.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-RTR2_RTR2A_9.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-RTR2_RTR2A_9_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-RTR2_RTR2A_datasheet_10.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SVR3.SVR3Q_Datasheet_1.0_Czech.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SVR3.SVR3Q_Datasheet_1.0_Polish.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SVR3_SVR3Q_12.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SVR3_SVR3Q_12_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SVR3_SVR3Q_datasheet_13.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SVR4_5.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SVR4_5_alternate.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SVR4_datasheet_6.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW24.SW24-SFP_Datasheet_1.0_Czech.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW24.SW24-SFP_Datasheet_1.0_Polish.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW24_Datasheet_9.0_.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW24_SW24SFP_10.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW24_SW24SFP_10_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW24_SW24SFP_10_1.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW24G_Interactive.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW8_8.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW8_8_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW8_Datasheet_1.0_Czech.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW8_Datasheet_1.0_Polish.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW8_Datasheet_6.0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-SW8_datasheet_9.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-TFOCA_3.0_.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-TFOCA_5.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-TFOCA_5_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-TFOCA_datasheet_6.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-TVM3_11.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-TVM3_11_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-TVM3_11_1.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-TVM3_Datasheet_1.0_Czech_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-TVM3_Datasheet_1.0_Polish.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-TVM3_Datasheet_1.0_Polish_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-TVM3_Datasheet_10.0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VOICE.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VOICE_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VOICE_8.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VOICE_Datasheet_1.0_Czech.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VOICE_Datasheet_1.0_Polish.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VOICE_Datasheet_7.0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VOICE_datasheet_9.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VOICE_datasheet_9_1.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VSAN-P_5.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VSAN-P_5_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VSAN-P_datasheet_6.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VSVR-P_8.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VSVR-P_8_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VSVR-P_datasheet_9.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VSVR5-P_%20DT2018-10-22-01_Interactive.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE-VSVR5-P_Interactive.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE3_12.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE3_12_0.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE3_12_1.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE3_13.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3-SE_Finding_the_Active_COM_Port.pdf /solutions/c4isr/secure-networking/networking-products/m3-se-products
+  Redirect 301 /sites/default/files/M3C4G_Basic_Setup.pdf /solutions/c4isr/secure-networking/networking-products/m3c4g-products
+  Redirect 301 /sites/default/files/M3X-APP_.pdf /solutions/c4isr/secure-networking/networking-products/m3x-product-family
+  Redirect 301 /sites/default/files/M3X-BPS_.pdf /solutions/c4isr/secure-networking/networking-products/m3x-product-family
+  Redirect 301 /sites/default/files/M3X-RTR_.pdf /solutions/c4isr/secure-networking/networking-products/m3x-product-family
+  Redirect 301 /sites/default/files/M3X-S24_.pdf /solutions/c4isr/secure-networking/networking-products/m3x-product-family
+  Redirect 301 /sites/default/files/M3x_%20Spec%20Sheet_cy_r15.pdf /solutions/c4isr/secure-networking/networking-products/m3x-product-family
+  Redirect 301 /sites/default/files/M3x_%20Spec%20Sheet_cy_r15.pdf /solutions/c4isr/secure-networking/networking-products/m3x-product-family
+  Redirect 301 /sites/default/files/TXC3_TXC4%2Bbase_modules_5.pdf /solutions/c4isr/secure-networking/networking-products/txc-products
+  Redirect 301 /sites/default/files/TXC_auxiliary_modules_2.pdf /solutions/c4isr/secure-networking/networking-products/txc-products
+
+  # Block access to "hidden" directories whose names begin with a period. This
+  # includes directories used by version control systems such as Subversion or
+  # Git to store control files. Files whose names begin with a period, as well
+  # as the control files used by CVS, are protected by the FilesMatch directive
+  # above.
+  #
+  # NOTE: This only works when mod_rewrite is loaded. Without mod_rewrite, it is
+  # not possible to block access to entire directories from .htaccess because
+  # <DirectoryMatch> is not allowed here.
+  #
+  # If you do not have mod_rewrite installed, you should remove these
+  # directories from your webroot or otherwise protect them from being
+  # downloaded.
+  RewriteRule "/\.|^\.(?!well-known/)" - [F]
+
+  # If your site can be accessed both with and without the 'www.' prefix, you
+  # can use one of the following settings to redirect users to your preferred
+  # URL, either WITH or WITHOUT the 'www.' prefix. Choose ONLY one option:
+  #
+  # To redirect all users to access the site WITH the 'www.' prefix,
+  # (http://example.com/foo will be redirected to http://www.example.com/foo)
+  # uncomment the following:
+  RewriteCond %{ENV:AH_SITE_ENVIRONMENT} prod [NC]
+  RewriteCond %{HTTP_HOST} ^(prod\.)?cubic\.com [NC]
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^ http%{ENV:protossl}://www.cubic.com%{REQUEST_URI} [L,R=301]
+
+  # To redirect all users to access the site WITHOUT the 'www.' prefix,
+  # (http://www.example.com/foo will be redirected to http://example.com/foo)
+  # uncomment the following:
+  # RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  # RewriteRule ^ http%{ENV:protossl}://%1%{REQUEST_URI} [L,R=301]
+
+  # Modify the RewriteBase if you are using Drupal in a subdirectory or in a
+  # VirtualDocumentRoot and the rewrite rules are not working properly.
+  # For example if your site is at http://example.com/drupal uncomment and
+  # modify the following line:
+  # RewriteBase /drupal
+  #
+  # If your site is running in a VirtualDocumentRoot at http://example.com/,
+  # uncomment the following line:
+  # RewriteBase /
+
+  # Redirect common PHP files to their new locations.
+  RewriteCond %{REQUEST_URI} ^(.*)?/(install.php) [OR]
+  RewriteCond %{REQUEST_URI} ^(.*)?/(rebuild.php)
+  RewriteCond %{REQUEST_URI} !core
+  RewriteRule ^ %1/core/%2 [L,QSA,R=301]
+
+  # Rewrite install.php during installation to see if mod_rewrite is working
+  RewriteRule ^core/install.php core/install.php?rewrite=ok [QSA,L]
+
+  # Pass all requests not referring directly to files in the filesystem to
+  # index.php.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_URI} !=/favicon.ico
+  RewriteRule ^ index.php [L]
+
+  # For security reasons, deny access to other PHP files on public sites.
+  # Note: The following URI conditions are not anchored at the start (^),
+  # because Drupal may be located in a subdirectory. To further improve
+  # security, you can replace '!/' with '!^/'.
+  # Allow access to PHP files in /core (like authorize.php or install.php):
+  RewriteCond %{REQUEST_URI} !/core/[^/]*\.php$
+  # Allow access to test-specific PHP files:
+  RewriteCond %{REQUEST_URI} !/core/modules/system/tests/https?.php
+  # Allow access to Statistics module's custom front controller.
+  # Copy and adapt this rule to directly execute PHP files in contributed or
+  # custom modules or to run another PHP application in the same directory.
+  RewriteCond %{REQUEST_URI} !/core/modules/statistics/statistics.php$
+  # Allow access to simplesaml paths
+  RewriteCond %{REQUEST_URI} !^/simplesaml
+  # Deny access to any other PHP files that do not match the rules above.
+  # Specifically, disallow autoload.php from being served directly.
+  RewriteRule "^(.+/.*|autoload)\.php($|/)" - [F]
+
+  # Rules to correctly serve gzip compressed CSS and JS files.
+  # Requires both mod_rewrite and mod_headers to be enabled.
+  <IfModule mod_headers.c>
+    # Serve gzip compressed CSS files if they exist and the client accepts gzip.
+    RewriteCond %{HTTP:Accept-encoding} gzip
+    RewriteCond %{REQUEST_FILENAME}\.gz -s
+    RewriteRule ^(.*)\.css $1\.css\.gz [QSA]
+
+    # Serve gzip compressed JS files if they exist and the client accepts gzip.
+    RewriteCond %{HTTP:Accept-encoding} gzip
+    RewriteCond %{REQUEST_FILENAME}\.gz -s
+    RewriteRule ^(.*)\.js $1\.js\.gz [QSA]
+
+    # Serve correct content types, and prevent mod_deflate double gzip.
+    RewriteRule \.css\.gz$ - [T=text/css,E=no-gzip:1]
+    RewriteRule \.js\.gz$ - [T=text/javascript,E=no-gzip:1]
+
+    <FilesMatch "(\.js\.gz|\.css\.gz)$">
+      # Serve correct encoding type.
+      Header set Content-Encoding gzip
+      # Force proxies to cache gzipped & non-gzipped css/js files separately.
+      Header append Vary Accept-Encoding
+    </FilesMatch>
+  </IfModule>
+</IfModule>
+
+# Various header fixes.
+<IfModule mod_headers.c>
+  # Disable content sniffing, since it's an attack vector.
+  Header always set X-Content-Type-Options nosniff
+  # Disable Proxy header, since it's an attack vector.
+  RequestHeader unset Proxy
+</IfModule>

@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: grid_of_success_stories
+label: 'Grid of Supporting Content'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

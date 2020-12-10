@@ -1,0 +1,50 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.milestone_decade.body
+    - field.field.node.milestone_decade.field_background_image
+    - field.field.node.milestone_decade.field_milestones
+    - node.type.milestone_decade
+  module:
+    - entity_reference_revisions
+    - image
+    - text
+    - user
+id: node.milestone_decade.default
+targetEntityType: node
+bundle: milestone_decade
+mode: default
+content:
+  body:
+    label: hidden
+    type: text_default
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_background_image:
+    type: image
+    weight: 3
+    region: content
+    label: hidden
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+  field_milestones:
+    type: entity_reference_revisions_entity_view
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  search_api_excerpt: true

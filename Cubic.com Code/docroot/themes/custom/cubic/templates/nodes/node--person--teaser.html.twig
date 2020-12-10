@@ -1,0 +1,30 @@
+{#
+/**
+ * @file
+ * Theme override to display a node teaser in the Lists view.
+ */
+#}
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  ]
+%}
+{{ attach_library('classy/node') }}
+<article{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+  <a href="{{ url }}" rel="bookmark">
+    <div{{ content_attributes.addClass('node__content') }}>
+      {{ content.field_photo }}
+      <div class="person-content text">
+        <h3{{ title_attributes.addClass('title') }}>{{ label }}</h3>
+        {{ content.field_title }}
+      </div>
+    </div>
+  </a>
+</article>

@@ -1,0 +1,149 @@
+.paragraph--type--event-schedule {
+  padding: 3rem map-get($paragraph-padding, small);
+
+  @include breakpoint(medium) {
+    padding-left: map-get($paragraph-padding, medium);
+    padding-right: map-get($paragraph-padding, medium);
+  }
+
+  @include breakpoint(large) {
+    padding-left: map-get($paragraph-padding, large);
+    padding-right: map-get($paragraph-padding, large);
+  }
+
+  > .field--name-field-title {
+    font-size: $h1-font-size;
+    margin-bottom: rem-calc(15);
+
+    @include breakpoint(medium) {
+      margin-bottom: rem-calc(30);
+    }
+  }
+
+  .schedule-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0;
+
+    li {
+      background-color: $color-schedule-bg;
+      color: $black;
+      cursor: pointer;
+      flex: 1 1 50%;
+      font-family: $font-bold;
+      font-size: rem-calc(18);
+      margin: 0 0 rem-calc(3);
+      padding: rem-calc(15);
+      text-align: center;
+      transition: all $transition-time;
+
+      @include breakpoint(large) {
+        flex-basis: auto;
+      }
+
+      &::before {
+        display: none !important;
+      }
+
+      &:hover,
+      &:active,
+      &.active {
+        background-color: $cubic-teal;
+        color: $white;
+      }
+    }
+  }
+
+  .field--name-field-download-schedule {
+    display: inline-block;
+    margin-bottom: rem-calc(30);
+
+    @include breakpoint(medium) {
+      margin-bottom: 0;
+      position: absolute;
+      right: map-get($paragraph-padding, medium);
+      top: 3rem;
+    }
+
+    @include breakpoint(large) {
+      right: map-get($paragraph-padding, large);
+    }
+
+    a {
+      @extend %link-w-icon;
+    }
+  }
+
+  > .field--name-field-event-schedule-content {
+    background-color: $color-schedule-bg;
+    padding: rem-calc(15);
+    position: relative;
+
+    &::after {
+      background: $color-schedule-bg;
+      bottom: #{rem-calc(15)};
+      content: '';
+      display: block;
+      height: 1px;
+      left: 0;
+      position: absolute;
+      width: 100%;
+    }
+
+    @include breakpoint(medium) {
+      padding-left: rem-calc(30);
+      padding-right: rem-calc(30);
+    }
+
+    > .field__item {
+      border-bottom: 1px solid $color-border;
+    }
+  }
+}
+
+.paragraph--type--event-schedule-item {
+  display: flex;
+  flex-direction: column;
+  padding: rem-calc(15);
+
+  @include breakpoint(medium) {
+    align-items: center;
+    flex-direction: row;
+    padding: rem-calc(30);
+  }
+
+  .text {
+    order: 2;
+
+    @include breakpoint(medium) {
+      max-width: 75%;
+      order: 0;
+    }
+  }
+
+  .field--name-field-title {
+    font-family: $font-bold;
+  }
+
+  .field--name-field-body {
+    p {
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .field--name-field-time {
+    font-family: $font-bold;
+    margin-bottom: rem-calc(15);
+    order: 1;
+
+    @include breakpoint(medium) {
+      flex-shrink: 0;
+      margin-bottom: 0;
+      margin-left: auto;
+      padding-left: rem-calc(15);
+    }
+  }
+}

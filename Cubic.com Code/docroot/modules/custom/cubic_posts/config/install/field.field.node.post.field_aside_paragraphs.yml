@@ -1,0 +1,136 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_aside_paragraphs
+    - node.type.post
+    - paragraphs.paragraphs_type.basic_image
+    - paragraphs.paragraphs_type.basic_text
+    - paragraphs.paragraphs_type.people_grid
+  module:
+    - entity_reference_revisions
+id: node.post.field_aside_paragraphs
+field_name: field_aside_paragraphs
+entity_type: node
+bundle: post
+label: 'Aside Paragraphs'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      basic_image: basic_image
+      basic_text: basic_text
+      people_grid: people_grid
+    target_bundles_drag_drop:
+      '50_50':
+        weight: 16
+        enabled: false
+      accordion:
+        weight: 17
+        enabled: false
+      accordions:
+        weight: 18
+        enabled: false
+      basic_image:
+        enabled: true
+        weight: 19
+      basic_text:
+        enabled: true
+        weight: 20
+      callouts:
+        weight: 21
+        enabled: false
+      cross_link:
+        weight: 22
+        enabled: false
+      cross_links:
+        weight: 23
+        enabled: false
+      divider_bar:
+        weight: 24
+        enabled: false
+      grid_of_products:
+        weight: 25
+        enabled: false
+      grid_of_success_stories:
+        weight: 26
+        enabled: false
+      image_grid_slider:
+        weight: 27
+        enabled: false
+      solutions_product:
+        weight: 28
+        enabled: false
+      tab:
+        weight: 29
+        enabled: false
+      tabs:
+        weight: 30
+        enabled: false
+      annual_reports_slider:
+        weight: 39
+        enabled: false
+      case_study_row:
+        weight: 43
+        enabled: false
+      event_recap:
+        weight: 47
+        enabled: false
+      event_recap_slider_item:
+        weight: 48
+        enabled: false
+      event_schedule:
+        weight: 49
+        enabled: false
+      event_schedule_item:
+        weight: 50
+        enabled: false
+      image_and_menu:
+        weight: 53
+        enabled: false
+      image_and_text_slider:
+        weight: 54
+        enabled: false
+      image_text_slider_item:
+        weight: 56
+        enabled: false
+      map:
+        weight: 57
+        enabled: false
+      people_grid:
+        enabled: true
+        weight: 58
+      people_grid_item:
+        weight: 59
+        enabled: false
+      people_grid_item_external:
+        weight: 60
+        enabled: false
+      salesforce_form:
+        weight: 61
+        enabled: false
+      social_icon_link:
+        weight: 62
+        enabled: false
+      social_icon_links:
+        weight: 63
+        enabled: false
+      taggbox_social_feed:
+        weight: 67
+        enabled: false
+      testimonial_slider:
+        weight: 68
+        enabled: false
+      testimonial_slider_item:
+        weight: 69
+        enabled: false
+      webform:
+        weight: 70
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,94 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.press_release.body
+    - field.field.node.press_release.field_aside_paragraphs
+    - field.field.node.press_release.field_brand
+    - field.field.node.press_release.field_business
+    - field.field.node.press_release.field_contain_header_image
+    - field.field.node.press_release.field_contained_paragraphs
+    - field.field.node.press_release.field_hero_image
+    - field.field.node.press_release.field_lower_paragraphs
+    - field.field.node.press_release.field_main_column
+    - field.field.node.press_release.field_metadata
+    - field.field.node.press_release.field_paragraphs
+    - field.field.node.press_release.field_region
+    - node.type.press_release
+  module:
+    - entity_reference_revisions
+    - metatag
+    - text
+    - user
+id: node.press_release.default
+targetEntityType: node
+bundle: press_release
+mode: default
+content:
+  field_aside_paragraphs:
+    type: entity_reference_revisions_entity_view
+    weight: 5
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_contained_paragraphs:
+    type: entity_reference_revisions_entity_view
+    weight: 4
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_lower_paragraphs:
+    type: entity_reference_revisions_entity_view
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+  field_main_column:
+    type: text_default
+    weight: 3
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+  field_metadata:
+    weight: 7
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
+  field_paragraphs:
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  workbench_moderation_control:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  body: true
+  field_brand: true
+  field_business: true
+  field_contain_header_image: true
+  field_hero_image: true
+  field_region: true

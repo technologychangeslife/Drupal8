@@ -1,0 +1,272 @@
+// sass-lint:disable force-pseudo-nesting
+// sass-lint:disable nesting-depth
+// sass-lint:disable force-element-nesting
+// sass-lint:disable force-attribute-nesting
+
+.page-node-type-post {
+  .block-page-title-block {
+    &.no-hero {
+      @include breakpoint(medium) {
+        background-color: $cubic-teal;
+
+        .page-header-background {
+          color: $white;
+          min-height: 265px;
+        }
+
+        .page-title-content {
+          color: $white;
+          background-image: none;
+        }
+      }
+    }
+  }
+
+  //limits the new styles only if it's using the new template.
+  .node--full--post-with-sidebar {
+
+    .main-column {
+      order: 1;
+    }
+
+    //Person Section
+    .paragraph--type--people-grid > .field--name-field-people-grid-content > .field__item {
+      flex: 0 0 100%;
+      max-width: 100%;
+      margin-top: 2.5rem;
+    }
+
+    @include breakpoint(medium) {
+      .text-formatted {
+        &.field--name-field-main-column {
+          max-width: 930px;
+        }
+      }
+
+      .paragraph--type--basic-text {
+        .field--name-field-body {
+          margin: unset;
+        }
+      }
+    }
+
+    @include breakpoint(large) {
+      .paragraph--type--people-grid > .field--name-field-people-grid-content {
+        margin-right: rem-calc(60);
+      }
+    }
+
+
+    //aside bar elements
+    .field--name-field-aside-paragraphs {
+
+      h3 {
+        &.title  {
+          margin-bottom: rem-calc(15);
+        }
+      }
+
+      &.field__items {
+        > field__item {
+          margin-bottom: 0;
+        }
+
+      }
+
+      .paragraph--type--people-grid {
+        padding: 0;
+      }
+
+      .cubic-social-addthis {
+        display: none;
+      }
+
+      .field--name-field-people-grid-content {
+        >
+        .field__item {
+          margin-bottom: 0;
+          margin-top: 0;
+        }
+      }
+
+
+
+      .field__item {
+        margin-bottom: rem-calc(30);
+        margin-top: 0;
+
+        &.field--name-field-title {
+          margin-top: 0;
+          margin-bottom: 0;
+        }
+
+        &.field--name-field-name {
+          margin-bottom: rem-calc(8);
+        }
+
+        .node--type-person,
+        .paragraph--type--people-grid-item-external {
+
+          .field__item {
+            margin-top: 0;
+          }
+
+          text-align: center;
+
+
+          .social-links {
+            display: none;
+          }
+
+          .cta {
+            display: none;
+          }
+
+          @include breakpoint(medium) {
+            text-align: left;
+
+            .field--name-field-photo {
+              margin: 0 0 rem-calc(30) 0;
+            }
+          }
+        }
+
+
+        @include breakpoint(medium) {
+          max-width: 310px;
+          margin-left: auto;
+          margin-right: 10px;
+
+        }
+      }
+
+      .guest-blogger {
+        display: block;
+      }
+
+      @include breakpoint(medium) {
+        padding-top: 2.5rem;
+      }
+    }
+
+
+    .guest-blogger {
+      text-transform: uppercase;
+      color: $color-grid-background;
+    }
+
+    .field--name-field-name {
+      font-weight: bold;
+    }
+
+
+    .field--name-field-title {
+      color: $color-grid-background;
+    }
+
+    .post-main-social-wrapper {
+      .basic-animation {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+    }
+
+    hr {
+      padding-top: 4.5rem;
+    }
+
+    .paragraph--type--basic-text {
+      &.bio-wrapper {
+        padding-top: 0;
+      }
+    }
+
+  }
+
+  .field--name-field-business {
+    display: none;
+  }
+
+  .view-id-list  {
+    .view-content  {
+      .node--view-mode-teaser {
+        .field--name-field-region {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .node--view-mode-teaser {
+
+    .node__content {
+      position: relative;
+
+      .text {
+        padding-bottom: rem-calc(5px);
+
+      }
+
+      .related-posts-read-more {
+        color: $black;
+        transition: color $transition-time;
+
+        &:after {
+          content: '';
+          display: inline;
+          background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4LjY5MDkgMTQuNTU0MiI+PHBvbHlnb24gcG9pbnRzPSIxLjQxNCAxNC41NTQgMCAxMy4xNCA1Ljg2MyA3LjI3NyAwIDEuNDE0IDEuNDE0IDAgOC42OTEgNy4yNzcgMS40MTQgMTQuNTU0Ii8+PC9zdmc+');
+          background-position: right 2px;
+          background-repeat: no-repeat;
+          background-size: 7px 16px;
+          color: $black;
+          font-family: $font-main;
+          padding-right: rem-calc(16);
+          position: relative;
+          transition: background-image $transition-time;
+        }
+      }
+
+
+    }
+
+    a {
+      &:hover {
+
+        .related-posts-read-more {
+          color: $white;
+
+          &:after {
+            background-image: url('../img/white-arrow.svg');
+
+          }
+        }
+      }
+    }
+
+  }
+
+  #block-views-block-list-related-posts {
+    background: $cubic-grey;
+    text-align: center;
+    padding-top: 4.5rem;
+    padding-bottom: 4.5rem;
+  }
+
+  .region-content  {
+    .embedded-entity {
+      &.entity--image {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+.contextual-region.view.view-list.view-id-list.view-display-id-posts {
+  .related-posts-read-more {
+    display: none;
+  }
+}
+
+.video-embed-field-responsive-video {
+  margin-bottom: rem-calc(26);
+}

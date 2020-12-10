@@ -1,0 +1,31 @@
+{%
+set classes = [
+'node',
+'node--type-' ~ node.bundle|clean_class,
+node.isPromoted() ? 'node--promoted',
+node.isSticky() ? 'node--sticky',
+not node.isPublished() ? 'node--unpublished',
+view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+]
+%}
+{{ attach_library('classy/node') }}
+<article{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+  <div class="hero-image" style="background-image: url({{ hero_image }})"></div>
+  <a href="{{ url }}" rel="bookmark">
+    <div class="node--inner">
+      {{ content.field_industry }}
+
+      {% if not page %}
+        <h3{{ title_attributes.addClass('title') }}>{{ label }}</h3>
+      {% endif %}
+
+      <div{{ content_attributes.addClass('node__content') }}>
+        {{ content|without('field_hero_image', 'field_industry') }}
+      </div>
+
+      <p class="learn-more">Learn More{% include directory ~ '/_/img/icon_extended-arrow.svg' %}</p>
+    </div>
+  </a>
+</article>

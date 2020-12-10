@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.image_browser
+    - field.field.paragraph.milestone_carousel_item.field_image
+    - paragraphs.paragraphs_type.milestone_carousel_item
+  module:
+    - entity_browser
+id: paragraph.milestone_carousel_item.default
+targetEntityType: paragraph
+bundle: milestone_carousel_item
+mode: default
+content:
+  field_image:
+    weight: 0
+    settings:
+      entity_browser: image_browser
+      field_widget_remove: true
+      field_widget_replace: true
+      open: true
+      selection_mode: selection_append
+      preview_image_style: thumbnail
+      field_widget_edit: true
+      view_mode: default
+    third_party_settings: {  }
+    type: entity_browser_file
+    region: content
+hidden:
+  created: true
+  status: true

@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_video
+    - paragraphs.paragraphs_type.testimonial_slider_item
+  module:
+    - video_embed_field
+id: paragraph.testimonial_slider_item.field_video
+field_name: field_video
+entity_type: paragraph
+bundle: testimonial_slider_item
+label: Video
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_providers:
+    vimeo: '0'
+    youtube: '0'
+    youtube_playlist: '0'
+    wistia: '0'
+field_type: video_embed_field

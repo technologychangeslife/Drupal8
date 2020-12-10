@@ -1,0 +1,126 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_sub_points
+    - paragraphs.paragraphs_type.basic_text
+    - paragraphs.paragraphs_type.case_study_row
+  module:
+    - entity_reference_revisions
+id: paragraph.case_study_row.field_sub_points
+field_name: field_sub_points
+entity_type: paragraph
+bundle: case_study_row
+label: Sub-Points
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      basic_text: basic_text
+    target_bundles_drag_drop:
+      '50_50':
+        weight: -67
+        enabled: false
+      accordion:
+        weight: -66
+        enabled: false
+      accordions:
+        weight: -65
+        enabled: false
+      annual_reports_slider:
+        weight: -64
+        enabled: false
+      basic_image:
+        weight: -63
+        enabled: false
+      basic_text:
+        enabled: true
+        weight: -62
+      callouts:
+        weight: -61
+        enabled: false
+      case_study_row:
+        weight: -60
+        enabled: false
+      cross_link:
+        weight: -59
+        enabled: false
+      cross_links:
+        weight: -58
+        enabled: false
+      divider_bar:
+        weight: -57
+        enabled: false
+      event_recap:
+        weight: -56
+        enabled: false
+      event_recap_slider_item:
+        weight: -55
+        enabled: false
+      event_schedule:
+        weight: -54
+        enabled: false
+      event_schedule_item:
+        weight: -53
+        enabled: false
+      grid_of_products:
+        weight: -52
+        enabled: false
+      grid_of_success_stories:
+        weight: -51
+        enabled: false
+      image_and_menu:
+        weight: -50
+        enabled: false
+      image_and_text_slider:
+        weight: -49
+        enabled: false
+      image_text_slider_item:
+        weight: -48
+        enabled: false
+      image_grid_slider:
+        weight: -47
+        enabled: false
+      map:
+        weight: -46
+        enabled: false
+      people_grid:
+        weight: -45
+        enabled: false
+      people_grid_item:
+        weight: -44
+        enabled: false
+      people_grid_item_external:
+        weight: -43
+        enabled: false
+      salesforce_form:
+        weight: -42
+        enabled: false
+      social_icon_link:
+        weight: -41
+        enabled: false
+      social_icon_links:
+        weight: -40
+        enabled: false
+      solutions_product:
+        weight: -39
+        enabled: false
+      tab:
+        weight: -38
+        enabled: false
+      tabs:
+        weight: -37
+        enabled: false
+      taggbox_social_feed:
+        weight: -36
+        enabled: false
+      webform:
+        weight: -35
+        enabled: false
+field_type: entity_reference_revisions

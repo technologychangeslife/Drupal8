@@ -1,0 +1,48 @@
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ */
+#}
+{%
+  set classes = [
+    'basic-animation', 'paragraph', 'paragraph--view-mode--default',
+    'block',
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+  ]
+%}
+<div class="field__item related-posts">
+  <span class="inview-marker"></span>
+  <div{{ attributes.addClass(classes) }}>
+    {{ title_prefix }}
+    {% if label %}
+      <h2{{ title_attributes }}>{{ label }}</h2>
+    {% endif %}
+    {{ title_suffix }}
+    {% block content %}
+      {{ content }}
+    {% endblock %}
+  </div>
+</div>
+
+<!--
+
+
+      <span class="inview-marker"></span>
+        <div class="basic-animation paragraph paragraph--type--callouts paragraph--view-mode--default">
+          <a name="learn-more--id-22591" id="learn-more--id-22591" class="paragraph__anchor"></a>
+              <h2 class="paragraph-title"><div class="field field--name-field-title field--type-string field--label-hidden contains-1 field__items">
+      <div class="field__item">
+      <div class="field__item__inner">
+        Learn More
+      </div>
+    </div>
+  </div>
+</h2>
+    <div class="grid">
+    <div class="field field--name-field-callout field--type-text-long field--label-hidden contains-3 field__items">
+
+
+
+-->

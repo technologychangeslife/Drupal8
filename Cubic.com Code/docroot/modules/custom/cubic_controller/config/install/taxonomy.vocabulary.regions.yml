@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+name: Regions
+vid: regions
+description: 'Use regions to group content into global locales.'
+weight: 0

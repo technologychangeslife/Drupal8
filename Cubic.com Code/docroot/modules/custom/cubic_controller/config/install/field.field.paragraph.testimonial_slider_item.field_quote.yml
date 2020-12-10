@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_quote
+    - paragraphs.paragraphs_type.testimonial_slider_item
+  module:
+    - text
+id: paragraph.testimonial_slider_item.field_quote
+field_name: field_quote
+entity_type: paragraph
+bundle: testimonial_slider_item
+label: Quote
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

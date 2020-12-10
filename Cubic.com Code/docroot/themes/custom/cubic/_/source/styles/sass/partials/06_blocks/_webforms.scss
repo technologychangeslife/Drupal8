@@ -1,0 +1,146 @@
+.block-webform {
+  background-color: $cubic-teal;
+  color: $white;
+  padding: 2em;
+  text-align: center;
+
+  .webform-submission-form {
+    @include grid-layout(1, '.form-item', $grid-column-gutter);
+    @include clear-floats;
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 670px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0;
+    @include breakpoint(medium) {
+      @include grid-layout(2, '.form-item', $grid-column-gutter);
+    }
+
+    p,
+    .form-item {
+      color: $white;
+      font-size: 0.93rem;
+    }
+
+    a {
+      color: $white;
+      text-decoration: underline;
+
+      &:hover {
+        color: $white;
+      }
+    }
+
+    .form-item {
+      margin: 1em 0;
+      text-align: left;
+
+      label {
+        .region-above-footer & {
+          display: none;
+        }
+      }
+
+      input,
+      select,
+      textarea {
+        color: $white;
+        border: none;
+        border-bottom: 1px solid $white;
+
+        @include placeholder {
+          color: $white;
+        }
+      }
+
+      select {
+        background-image: url('../img/icon_arrow-dropdown-white.svg');
+      }
+
+      &.form-type-processed-text {
+        clear: both;
+        width: 100%;
+      }
+
+      &.form-type-textarea {
+        clear: left;
+        width: 100%;
+      }
+
+      &.form-type-checkbox {
+        input,
+        label {
+          display: inline-block;
+          width: auto;
+        }
+      }
+    }
+
+    .form-actions,
+    .webform-actions {
+      @include grid-column-gutter;
+      clear: both;
+      margin-top: 0;
+      padding-top: 2em;
+      text-align: left;
+      width: 100%;
+    }
+
+    .form-submit {
+      background: $white;
+      border: 1px solid transparent;
+      border-radius: 3px;
+      color: $black;
+
+      &:hover,
+      &:focus {
+        background: inherit;
+        border: 1px solid $white;
+        color: $white;
+      }
+    }
+  }
+
+  .webform-confirmation {
+    a {
+      &.cta {
+        @extend %link-w-arrow;
+        background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8.6909 14.5542"><polygon fill="#{$white}" points="1.414 14.554 0 13.14 5.863 7.277 0 1.414 1.414 0 8.691 7.277 1.414 14.554"/></svg>');
+        color: $white;
+        font-size: 1rem;
+        text-decoration: none;
+        font-family: $font-bold;
+
+        &::before {
+          background-color: $white;
+        }
+
+        &:hover {
+          text-decoration: none;
+          color: $cubic-teal;
+        }
+      }
+    }
+  }
+
+  .messages {
+    text-align: left;
+    width: 100%;
+  }
+}
+
+@include breakpoint(large) {
+  .block-webform {
+    .webform-submission-form {
+      .form-type-processed-text {
+        p {
+          &:first-child {
+            margin-left: -4em;
+            margin-right: -4em;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,26 @@
+.view-id-acquia_search {
+  > .view-content {
+    > .views-row {
+      > article {
+        .field--name-created {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .view-empty {
+    padding-left: map-get($paragraph-padding, small);
+    padding-right: map-get($paragraph-padding, small);
+
+    @include breakpoint(medium) {
+      padding-left: map-get($paragraph-padding, medium);
+      padding-right: map-get($paragraph-padding, medium);
+    }
+
+    @include breakpoint(large) {
+      padding-left: map-get($paragraph-padding, large);
+      padding-right: map-get($paragraph-padding, large);
+    }
+  }
+}

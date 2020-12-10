@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.annual_reports_slider.field_body
+    - field.field.paragraph.annual_reports_slider.field_report_category
+    - field.field.paragraph.annual_reports_slider.field_title
+    - paragraphs.paragraphs_type.annual_reports_slider
+  module:
+    - text
+id: paragraph.annual_reports_slider.default
+targetEntityType: paragraph
+bundle: annual_reports_slider
+mode: default
+content:
+  field_body:
+    weight: 7
+    settings:
+      rows: 9
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_report_category:
+    weight: 8
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_title:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

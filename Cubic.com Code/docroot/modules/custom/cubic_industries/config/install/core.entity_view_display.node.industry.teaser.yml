@@ -1,0 +1,47 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.industry.body
+    - field.field.node.industry.field_business
+    - field.field.node.industry.field_contain_header_image
+    - field.field.node.industry.field_hero_image
+    - field.field.node.industry.field_metadata
+    - field.field.node.industry.field_paragraphs
+    - node.type.industry
+  module:
+    - smart_trim
+    - user
+id: node.industry.teaser
+targetEntityType: node
+bundle: industry
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: smart_trim
+    weight: 0
+    settings:
+      trim_length: 250
+      trim_type: chars
+      trim_suffix: ''
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: trim
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+    third_party_settings: {  }
+    region: content
+hidden:
+  field_business: true
+  field_contain_header_image: true
+  field_hero_image: true
+  field_metadata: true
+  field_paragraphs: true
+  links: true
+  workbench_moderation_control: true

@@ -1,0 +1,188 @@
+#menus {
+  // search is available as an exposed filter block
+  // sass-lint:disable force-element-nesting
+  .views-exposed-form.block {
+    position: absolute;
+    left: 0;
+    display: none;
+    top: 100%;
+    height: map-get($menu-size, small);
+    width: 100%;
+    text-align: center;
+    background: $cubic-blue;
+    color: $white;
+    opacity: 0;
+    transition: opacity $transition-time;
+
+    @include breakpoint(small down) {
+      box-shadow: 0 rem-calc(3) rem-calc(5) $drop-shadow;
+      z-index: 100;
+    }
+    @include breakpoint(large) {
+      font-size: rem-calc(20);
+      height: map-get($menu-size, large);
+      left: auto;
+      right: rem-calc(-5);
+      width: calc(75% - #{map-get($grid-column-gutter, medium)});
+      z-index: 10;
+
+      &::before {
+        background: $cubic-blue;
+        content: '';
+        display: block;
+        height: 100%;
+        position: absolute;
+        right: 0;
+        top: -100%;
+        width: rem-calc(60);
+      }
+    }
+
+    &.open {
+      display: block;
+      opacity: 1;
+    }
+
+    form {
+      height: 100%;
+    }
+
+    .form--inline {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      padding: 0 rem-calc(20);
+
+      @include breakpoint(large) {
+        align-items: stretch;
+        padding: 0;
+      }
+
+      .form-item {
+        display: flex;
+        flex: 1 0 auto;
+
+        @include breakpoint(large) {
+          padding: rem-calc(10) 0 rem-calc(10) rem-calc(25);
+        }
+      }
+    }
+
+    label {
+      visibility: hidden;
+      display: inline-block;
+      max-width: 1px;
+    }
+
+    .form-item,
+    .form-actions,
+    input {
+      margin: 0;
+    }
+
+    .form-text {
+      background: transparent;
+      border: 1px solid transparent;
+      border-left-color: $white;
+      flex: 1 0 auto;
+      padding: 0.2em 0.5em;
+      width: 12em;
+
+      &:focus {
+        border-left-color: transparent;
+      }
+    }
+
+    .form-submit {
+      position: relative;
+      background: $cubic-blue url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 8.6909 14.5542"><polygon points="1.414 14.554 0 13.14 5.863 7.277 0 1.414 1.414 0 8.691 7.277 1.414 14.554" fill="#ffffff" /></svg>') no-repeat right center;
+      border-color: $cubic-blue;
+      text-align: left;
+      padding: 0.5em 1.25em 0.5em 0.5em;
+      background-size: 8px;
+
+      &:hover,
+      &:focus {
+        color: $white;
+      }
+
+      @include breakpoint(large) {
+        background: transparent url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26.2038 26.2038"><path fill="none" d="M9.7329,2.9947A6.7381,6.7381,0,1,0,16.471,9.7328,6.71,6.71,0,0,0,9.7329,2.9947Z"/><path fill="#ffffff" d="M18.717,16.471H17.5191l-.4491-.4492a9.3722,9.3722,0,0,0,2.3958-6.2889,9.7329,9.7329,0,1,0-9.7329,9.7329A9.3723,9.3723,0,0,0,16.0218,17.07l.4492.4492V18.717l7.4868,7.4869,2.246-2.2461Zm-8.9842,0A6.7381,6.7381,0,1,1,16.471,9.7328,6.71,6.71,0,0,1,9.7329,16.471Z"/></svg>') no-repeat center;
+        background-size: 30px auto;
+        border: 0 solid transparentize($white, 0.85);
+        border-left-width: 1px;
+        border-radius: 0;
+        height: 100%;
+        padding: 0;
+        text-indent: -100vw;
+        width: rem-calc(80);
+      }
+    }
+  }
+
+  .search-toggle {
+    align-content: center;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    position: relative;
+    z-index: 11;
+
+    @include breakpoint(large) {
+      border-left: 1px solid $text-color;
+      margin-left: rem-calc(10);
+      padding-left: rem-calc(40);
+
+      &:hover {
+        svg {
+          transform: scale(1.1);
+        }
+      }
+
+      // sass-lint:disable force-pseudo-nesting
+      .path-frontpage:not(.menu-fixed):not(.user-logged-in) & {
+        border-left-color: transparentize($white, 0.85);
+      }
+      // sass-lint:enable force-pseudo-nesting
+    }
+
+    svg {
+      display: inline-block;
+      fill: $cubic-blue;
+      height: rem-calc(25);
+      transition: all $transition-time;
+      width: rem-calc(25);
+
+      @include breakpoint(large) {
+        height: rem-calc(19);
+        width: rem-calc(19);
+
+        // sass-lint:disable force-pseudo-nesting
+        .path-frontpage:not(.menu-fixed):not(.user-logged-in) & {
+          fill: $white;
+        }
+        // sass-lint:enable force-pseudo-nesting
+      }
+    }
+
+    .close {
+      display: none;
+    }
+
+    &.open {
+      @include breakpoint(large) {
+        svg {
+          fill: $white;
+        }
+      }
+
+      .glass {
+        display: none;
+      }
+
+      .close {
+        display: inline-block;
+      }
+    }
+  }
+}

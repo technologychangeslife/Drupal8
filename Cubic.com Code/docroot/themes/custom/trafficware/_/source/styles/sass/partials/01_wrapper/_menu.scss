@@ -1,0 +1,451 @@
+// sass-lint:disable nesting-depth
+.page-wrapper {
+  @include anonymous {
+    padding-top: map-get($menu-size, small);
+  }
+
+  @include breakpoint(large) {
+    @include anonymous {
+      padding-top: map-get($menu-size, large);
+    }
+
+    // sass-lint:disable force-element-nesting no-qualifying-elements
+    body.path-frontpage & {
+      padding-top: 0;
+    }
+  }
+}
+
+#menus {
+  background-color: $white;
+  transition: background-color $transition-time;
+  width: 100%;
+
+  @include anonymous {
+    left: 0;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+  }
+
+  &::before {
+    background: linear-gradient(to bottom, transparentize($black, 0.75) 0%, transparent 100%);
+    content: '';
+    display: block;
+    height: rem-calc(4);
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    top: 100%;
+    transition: opacity $transition-time;
+    width: 100%;
+    z-index: -1;
+
+    .menu-fixed & {
+      opacity: 1;
+    }
+  }
+
+  .region-menus-wrapper {
+    @include flex-grid-row(null, expand);
+    @include grid-column-gutter;
+    align-items: center;
+    height: map-get($menu-size, small);
+    justify-content: center;
+    position: relative;
+
+    @include breakpoint(large) {
+      height: map-get($menu-size, large);
+      justify-content: space-between;
+      margin: 0 rem-calc(45);
+    }
+  }
+
+  .hamburger {
+    @include breakpoint(large) {
+      display: none;
+    }
+  }
+
+  .site-branding {
+    @include breakpoint(medium down) {
+      flex: 1 0 auto;
+    }
+  }
+
+  .menu-container {
+    .top-view-link {
+      display: none;
+    }
+
+    ul {
+      list-style: none;
+      list-style-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=');
+      margin: 0;
+    }
+  }
+
+  @include breakpoint(medium down) {
+    .menu--main {
+      display: none;
+
+      &.open {
+        background-color: $white;
+        display: block;
+        left: 0;
+        height: calc(100vh - #{map-get($menu-size, small)});
+        overflow-y: scroll;
+        position: fixed;
+        top: map-get($menu-size, small);
+        width: 100%;
+        z-index: 100;
+
+        .user-logged-in.toolbar-vertical.toolbar-fixed & {
+          height: calc(100vh - #{map-get($menu-size, small)} - 39px);
+          top: calc(#{map-get($menu-size, small)} + 39px);
+        }
+      }
+    }
+
+    .menu-container {
+      display: flex;
+      flex-flow: nowrap column;
+      min-height: 100%;
+
+      &::after {
+        @include cubic-mark-bg(transparentize($text-color, 0.85));
+        background-position: -60px calc(100% + 70px);
+        background-repeat: no-repeat;
+        background-size: 260px;
+        content: '';
+        display: block;
+        height: 190px;
+        margin-top: auto;
+        width: 100%;
+      }
+
+      > ul {
+        padding: rem-calc(12) rem-calc(16);
+
+        > li {
+          // Top.
+          padding: 0 rem-calc(8);
+
+          a,
+          span {
+            cursor: pointer;
+            display: block;
+          }
+
+          > a,
+          > span {
+            color: $black;
+            font-size: rem-calc(18);
+            padding: rem-calc(12) 0;
+            position: relative;
+          }
+
+          &.menu-item--expanded {
+            > a,
+            > span {
+              &::after {
+                background: url('/themes/custom/cubic/_/img/icon_arrow-dropdown.svg') no-repeat;
+                background-size: contain;
+                content: '';
+                height: 8px;
+                position: absolute;
+                right: 0;
+                top: calc(50%);
+                transform: translate(-50%, -50%) rotate(-90deg);
+                transition: transform ($transition-time / 2);
+                width: 12px;
+              }
+            }
+          }
+
+          > ul {
+            display: none;
+            padding: 0 rem-calc(8);
+
+            &::after {
+              background-color: $cubic-blue;
+              content: ' ';
+              display: block;
+              height: 3px;
+              margin: 1em 0 1em rem-calc(-8);
+              width: 48px;
+            }
+
+            .top-view-link {
+              background-color: $cubic-blue;
+              color: $white;
+              display: block;
+              font-family: $font-bold;
+              font-size: rem-calc(12);
+              margin: 0 rem-calc(-36) rem-calc(20);
+              padding: rem-calc(10) rem-calc(36);
+              text-transform: uppercase;
+            }
+
+            > li {
+              // Second level.
+              margin-bottom: rem-calc(20);
+
+              &:first-of-type {
+                margin-top: rem-calc(10);
+              }
+
+              > a {
+                color: $color-menu-link;
+                font-family: $font-bold;
+              }
+
+              > ul {
+                margin-top: rem-calc(5);
+
+                a {
+                  color: $text-color;
+                }
+              }
+            }
+          }
+
+          &.open {
+            > a {
+              &::after {
+                transform: translate(-50%, -50%) rotate(0);
+              }
+            }
+
+            > ul {
+              display: block;
+            }
+          }
+        }
+      }
+    }
+
+    @at-root body.menu-open {
+      overflow: hidden;
+
+      .page-wrapper {
+        max-height: 100vh;
+        overflow: hidden;
+      }
+    }
+  }
+
+  @include breakpoint(large) {
+    .menu--main {
+      align-self: flex-end;
+      margin-left: auto;
+      position: static;
+      z-index: 11;
+    }
+
+    .menu-container {
+      font-size: #{((18/$max-row-width)*100)}vw;
+
+      > ul {
+        align-items: stretch;
+        display: flex;
+
+        > li {
+          // Top.
+          white-space: nowrap;
+
+          a {
+            color: $color-menu-link;
+          }
+
+          > a {
+            display: block;
+            height: map-get($menu-size, large);
+            line-height: map-get($menu-size, large);
+            padding: 0 #{((20/$max-row-width)*100)}vw;
+            position: relative;
+
+            &::before {
+              background-color: transparentize($white, 0.75);
+              bottom: 0;
+              content: '';
+              display: block;
+              height: 0;
+              left: 0;
+              opacity: 0;
+              position: absolute;
+              transition: all ($transition-time / 2);
+              width: 100%;
+              z-index: -1;
+            }
+          }
+
+          > ul {
+            // Dropdown.
+            background-color: $white;
+            box-shadow: 0 2px 6px transparentize($black, 0.7);
+            display: none;
+            flex-wrap: wrap;
+            left: calc(25% + 20px);
+            margin: 0 #{(map-get($grid-column-gutter, medium)) / 2};
+            padding: rem-calc(30) 0;
+            position: absolute;
+            top: 100%;
+            width: calc(75% - #{map-get($grid-column-gutter, medium)});
+            z-index: 1;
+
+            > li {
+              // Second level.
+              border-right: 1px solid $color-border;
+              padding-bottom: rem-calc(5);
+              padding-left: rem-calc(10);
+              width: 33.333%;
+
+              &:nth-of-type(3n) {
+                border-right: none;
+              }
+
+              a {
+                display: block;
+                padding: rem-calc(2) rem-calc(10);
+                transition: all $transition-time;
+
+                &:hover {
+                  background-color: $text-color;
+                  color: $white;
+                }
+              }
+
+              > a {
+                font-family: $font-bold;
+                margin-bottom: rem-calc(5);
+              }
+
+              > ul {
+                > li {
+                  // Third level.
+                  a {
+                    color: $text-color;
+                    font-family: $font-main;
+                    font-size: #{((16/$max-row-width)*100)}vw;
+                  }
+                }
+              }
+            }
+          }
+
+          &.menu-item--children-1 {
+            > ul {
+              width: calc(25% - #{map-get($grid-column-gutter, medium)});
+
+              > li {
+                border-right: 1px solid $color-border;
+                width: 100%;
+
+                &:nth-of-type(1n) {
+                  border-right: none;
+                }
+              }
+            }
+          }
+
+          &.menu-item--children-2 {
+            > ul {
+              width: calc(50% - #{map-get($grid-column-gutter, medium)});
+
+              > li {
+                border-right: 1px solid $color-border;
+                width: 50%;
+
+                &:nth-of-type(2n) {
+                  border-right: none;
+                }
+              }
+            }
+          }
+
+          &:hover {
+            > a {
+              box-shadow: inset 0 -6px 0 0 $cubic-blue;
+
+              &::before {
+                height: calc(100% - 6px);
+                opacity: 1;
+              }
+            }
+
+            &.menu-item--expanded {
+              > a {
+                &::after {
+                  background-color: $cubic-blue;
+                  content: '';
+                  display: block;
+                  height: rem-calc(8.48);
+                  left: 50%;
+                  position: absolute;
+                  top: 100%;
+                  transform: translate(-50%, -50%) rotate(-45deg);
+                  width: rem-calc(8.48);
+                  z-index: 2;
+                }
+              }
+            }
+
+            > ul {
+              display: flex;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include breakpoint($global-width) {
+    .menu-container {
+      font-size: rem-calc(18);
+
+      > ul {
+        > li {
+          > a {
+            padding: 0 rem-calc(20);
+          }
+
+          > ul {
+            > li {
+              > ul {
+                > li {
+                  a {
+                    font-size: rem-calc(16);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .views-exposed-form {
+    display: none;
+  }
+
+  @include breakpoint(large) {
+    // sass-lint:disable force-pseudo-nesting
+    .path-frontpage:not(.menu-fixed):not(.user-logged-in) & {
+      background-color: transparent;
+
+      .menu-container {
+        > ul {
+          > li {
+            > a {
+              color: $white;
+            }
+          }
+        }
+      }
+    }
+    // sass-lint:enable force-pseudo-nesting
+  }
+}

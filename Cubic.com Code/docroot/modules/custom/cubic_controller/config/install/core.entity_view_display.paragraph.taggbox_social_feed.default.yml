@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.taggbox_social_feed.field_social_embed_code
+    - field.field.paragraph.taggbox_social_feed.field_title
+    - paragraphs.paragraphs_type.taggbox_social_feed
+id: paragraph.taggbox_social_feed.default
+targetEntityType: paragraph
+bundle: taggbox_social_feed
+mode: default
+content:
+  field_social_embed_code:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

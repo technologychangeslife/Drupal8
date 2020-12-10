@@ -1,0 +1,105 @@
+{#
+/**
+ * @file
+ * Theme override to display a node.
+ */
+#}
+{%
+  set classes = [
+  'node',
+  'node--full--with-sidebar',
+  'node--full--post-with-sidebar',
+  'node--type-' ~ node.bundle|clean_class,
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+]
+%}
+{{ attach_library('classy/node') }}
+<article{{ attributes.addClass(classes) }}>
+
+  {{ title_prefix }}
+  {{ title_suffix }}
+
+  {% if display_submitted %}
+    <footer class="node__meta">
+      {{ author_picture }}
+      <div{{ author_attributes.addClass('node__submitted') }}>
+        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+        {{ metadata }}
+      </div>
+    </footer>
+  {% endif %}
+
+  <div{{ content_attributes.addClass('node__content') }}>
+
+
+
+    {% if content.field_main_column|render|striptags|trim is not empty or content.field_contained_paragraphs|render|striptags|trim is not empty or content.field_paragraphs|render|striptags|trim is not empty %}
+
+
+      <div class="main-columns">
+
+
+        {{ content.field_aside_paragraphs }}
+
+
+        {% if content.field_main_column or content.field_contained_paragraphs or content.field_paragraphs %}
+          <div class="main-column">
+
+            {{ content.field_main_column }}
+
+            {{ content.field_paragraphs }}
+
+            {{ content.field_contained_paragraphs }}
+
+
+
+            <div class="field field--name-field-paragraphs field--type-entity-reference-revisions field--label-hidden field__items post-main-social-wrapper">
+              <div class="field__item">
+                <span class="inview-marker"></span>
+                <div class="basic-animation paragraph paragraph--type--basic-text paragraph--view-mode--default">
+                  <div class="clearfix text-formatted field field--name-field-body field--type-text-long field--label-hidden field__item"><p class="text-align-center">&nbsp;</p>
+
+                    <div class="cubic-social-addthis clearfix">
+                      {% if twitter_only %}
+                        {# Twitter Only List #}
+                        <div class="addthis_inline_share_toolbox_2vb5"></div>
+                      {% else %}
+                        {# Full List #}
+                        <div class="addthis_inline_share_toolbox"></div>
+                      {% endif %}
+                      <hr>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Here it should go the Bio of the People Grid entity.. -->
+            {% if bio %}
+              <div class="field field--name-field-paragraphs field--type-entity-reference-revisions field--label-hidden field__items">
+                <div class="field__item">
+                  <span class="inview-marker"></span>
+                  <div class="basic-animation bio-wrapper paragraph paragraph--type--basic-text paragraph--view-mode--default">
+                    <div class="clearfix text-formatted field field--name-field-body field--type-text-long field--label-hidden field__item"><p class="text-align-center">&nbsp;</p>
+                      {{ bio.content }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            {% endif %}
+
+
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {{ content.field_lower_paragraphs }}
+  </div>
+
+</article>

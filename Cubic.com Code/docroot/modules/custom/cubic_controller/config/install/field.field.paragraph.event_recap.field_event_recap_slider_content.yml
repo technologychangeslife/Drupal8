@@ -1,0 +1,114 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_event_recap_slider_content
+    - paragraphs.paragraphs_type.event_recap
+    - paragraphs.paragraphs_type.event_recap_slider_item
+  module:
+    - entity_reference_revisions
+id: paragraph.event_recap.field_event_recap_slider_content
+field_name: field_event_recap_slider_content
+entity_type: paragraph
+bundle: event_recap
+label: 'Event Recap Slider Content'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      event_recap_slider_item: event_recap_slider_item
+    target_bundles_drag_drop:
+      event_recap_slider_item:
+        enabled: true
+        weight: 30
+      '50_50':
+        weight: 31
+        enabled: false
+      accordion:
+        weight: 32
+        enabled: false
+      accordions:
+        weight: 33
+        enabled: false
+      annual_reports_slider:
+        weight: 34
+        enabled: false
+      basic_image:
+        weight: 35
+        enabled: false
+      basic_text:
+        weight: 36
+        enabled: false
+      callouts:
+        weight: 37
+        enabled: false
+      cross_link:
+        weight: 38
+        enabled: false
+      cross_links:
+        weight: 39
+        enabled: false
+      divider_bar:
+        weight: 40
+        enabled: false
+      event_recap:
+        weight: 41
+        enabled: false
+      event_schedule:
+        weight: 42
+        enabled: false
+      event_schedule_item:
+        weight: 43
+        enabled: false
+      grid_of_products:
+        weight: 44
+        enabled: false
+      grid_of_success_stories:
+        weight: 45
+        enabled: false
+      image_and_menu:
+        weight: 46
+        enabled: false
+      image_and_text_slider:
+        weight: 47
+        enabled: false
+      image_grid_slider:
+        weight: 48
+        enabled: false
+      image_text_slider_item:
+        weight: 49
+        enabled: false
+      people_grid:
+        weight: 50
+        enabled: false
+      people_grid_item:
+        weight: 51
+        enabled: false
+      people_grid_item_external:
+        weight: 52
+        enabled: false
+      social_icon_link:
+        weight: 53
+        enabled: false
+      social_icon_links:
+        weight: 54
+        enabled: false
+      solutions_product:
+        weight: 55
+        enabled: false
+      tab:
+        weight: 56
+        enabled: false
+      tabs:
+        weight: 57
+        enabled: false
+      webform:
+        weight: 58
+        enabled: false
+field_type: entity_reference_revisions

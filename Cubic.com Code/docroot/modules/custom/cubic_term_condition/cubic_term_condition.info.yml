@@ -1,0 +1,19 @@
+name: 'Terms / Conditions'
+description: 'Provides Term / Condition content type and related configuration. Terms, conditions and other documents relevant to Cubic’s suppliers'
+type: module
+core: 8.x
+dependencies:
+  - cubic_controller
+  - field
+  - file
+  - menu_ui
+  - node
+  - path
+  - scheduler
+  - taxonomy
+  - text
+  - user
+  - views
+  - workbench_moderation
+package: Cubic
+version: 8.x-1.0

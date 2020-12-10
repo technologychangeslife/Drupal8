@@ -1,0 +1,21 @@
+{%
+  set classes = [
+    'field',
+    'field--name-' ~ field_name|clean_class,
+    'field--type-' ~ field_type|clean_class,
+    'field--label-' ~ label_display,
+  ]
+%}
+{%
+  set title_classes = [
+    'field__label',
+    label_display == 'visually_hidden' ? 'visually-hidden',
+    ]
+%}
+<div class="image-gallery {% if is_multiple %}is-slider{% else %}not-slider{% endif %}">
+  <div class="image-slider">
+    {% for item in items %}
+      {{ item.content }}
+    {% endfor %}
+  </div>
+</div>

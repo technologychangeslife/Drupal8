@@ -1,0 +1,37 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.milestone_slider.field_milestone_slider_item
+    - field.field.paragraph.milestone_slider.field_milestone_year
+    - paragraphs.paragraphs_type.milestone_slider
+  module:
+    - paragraphs
+id: paragraph.milestone_slider.default
+targetEntityType: paragraph
+bundle: milestone_slider
+mode: default
+content:
+  field_milestone_slider_item:
+    type: entity_reference_paragraphs
+    weight: 1
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  field_milestone_year:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true

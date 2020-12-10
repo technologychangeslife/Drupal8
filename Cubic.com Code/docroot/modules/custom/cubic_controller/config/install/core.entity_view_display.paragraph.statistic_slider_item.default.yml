@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.statistic_slider_item.field_label
+    - field.field.paragraph.statistic_slider_item.field_stat
+    - paragraphs.paragraphs_type.statistic_slider_item
+id: paragraph.statistic_slider_item.default
+targetEntityType: paragraph
+bundle: statistic_slider_item
+mode: default
+content:
+  field_label:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_stat:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  search_api_excerpt: true

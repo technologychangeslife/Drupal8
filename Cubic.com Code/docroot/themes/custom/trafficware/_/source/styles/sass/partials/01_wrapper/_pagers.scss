@@ -1,0 +1,33 @@
+.region-content {
+  .pager {
+    .pager__items {
+      background-image: none;
+      list-style: none;
+
+      @include breakpoint(small only) {
+        font-size: rem-calc(12);
+      }
+
+      .pager__item {
+        list-style: none;
+        padding: 0.5em;
+
+        &::before {
+          content: none;
+        }
+
+        a {
+          font-family: $font-main;
+          font-weight: normal;
+        }
+
+        &.is-active {
+          a {
+            color: $cubic-teal;
+            font-family: $font-bold;
+          }
+        }
+      }
+    }
+  }
+}

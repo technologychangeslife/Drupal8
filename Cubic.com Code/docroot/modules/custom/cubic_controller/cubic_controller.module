@@ -1,0 +1,209 @@
+<?php
+
+/**
+ * @file
+ * Custom code for Cubic controller.
+ *
+ * TODO: Set content type filter on attachment view to that of attached display.
+ */
+
+use Drupal\Core\Database\Database;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\views\Plugin\views\query\QueryPluginBase;
+use Drupal\views\ViewExecutable;
+use Drupal\Core\Entity\ContentEntityInterface;
+
+/**
+ * Implements hook_preprocess_views_view_table().
+ */
+function cubic_controller_preprocess_views_view_table(&$vars) {
+  $view = $vars['view'];
+  if ($view->id() == 'image_browser' && $view->current_display === 'entity_browser_1') {
+    foreach ($vars['rows'] as $key => $row) {
+      $thumbnail = [
+        '#theme' => 'image_style',
+        '#style_name' => 'thumbnail',
+        '#uri' => $view->result[$key]->_entity->get('uri')->value,
+      ];
+
+      $vars['rows'][$key]['columns']['nothing']['content'][0]['field_output'] = $thumbnail;
+    }
+  }
+}
+
+/**
+ * Implements hook_views_post_render().
+ */
+function cubic_controller_views_post_render(ViewExecutable $view) {
+  if ($view->id() == 'standard_documentation') {
+    // Use the term name for view title instead of the term tid.
+    $tid = trim($view->getTitle());
+    if (is_numeric($tid)) {
+      $term = Term::load($tid);
+      $title = $term->getName();
+      if (isset($title)) {
+        // Set the view title.
+        $view->setTitle($title);
+        // Set the route title.
+        $route = \Drupal::routeMatch()->getCurrentRouteMatch()->getRouteObject();
+        $route->setDefault('_title', $title);
+      }
+    }
+  }
+
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function cubic_controller_taxonomy_term_insert(EntityInterface $entity) {
+  if ($entity->getVocabularyId() == 'suppliers') {
+    _cubic_controller_update_aliases('standard_documentation', $entity->getVocabularyId());
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_update().
+ */
+function cubic_controller_taxonomy_term_update(EntityInterface $entity) {
+  if ($entity->getVocabularyId() == 'suppliers') {
+    _cubic_controller_update_aliases('standard_documentation', $entity->getVocabularyId());
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function cubic_controller_taxonomy_term_delete(EntityInterface $entity) {
+  if ($entity->getVocabularyId() == 'suppliers') {
+    _cubic_controller_update_aliases('standard_documentation', $entity->getVocabularyId());
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function cubic_controller_views_query_alter(ViewExecutable $view, QueryPluginBase $query) {
+  $parent_display = &drupal_static(__FUNCTION__);
+
+  if ($view->id() == 'list') {
+    $attached = $view->display_handler->getAttachedDisplays();
+
+    // Attached views don't have a way of accessing their parent displays
+    // directly, but the parent view is processed first, so we track it in a
+    // static variable that we can load afterward.
+    if (!empty($attached)) {
+      $parent_display = $view->current_display;
+    }
+
+    if ($view->current_display == 'featured') {
+      $parent_handler = $view->displayHandlers->get($parent_display);
+      // TODO - should we drupal_reset_static(__FUNCTION__) here?
+
+      // Attachments can't inherit non-exposed filters/arguments,
+      // so retrieve the node type filter from the parent view now.
+      $type_filter = $parent_handler->getOption('filters')['type'];
+      if (!empty($type_filter)) {
+        $query->where[1]['conditions'][] = [
+          'field' => $type_filter['table'] . '.' . $type_filter['field'],
+          'operator' => '=',
+          'value' => $type_filter['value'],
+        ];
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cubic_controller_theme($existing, $type, $theme, $path) {
+  return [
+    // Themes Globe block.
+    'cubic_globe_block' => [
+      'variables' => [
+        'body' => NULL,
+        'path' => NULL,
+      ],
+    ],
+  ];
+
+}
+
+/**
+ * Handle path aliases needed that cannot be managed using pathauto.
+ */
+function _cubic_controller_update_aliases($type, $vid) {
+  switch ($type) {
+    case 'standard_documentation':
+      // Load all terms in the suppliers vocab.
+      $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vid);
+      foreach ($terms as $term) {
+        $system_path = '/suppliers/' . $term->tid;
+        // Delete all the aliases.
+        $path_alias = \Drupal::service('path.alias_manager')->getAliasByPath($system_path, 'en');
+        // Get the pid.
+        $query = 'SELECT pid FROM {url_alias} ua WHERE ua.alias = :alias AND ua.langcode = :langcode';
+        $args = [':alias' => $path_alias, ':langcode' => 'en'];
+        $pid = Database::getConnection()->query($query, $args)->fetchField();
+        if ($pid) {
+          $path = \Drupal::service('path.alias_storage')->delete(['pid' => $pid]);
+        }
+        // Create all the aliases. Check for commas; Typically the name of the
+        // city will be separated from the country or state with a comma.
+        if (strpos($term->name, ',')) {
+          $name_parts = explode(',', $term->name);
+          $name = $name_parts[0];
+        }
+        else {
+          $name = $term->name;
+        }
+        $name_for_path = _cubic_controller_name_path($name);
+        $path = \Drupal::service('path.alias_storage')->save($system_path, '/suppliers/' . $name_for_path, 'en');
+      }
+      break;
+  }
+}
+
+/**
+ * Simple function to format strings for use in paths.
+ */
+function _cubic_controller_name_path($string) {
+  $string = strtolower($string);
+  $string = trim($string);
+  $string = str_replace(' ', '-', $string);
+  $string = preg_replace('/[^a-z0-9-]/', '', $string);
+  return substr($string, 0, 60);
+}
+
+/**
+ * Set dynamic allowed values for the social icons field.
+ *
+ * @param \Drupal\field\Entity\FieldStorageConfig $definition
+ *   The field definition.
+ * @param \Drupal\Core\Entity\ContentEntityInterface|null $entity
+ *   The entity being created if applicable.
+ * @param bool $cacheable
+ *   Boolean indicating if the results are cacheable.
+ *
+ * @return array
+ *   An array of possible key and value options.
+ *
+ * @see options_allowed_values()
+ */
+function cubic_controller_social_icon_values(FieldStorageConfig $definition, ContentEntityInterface $entity = NULL, $cacheable) {
+  $dir = drupal_get_path('theme', 'cubic') . '/_/source/svg';
+  $icons = file_scan_directory($dir, '/^social-/i');
+  $icons = array_column($icons, 'name');
+  sort($icons);
+  $options = [];
+
+  foreach ($icons as $icon) {
+    $icon = str_replace('social-', '', $icon);
+    $options[$icon] = ucfirst($icon);
+  }
+
+  return $options;
+}

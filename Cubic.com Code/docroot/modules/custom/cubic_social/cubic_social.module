@@ -1,0 +1,45 @@
+<?php
+
+/**
+ * @file
+ * Contains cubic_social.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Site\Settings;
+
+/**
+ * Implements hook_help().
+ */
+function cubic_social_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the cubic_nyse_ticker module.
+    case 'help.page.cubic_social':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Custom module that provides support for social media buttons as well as an Addthis implementation.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cubic_social_theme($existing, $type, $theme, $path) {
+  return array(
+    // Themes social buttons
+    'cubic_social_buttons_block' => array(
+      'variables' => array(
+        'items' => NULL,
+      ),
+    ),
+    // Themes AddThis
+    'cubic_social_addthis' => array(
+      'variables' => array(
+        'twitter_only' => NULL,
+      ),
+    ),
+  );
+}

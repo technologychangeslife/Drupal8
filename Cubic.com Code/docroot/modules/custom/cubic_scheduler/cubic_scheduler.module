@@ -1,0 +1,32 @@
+<?php
+
+/**
+ * @file
+ * Contains cubic_scheduler.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function cubic_scheduler_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the cubic_scheduler module.
+    case 'help.page.cubic_scheduler':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Wrapper module for intergration with Scheduler') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * @param $nids
+ * @param $action
+ */
+function cubic_scheduler_scheduler_nid_list_alter(&$nids, $action) {
+  $break = TRUE;
+}

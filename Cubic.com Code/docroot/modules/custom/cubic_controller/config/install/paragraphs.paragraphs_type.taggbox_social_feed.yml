@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: taggbox_social_feed
+label: 'Taggbox Social Feed'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

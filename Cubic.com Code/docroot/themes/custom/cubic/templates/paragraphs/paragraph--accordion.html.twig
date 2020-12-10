@@ -1,0 +1,29 @@
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    'accordion-item',
+  ]
+%}
+
+{% block paragraph %}
+  <div{{ attributes.addClass(classes) }} data-accordion-item>
+    {% block content %}
+      <a name="{{ anchor_id }}" id="{{ anchor_id }}" class="accordion-title">
+        {{ content.field_title }}
+      </a>
+      <div class="accordion-content" data-tab-content>
+        {% if content.field_body|render|striptags|trim is not empty or content.field_downloads|render|striptags|trim is not empty %}
+          <div class="accordion-content__header">
+            {{ content.field_body }}
+            {{ content.field_downloads }}
+          </div>
+        {% endif %}
+        <div class="accordion-content__inner">
+          {{ content|without('field_body', 'field_downloads', 'field_title') }}
+        </div>
+      </div>
+    {% endblock %}
+  </div>
+{% endblock paragraph %}

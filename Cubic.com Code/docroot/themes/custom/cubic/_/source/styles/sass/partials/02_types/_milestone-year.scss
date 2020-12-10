@@ -1,0 +1,56 @@
+// sass-lint:disable force-pseudo-nesting
+// sass-lint:disable nesting-depth
+// sass-lint:disable force-element-nesting
+// sass-lint:disable force-attribute-nesting
+
+.node--type-timeline {
+  > .node__content {
+
+    .decades-top-bar {
+      display: flex;
+      flex-direction: column;
+
+      .decades-top-bar-decade {
+        background: $timeline-decade-blue;
+        padding: 10px 0 0;
+        text-align: center;
+
+        &.active {
+          background: $timeline-milestone-year-blue;
+
+          a {
+            background: $timeline-milestone-year-blue;
+          }
+        }
+
+        a {
+          color: $white;
+          padding: 12px 0;
+          background: $timeline-decade-blue;
+          width: 100%;
+        }
+      }
+
+      @include breakpoint(medium) {
+        justify-content: space-around;
+        flex-direction: row;
+
+        .decades-top-bar-decade {
+          flex: 1 1 auto;
+
+          a {
+            color: $white;
+            padding: 12px 0;
+            background: $timeline-decade-blue;
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    > .field--name-body {
+      display: none;
+    }
+  }
+}
+

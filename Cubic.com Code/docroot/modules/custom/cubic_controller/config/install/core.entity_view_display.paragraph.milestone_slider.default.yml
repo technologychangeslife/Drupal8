@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.milestone_slider.field_milestone_slider_item
+    - field.field.paragraph.milestone_slider.field_milestone_year
+    - paragraphs.paragraphs_type.milestone_slider
+  module:
+    - entity_reference_revisions
+id: paragraph.milestone_slider.default
+targetEntityType: paragraph
+bundle: milestone_slider
+mode: default
+content:
+  field_milestone_slider_item:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_milestone_year:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  search_api_excerpt: true

@@ -1,0 +1,8 @@
+.button {
+  border: 2px solid $button-background;
+
+  &:hover,
+  &:focus {
+    color: $button-background;
+  }
+}

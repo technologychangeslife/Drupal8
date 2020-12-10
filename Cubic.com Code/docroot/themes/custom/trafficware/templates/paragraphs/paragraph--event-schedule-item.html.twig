@@ -1,0 +1,7 @@
+{% extends 'paragraph.html.twig' %}
+{% block content %}
+  <div class="text">
+    {{ content|without('field_time') }}
+  </div>
+  {{ content.field_time }}
+{% endblock %}

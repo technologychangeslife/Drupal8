@@ -1,0 +1,6 @@
+{% extends 'paragraph.html.twig' %}
+{% block content %}
+  <a{{ social_link.attributes }}>
+    <svg class="icon icon--{{ social_link.id }}"><use xlink:href="#icon-{{ social_link.id }}"></use></svg>
+  </a>
+{% endblock content %}

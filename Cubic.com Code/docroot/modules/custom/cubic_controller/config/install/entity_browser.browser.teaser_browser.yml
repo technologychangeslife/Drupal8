@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.teaser_browser
+  module:
+    - views
+name: teaser_browser
+label: 'Teaser Browser'
+display: modal
+display_configuration:
+  width: '1070'
+  height: '840'
+  link_text: 'Select Content'
+  auto_open: false
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  826846dd-b2a2-48d8-9629-2a2767763ff4:
+    settings:
+      view: teaser_browser
+      view_display: entity_browser_1
+      submit_text: 'Select Content'
+      auto_select: false
+    uuid: 826846dd-b2a2-48d8-9629-2a2767763ff4
+    weight: 1
+    label: Select
+    id: view

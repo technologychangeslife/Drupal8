@@ -1,0 +1,11 @@
+name: Cubic Charts
+type: module
+description: Custom module that provides tokens to display interactive charts inline
+core: 8.x
+package: Cubic
+
+dependencies:
+  - token
+  - token_filter
+
+

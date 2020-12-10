@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: hero_compressed
+label: 'Hero Compressed'
+effects:
+  a5b7aad5-9bdd-4317-a2d1-638cbb43b34c:
+    uuid: a5b7aad5-9bdd-4317-a2d1-638cbb43b34c
+    id: image_scale
+    weight: -9
+    data:
+      width: 1600
+      height: null
+      upscale: false

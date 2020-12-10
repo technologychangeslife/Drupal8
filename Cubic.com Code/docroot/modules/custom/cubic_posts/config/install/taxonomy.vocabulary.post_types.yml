@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+name: 'Post Types'
+vid: post_types
+description: 'Use post types to group posts by type.'
+weight: 0

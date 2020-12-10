@@ -1,0 +1,124 @@
+<?php
+
+/**
+ * @file
+ * Contains cubic_workbench_moderation.module..
+ */
+
+use \Drupal\Core\Entity\EntityInterface;
+use \Drupal\Core\Routing\RouteMatchInterface;
+use \Drupal\Core\Site\Settings;
+use \Drupal\user\Entity\Role;
+use \Drupal\user\Entity\User;
+
+/**
+ * Implements hook_help().
+ */
+function cubic_workbench_moderation_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the cubic_workbench_moderation module.
+    case 'help.page.cubic_workbench_moderation':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Wrapper module for integration with Workbench Moderation') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_mail().
+ */
+function cubic_workbench_moderation_mail($key, &$message, $params) {
+  switch ($key) {
+    case 'cubic_workbench_moderation_notify_content_administrators':
+      $message['from'] = \Drupal::config('system.site')->get('mail');
+      $message['subject'] = t('Content is available for review: @label', array('@label' => $params['entity']->label()));
+
+      $text = "Please review the following published content for changes:\r\n" . $params['entity']->toUrl('edit-form')->setAbsolute()->toString();
+
+      $message['body'][] = $text;
+
+      \Drupal::logger('cubic_workbench_moderation')->notice('Notify content administrators called for entity id: ' . $params['entity']->id() . ', ' . $params['entity']->label());
+      break;
+  }
+}
+
+/**
+ * Implements hook_entity_insert().
+ */
+function cubic_workbench_moderation_entity_insert(EntityInterface $entity) {
+  // If this is a new entity and it is state 1; i.e. published and this entity
+  // type is governed by moderation, then we are bypasss the workbench
+  // moderation workflow and going immediately to published.
+  // In that case, we need to notify our admin mailer directly.
+  if (isset($entity->moderation_state) && $entity->moderation_state->target_id != NULL && $entity->get('status')->value) {
+    if ($entity->getEntityType()) {
+      cubic_workbench_moderation_notify_content_administrators($entity);
+    }
+  }
+}
+
+/**
+ * Helper function to notify admin of published content.
+ *
+ * @param \Drupal\Core\Entity\EntityInterface $entity
+ *   The entity to review.
+ */
+function cubic_workbench_moderation_notify_content_administrators(EntityInterface $entity) {
+  // Get the distribution emails from config.
+  $distribution_group_role = Settings::get('cubic_workbench_moderation.distribution_group', FALSE);
+
+  if ($distribution_group_role) {
+    $role = Role::load($distribution_group_role);
+
+    if (!$role) {
+      \Drupal::logger('cubic_workbench_moderation')->error('Distribution group is not a valid role.');
+      return;
+    }
+  }
+  else {
+    return;
+  }
+
+  $user_storage = \Drupal::service('entity_type.manager')->getStorage('user');
+
+  $ids = $user_storage->getQuery()
+    ->condition('status', 1)
+    ->condition('roles', $role->id())
+    ->execute();
+  $users = $user_storage->loadMultiple($ids);
+
+  // If we have a valid email then setup and send.
+  if (!empty($users)) {
+    // Build list of users.
+    foreach ($users as $user) {
+      if ($user instanceof User) {
+        $emails[] = $user->getEmail();
+      }
+    }
+
+    if (isset($emails) && !empty($emails)) {
+      // Load the entity we are acting on.
+      $params = ['entity' => $entity];
+
+      // Load the mailManager and set the default language code.
+      $mailManager = \Drupal::service('plugin.manager.mail');
+      $langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+
+      // Send the email.
+      $result = $mailManager->mail('cubic_workbench_moderation', 'cubic_workbench_moderation_notify_content_administrators', implode(',', $emails), $langcode, $params, NULL, TRUE);
+
+      if ($result['result'] !== TRUE) {
+        \Drupal::logger('cubic_workbench_moderation')->error('Mail message unsuccessful: ' . $entity->id() . ', ' . $entity->label() . '.');
+      }
+    }
+    else {
+      \Drupal::logger('cubic_workbench_moderation')->error('Users in selected role have no emails.');
+    }
+  }
+  else {
+    \Drupal::logger('cubic_workbench_moderation')->error('Valid email not set for admin notifications on workbench moderation state change.');
+  }
+}

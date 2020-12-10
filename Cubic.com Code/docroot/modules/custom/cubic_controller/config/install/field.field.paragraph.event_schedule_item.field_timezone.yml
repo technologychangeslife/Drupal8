@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_timezone
+    - paragraphs.paragraphs_type.event_schedule_item
+  module:
+    - tzfield
+id: paragraph.event_schedule_item.field_timezone
+field_name: field_timezone
+entity_type: paragraph
+bundle: event_schedule_item
+label: Timezone
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: America/Los_Angeles
+default_value_callback: ''
+settings: {  }
+field_type: tzfield

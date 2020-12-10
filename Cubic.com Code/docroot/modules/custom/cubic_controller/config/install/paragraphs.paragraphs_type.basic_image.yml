@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: basic_image
+label: 'Basic Image'
+behavior_plugins: {  }

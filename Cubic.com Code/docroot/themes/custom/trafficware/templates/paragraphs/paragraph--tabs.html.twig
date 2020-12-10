@@ -1,0 +1,11 @@
+{% extends 'paragraph.html.twig' %}
+{% block content %}
+  <div class="tabs-before">
+    {{ content.field_title }}
+    {{ content.field_body }}
+  </div>
+
+  <div class="tabs-container">
+    {{ content.field_tabs }}
+  </div>
+{% endblock %}

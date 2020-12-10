@@ -1,0 +1,23 @@
+// styles for all views
+.view {
+  .views-exposed-form {
+    &.auto-submit {
+      @include has-js {
+        .form-actions {
+          display: none;
+        }
+
+        .js-form-submit {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .view-header {
+    > a {
+      @extend %link-w-icon;
+      display: inline-block;
+    }
+  }
+}

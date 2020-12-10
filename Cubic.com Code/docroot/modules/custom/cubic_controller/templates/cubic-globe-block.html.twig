@@ -1,0 +1,19 @@
+{#
+
+Markup for the cubic_globe_block.
+
+#}
+
+
+{% trans %}
+
+<div class="cubic-globe-block">
+    <a id="cubic-globe-block" name="cubic-globe-block"></a>
+    {{ body }}
+    {%  if path %}
+        <div class="more-info more-info-about-cubic"><a href="{{ path }}">About Cubic</a></div>
+    {%  endif %}
+</div>
+
+{% endtrans %}
+

@@ -1,0 +1,6 @@
+services:
+  cubic_scheduler.schedule_content:
+      class: Drupal\cubic_scheduler\EventSubscriber\CubicSchedulerEventSubscriber
+      arguments: []
+      tags:
+        - { name: event_subscriber }

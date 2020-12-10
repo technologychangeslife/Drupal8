@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.milestone_group.field_milestone_group
+    - paragraphs.paragraphs_type.milestone_group
+  module:
+    - entity_reference_revisions
+id: paragraph.milestone_group.default
+targetEntityType: paragraph
+bundle: milestone_group
+mode: default
+content:
+  field_milestone_group:
+    type: entity_reference_revisions_entity_view
+    weight: 0
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+hidden:
+  search_api_excerpt: true

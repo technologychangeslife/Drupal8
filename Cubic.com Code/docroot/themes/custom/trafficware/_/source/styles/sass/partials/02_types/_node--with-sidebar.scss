@@ -1,0 +1,82 @@
+.node--full--with-sidebar {
+  .main-columns {
+    @include flex-grid-row(null, null, 'expand');
+
+    margin-bottom: map-get($component-spacing, small);
+    margin-top: map-get($component-spacing, small);
+    padding: 0 map-get($paragraph-padding, small);
+
+    @include breakpoint(medium) {
+      padding: 0 map-get($paragraph-padding, medium);
+    }
+
+    @include breakpoint(large) {
+      padding-left: 0 map-get($paragraph-padding, large);
+    }
+
+    .main-column,
+    .field--name-field-aside-paragraphs {
+      @include flex-grid-column(12, 0);
+
+      a {
+        @extend %link-jumplink;
+      }
+    }
+
+    .field--name-field-aside-paragraphs {
+      @include flex-order(1);
+      @include breakpoint(small down) {
+        margin-top: rem-calc(30);
+      }
+
+      .field__item {
+        margin-bottom: rem-calc(30);
+
+        @include breakpoint(medium) {
+          margin-bottom: rem-calc(60);
+        }
+      }
+    }
+
+    @include breakpoint(medium) {
+      margin-bottom: map-get($component-spacing, medium);
+      margin-top: map-get($component-spacing, medium);
+
+      .field--name-field-aside-paragraphs {
+        @include flex-grid-size(5);
+
+        + .main-column {
+          @include flex-grid-size(7);
+
+          padding-right: rem-calc(50);
+        }
+      }
+    }
+
+    @include breakpoint(large) {
+      .field--name-field-aside-paragraphs {
+        @include flex-grid-size(4);
+
+        + .main-column {
+          @include flex-grid-size(8);
+
+          padding-right: rem-calc(100);
+        }
+      }
+    }
+  }
+
+  .field--name-field-contained-paragraphs {
+    > .field__item {
+      margin: 2rem 0;
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

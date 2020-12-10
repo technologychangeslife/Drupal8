@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.person_browser
+    - field.field.paragraph.people_grid_item.field_person
+    - paragraphs.paragraphs_type.people_grid_item
+  module:
+    - entity_browser
+id: paragraph.people_grid_item.default
+targetEntityType: paragraph
+bundle: people_grid_item
+mode: default
+content:
+  field_person:
+    weight: 0
+    settings:
+      entity_browser: person_browser
+      field_widget_display: label
+      field_widget_remove: true
+      open: true
+      selection_mode: selection_append
+      field_widget_edit: false
+      field_widget_replace: false
+      field_widget_display_settings: {  }
+    third_party_settings: {  }
+    type: entity_browser_entity_reference
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

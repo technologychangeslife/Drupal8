@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_social_icon
+    - paragraphs.paragraphs_type.social_icon_link
+  module:
+    - options
+id: paragraph.social_icon_link.field_social_icon
+field_name: field_social_icon
+entity_type: paragraph
+bundle: social_icon_link
+label: 'Social Icon'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: list_string

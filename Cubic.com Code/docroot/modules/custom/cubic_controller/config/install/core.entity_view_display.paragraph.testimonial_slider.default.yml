@@ -1,0 +1,52 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.testimonial_slider.field_body
+    - field.field.paragraph.testimonial_slider.field_one_column
+    - field.field.paragraph.testimonial_slider.field_testimonial_slider_items
+    - field.field.paragraph.testimonial_slider.field_title
+    - paragraphs.paragraphs_type.testimonial_slider
+  module:
+    - entity_reference_revisions
+    - text
+id: paragraph.testimonial_slider.default
+targetEntityType: paragraph
+bundle: testimonial_slider
+mode: default
+content:
+  field_body:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_one_column:
+    weight: 4
+    label: hidden
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_testimonial_slider_items:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_title:
+    weight: 2
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

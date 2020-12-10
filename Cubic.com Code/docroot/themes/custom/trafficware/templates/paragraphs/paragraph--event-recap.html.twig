@@ -1,0 +1,10 @@
+{% extends 'paragraph.html.twig' %}
+{% block content %}
+  {{ content.field_title }}
+  {{ content.field_event_recap_slider_content }}
+  {% if content|without('field_event_recap_slider_content', 'field_title')|render|striptags|trim is not empty and content.field_social_embed_code is not empty %}
+    <div class="body-container">
+      {{ content|without('field_event_recap_slider_content', 'field_title') }}
+    </div>
+  {% endif %}
+{% endblock %}

@@ -1,0 +1,36 @@
+.paragraph--type--divider-bar {
+  .field--name-field-image {
+    height: 40vh;
+    max-height: 30vw;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+
+    img {
+      height: auto;
+      left: 50%;
+      min-height: 100%;
+      min-width: 100%;
+      position: absolute;
+      top: 0;
+      transform: translateX(-50%);
+      width: auto;
+    }
+  }
+
+  // sass-lint:disable force-pseudo-nesting
+  @include anonymous('.advanced-animations') {
+    @include has-js {
+      img {
+        opacity: 0;
+        transition: opacity $transition-time;
+      }
+
+      &.parallax-processed {
+        img {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}

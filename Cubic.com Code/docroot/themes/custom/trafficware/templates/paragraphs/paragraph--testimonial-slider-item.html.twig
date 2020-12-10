@@ -1,0 +1,50 @@
+{% extends 'paragraph.html.twig' %}
+{% block content %}
+
+
+  {% if has_image %}
+    <a href="javascript:void(0)" data-open="video-modal-{{ paragraph.id() }}" class="{{ has_video }}">
+      {{ content.field_quote }}
+    </a>
+    <div class="reveal large" id="video-modal-{{ paragraph.id() }}" data-reveal data-reset-on-close="true">
+      <button class="close-button" data-close aria-label="Close video" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+
+      {% if has_video %}
+        {{ content.field_video }}
+      {% endif %}
+    </div>
+
+  {% else %}
+
+
+
+
+    {% if one_column %}
+      <div class="quotes-items-wrapper">
+        {{ content.field_logo }}
+        {{ content.field_quote }}
+        {{ content.field_quotee }}
+        {{ content.field_quotee_title }}
+      </div>
+      <div class="quote-on-large">
+        {{ content.field_quote }}
+      </div>
+
+    {% else %}
+      <div class="quotes-items-wrapper">
+        {{ content.field_logo }}
+        {{ content.field_quote }}
+        {{ content.field_quotee }}
+        {{ content.field_quotee_title }}
+     </div>
+
+    {% endif %}
+
+
+
+  {% endif %}
+
+
+{% endblock %}

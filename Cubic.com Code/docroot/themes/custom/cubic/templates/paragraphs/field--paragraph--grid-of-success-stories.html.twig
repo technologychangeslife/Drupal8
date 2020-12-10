@@ -1,0 +1,20 @@
+{%
+  set classes = [
+  'field',
+  'field__item',
+  'field--name-' ~ field_name|clean_class,
+  'field--type-' ~ field_type|clean_class,
+  'field--label-' ~ label_display,
+  'success-story'
+  ]
+%}
+{%
+  set title_classes = [
+    'field__label',
+    label_display == 'visually_hidden' ? 'visually-hidden'
+  ]
+%}
+
+{% for item in items %}
+  <div{{ item.attributes.addClass(classes) }}>{{ item.content }}</div>
+{% endfor %}

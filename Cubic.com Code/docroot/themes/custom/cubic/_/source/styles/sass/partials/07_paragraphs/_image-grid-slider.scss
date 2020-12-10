@@ -1,0 +1,104 @@
+.paragraph--type--image-grid-slider {
+  text-align: center;
+  padding: 2em;
+
+  .field--name-field-title {
+    font-size: $h1-font-size;
+    margin-bottom: 1em;
+  }
+
+  .field--name-field-grid-image {
+    position: relative;
+
+    .field__item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      margin-bottom: 1em;
+
+      img {
+        max-width: 100%;
+        width: auto;
+        max-height: 120px;
+        vertical-align: middle;
+      }
+    }
+
+    &.is-grid {
+      @include grid-layout(2, '.field__item');
+      @include clear-floats;
+    }
+  }
+
+  .bx-wrapper {
+    position: relative;
+    max-width: 100% !important;
+
+    @include breakpoint(medium) {
+      .bx-viewport {
+        position: relative;
+
+        &::after {
+          @include abs-stretch;
+          background: linear-gradient(90deg, transparentize($white, 1) 0%, transparentize($white, 1) 85%, $white 99%);
+          content: '';
+          z-index: 1;
+        }
+      }
+    }
+
+    .bx-next,
+    .bx-prev {
+      @extend %hide-text;
+      display: block;
+      position: absolute;
+      top: 30px;
+      width: 30px;
+      height: 60px;
+      background: url('../img/spr-slider-arrows.png') no-repeat;
+      background-size: 120px;
+      z-index: 2;
+    }
+
+    .bx-prev {
+      left: -10px;
+      background-position: -73px 0;
+
+      &:hover {
+        background-position: -73px -61px;
+      }
+
+      &.disabled {
+        background-position: -73px 0;
+        // cursor: default;
+      }
+    }
+
+    .bx-next {
+      right: -10px;
+      background-position: -17px 0;
+
+      &:hover {
+        background-position: -17px -61px;
+      }
+
+      &.disabled {
+        background-position: -17px 0;
+        // cursor: default;
+      }
+    }
+  }
+
+  @include breakpoint(medium) {
+    .field--name-field-grid-image {
+      &.is-grid {
+        @include grid-layout(4, '.field__item');
+      }
+
+      .field__item {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

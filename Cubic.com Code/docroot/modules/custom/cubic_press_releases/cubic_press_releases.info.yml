@@ -1,0 +1,28 @@
+name: 'Press Releases'
+description: 'Code and configuration for the Press Release content type.'
+type: module
+core: 8.x
+dependencies:
+  - cubic_annual_reports
+  - cubic_businesses
+  - cubic_controller
+  - cubic_entity_browser
+  - cubic_success_stories
+  - entity_browser
+  - entity_reference_revisions
+  - field
+  - image
+  - menu_ui
+  - metatag
+  - node
+  - paragraphs
+  - path
+  - pathauto
+  - scheduler
+  - smart_trim
+  - taxonomy
+  - text
+  - user
+  - workbench_moderation
+package: Cubic
+version: 8.x-1.0

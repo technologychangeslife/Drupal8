@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_contain_header_image
+    - node.type.location
+id: node.location.field_contain_header_image
+field_name: field_contain_header_image
+entity_type: node
+bundle: location
+label: 'Contain Header Image'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,69 @@
+.downloads-wrapper {
+  line-height: 1;
+  margin-bottom: 1.6rem;
+  padding: 4px 0;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  @include breakpoint(medium) {
+    display: inline-block;
+    position: relative;
+
+    &::before {
+      background: url('../img/icon_arrow-dropdown.svg') no-repeat right center;
+      background-size: 12px;
+      color: $black;
+      content: 'Downloads';
+      cursor: pointer;
+      font-family: $font-bold;
+      padding-right: 18px;
+    }
+
+    .downloads {
+      background: $white;
+      border: 1px solid $color-border;
+      border-radius: rem-calc(6);
+      display: none;
+      left: 0;
+      padding: rem-calc(5) rem-calc(10);
+      position: absolute;
+      top: 100%;
+      z-index: 51;
+      width: 340px;
+
+      @media only screen and (min-width: 640px) and (max-width: 755px) {
+        width: 270px;
+      }
+
+      > article {
+        line-height: 1.6em;
+        margin: 0;
+        padding: rem-calc(5) 0;
+      }
+    }
+
+    &:hover {
+      .downloads {
+        display: block;
+      }
+    }
+  }
+
+  @media only screen and (min-width: 664px) and (max-width: 1230px) {
+    &.hidden {
+      .downloads {
+        display: none;
+
+      }
+    }
+
+    &.active {
+      .downloads {
+        display: block;
+
+      }
+    }
+  }
+}

@@ -1,0 +1,243 @@
+// sass-lint:disable force-attribute-nesting force-pseudo-nesting no-qualifying-elements
+.webform-submission-form {
+  padding: map-get($component-spacing, small) map-get($paragraph-padding, small);
+  @include breakpoint(medium) {
+    padding: map-get($component-spacing, medium) map-get($paragraph-padding, medium);
+  }
+  @include breakpoint(large) {
+    padding-left: map-get($paragraph-padding, large);
+    padding-right: map-get($paragraph-padding, large);
+  }
+
+  .form-item {
+    margin-top: rem-calc(15);
+    @include breakpoint(medium) {
+      margin-top: rem-calc(30);
+    }
+
+    label {
+      display: block;
+      margin-bottom: rem-calc(8);
+      width: 100%;
+
+      + .form-textarea-wrapper {
+        margin-top: rem-calc(10);
+      }
+    }
+  }
+
+  .form-required {
+    &::after {
+      color: $cubic-red;
+      content: '*';
+    }
+  }
+
+  .form-type-processed-text,
+  .form-type-webform-markup {
+    color: $text-color;
+  }
+
+  .intl-tel-input {
+    display: block;
+    width: 100%;
+  }
+
+  fieldset {
+    border: 0;
+    margin: rem-calc(30) 0 0;
+    padding: 0;
+
+    &:not(.form-composite) {
+      margin-top: rem-calc(70);
+
+      > legend {
+        @extend h3;
+      }
+
+      > .fieldset-wrapper {
+        @include flex-grid-row($behavior: nest);
+
+        > .form-item,
+        > .form-wrapper {
+          @include flex-grid-column(100%);
+          @include breakpoint(medium) {
+            @include flex-grid-size(50%);
+          }
+          @include breakpoint(large) {
+            @include flex-grid-size(33.333%);
+          }
+
+          &.form-type-processed-text,
+          &.form-type-textarea,
+          &.form-type-webform-markup {
+            @include flex-grid-size(100%);
+          }
+
+          label {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+
+  input[type='text'],
+  input[type='email'],
+  input[type='password'],
+  input[type='tel'],
+  select,
+  textarea {
+    background-color: transparent;
+    border: none;
+    border-bottom: 2px solid $color-border;
+    color: $text-color;
+    padding: rem-calc(5) 0;
+    width: 100%;
+
+    &.error {
+      background-color: scale-color($cubic-red, $lightness: 95%);
+      border-color: $cubic-red;
+    }
+  }
+
+  input[type='text'],
+  input[type='email'],
+  input[type='password'],
+  input[type='tel'] {
+    appearance: none;
+    border-radius: 0;
+  }
+
+  input[type='checkbox'],
+  input[type='radio'] {
+    &.error {
+      background-color: scale-color($cubic-red, $lightness: 95%);
+      border-color: $cubic-red;
+
+      ~ label {
+        color: $cubic-red;
+      }
+    }
+  }
+
+  select {
+    appearance: none;
+    background: transparent url('../img/icon_arrow-dropdown.svg') no-repeat right center;
+    background-size: 12px;
+
+    option {
+      color: $black;
+    }
+  }
+
+  textarea {
+    resize: none;
+
+    .paragraph--type--webform & {
+      background-color: scale-color($color-border, $lightness: 90%);
+      min-height: rem-calc(150);
+      padding: rem-calc(15);
+    }
+  }
+
+  .description {
+    color: $color-border;
+    font-size: 0.9em;
+    margin-top: rem-calc(3);
+  }
+
+  .form-checkboxes {
+    @include flex-grid-row($behavior: nest, $gutters: 5px);
+    column-count: initial;
+
+    > .form-item {
+      @include flex-grid-column($columns: 100%, $gutters: 5px);
+      break-inside: avoid;
+      margin: 0;
+      padding-top: rem-calc(10);
+    }
+
+    &.webform-options-display-two-columns {
+      > .form-item {
+        @include flex-grid-size(50%);
+      }
+    }
+
+    &.webform-options-display-three-columns {
+      > .form-item {
+        @include flex-grid-size(50%);
+        @include breakpoint(xxlarge) {
+          @include flex-grid-size(33.333%);
+        }
+      }
+    }
+
+    &.webform-options-display-side-by-side {
+      margin: 0 rem-calc(-8);
+
+      > .form-item {
+        @include flex-grid-size(shrink);
+        padding-left: rem-calc(8);
+        padding-right: rem-calc(8);
+      }
+    }
+  }
+
+  .form-type-checkbox {
+    align-items: flex-start;
+    display: flex;
+
+    > * {
+      flex: 0 1 auto;
+      width: auto;
+    }
+
+    input {
+      appearance: none;
+      border-radius: rem-calc(3);
+      border: 1px solid $black;
+      display: block;
+      flex-shrink: 0;
+      height: 1em;
+      margin-top: rem-calc(4);
+      width: 1em;
+
+      &:checked {
+        background-color: $cubic-teal;
+        box-shadow: inset 0 0 0 rem-calc(2) $white;
+      }
+    }
+
+    label {
+      color: $text-color;
+      margin: 0 0 0 rem-calc(10);
+    }
+  }
+
+  .form-actions {
+    margin-top: rem-calc(30);
+    @include breakpoint(medium) {
+      margin-top: rem-calc(60);
+    }
+  }
+}
+
+.paragraph--type--webform {
+  padding: map-get($component-spacing, small) map-get($paragraph-padding, small);
+  @include breakpoint(medium) {
+    padding: map-get($component-spacing, medium) map-get($paragraph-padding, medium);
+  }
+  @include breakpoint(large) {
+    padding-left: map-get($paragraph-padding, large);
+    padding-right: map-get($paragraph-padding, large);
+  }
+
+  .field--name-field-title {
+    margin-bottom: rem-calc(30);
+  }
+
+  .webform-submission-form {
+    padding: 0;
+  }
+}

@@ -1,0 +1,50 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.event_schedule_item.field_body
+    - field.field.paragraph.event_schedule_item.field_time
+    - field.field.paragraph.event_schedule_item.field_timezone
+    - field.field.paragraph.event_schedule_item.field_title
+    - paragraphs.paragraphs_type.event_schedule_item
+  module:
+    - datetime_range
+    - text
+    - tzfield
+id: paragraph.event_schedule_item.default
+targetEntityType: paragraph
+bundle: event_schedule_item
+mode: default
+content:
+  field_body:
+    weight: 1
+    settings:
+      rows: 9
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_time:
+    weight: 3
+    settings: {  }
+    third_party_settings: {  }
+    type: daterange_default
+    region: content
+  field_timezone:
+    weight: 4
+    settings: {  }
+    third_party_settings: {  }
+    type: tzfield_default
+    region: content
+  field_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

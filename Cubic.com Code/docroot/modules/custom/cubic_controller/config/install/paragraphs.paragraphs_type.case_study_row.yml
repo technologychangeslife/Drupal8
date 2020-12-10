@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: case_study_row
+label: 'Case Study Row'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

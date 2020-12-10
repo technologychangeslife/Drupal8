@@ -1,0 +1,93 @@
+<?php
+
+/**
+ * @file
+ * Contains cubic_views.module..
+ */
+
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+
+/**
+ * Implements hook_help().
+ */
+function cubic_views_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the cubic_views module.
+    case 'help.page.cubic_views':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Enhancements to Views for Cubic') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_views_plugins_display_alter().
+ */
+function cubic_views_views_plugins_display_alter(array &$plugins) {
+  // Force the block display plugin to use our block display plugin that allows
+  // exposed forms on block displays.
+  $plugins['block']['class'] = 'Drupal\cubic_views\Plugin\views\ListingPluginDisplayBlock';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cubic_views_form_views_exposed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  /* @var \Drupal\views\ViewExecutable $view */
+  $view = $form_state->get('view');
+
+  if ($view->id() == 'list') {
+    $query = \Drupal::entityQuery('node');
+    $storage = $view->storage;
+    $display = $storage->getDisplay($view->current_display);
+    $arguments = $display['display_options'];
+
+    if (array_key_exists('type', $arguments['filters'])) {
+      $type = reset($arguments['filters']['type']['value']);
+
+      if ($type !== 'event') {
+        $query->condition('type', $type)
+          ->condition('status', 1)
+          ->sort('created', 'DESC');
+
+        $result = $query->execute();
+
+        if ($result) {
+          $options = [
+            'All' => new TranslatableMarkup('Year'),
+          ];
+          /* @var \Drupal\node\NodeStorage $storage */
+          $storage = \Drupal::service('entity_type.manager')->getStorage('node');
+          /* @var \Drupal\node\Entity\Node $node */
+          $nodes = $storage->loadMultiple($result);
+
+          foreach ($nodes as $node) {
+            $date = $node->get('created')->value;
+
+            if ($date) {
+              $date = new DrupalDateTime(DrupalDateTime::createFromTimestamp($date), new \DateTimeZone('UTC'));
+              $year = $date->format('Y');
+
+              if (!isset($options[$year])) {
+                $options[$year] = $year;
+              }
+            }
+          }
+
+          $form['year'] = [
+            '#title' => new TranslatableMarkup('Year'),
+            '#type' => 'select',
+            '#options' => $options,
+            '#size' => NULL,
+            '#default_value' => 'All',
+          ];
+        }
+      }
+    }
+  }
+}

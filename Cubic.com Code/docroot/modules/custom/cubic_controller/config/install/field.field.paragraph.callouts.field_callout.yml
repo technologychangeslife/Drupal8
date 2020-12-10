@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_callout
+    - paragraphs.paragraphs_type.callouts
+  module:
+    - text
+id: paragraph.callouts.field_callout
+field_name: field_callout
+entity_type: paragraph
+bundle: callouts
+label: Callout
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

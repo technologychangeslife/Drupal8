@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.image_grid_slider.field_grid_image
+    - field.field.paragraph.image_grid_slider.field_title
+    - paragraphs.paragraphs_type.image_grid_slider
+  module:
+    - image
+id: paragraph.image_grid_slider.default
+targetEntityType: paragraph
+bundle: image_grid_slider
+mode: default
+content:
+  field_grid_image:
+    weight: 1
+    label: hidden
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+  field_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

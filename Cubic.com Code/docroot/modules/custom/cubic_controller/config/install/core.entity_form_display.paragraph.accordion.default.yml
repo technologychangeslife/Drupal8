@@ -1,0 +1,81 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.file_browser
+    - field.field.paragraph.accordion.field_accordion_content
+    - field.field.paragraph.accordion.field_body
+    - field.field.paragraph.accordion.field_downloads
+    - field.field.paragraph.accordion.field_subtitle
+    - field.field.paragraph.accordion.field_title
+    - paragraphs.paragraphs_type.accordion
+  module:
+    - entity_browser
+    - paragraphs
+    - text
+id: paragraph.accordion.default
+targetEntityType: paragraph
+bundle: accordion
+mode: default
+content:
+  field_accordion_content:
+    type: paragraphs
+    weight: 4
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: '0'
+    third_party_settings: {  }
+    region: content
+  field_body:
+    weight: 2
+    settings:
+      rows: 9
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_downloads:
+    weight: 3
+    settings:
+      entity_browser: file_browser
+      field_widget_remove: true
+      field_widget_replace: true
+      selection_mode: selection_append
+      field_widget_edit: true
+      open: false
+      view_mode: default
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: entity_browser_file
+    region: content
+  field_subtitle:
+    weight: 1
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

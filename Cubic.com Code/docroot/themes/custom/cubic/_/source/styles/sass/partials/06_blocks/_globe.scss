@@ -1,0 +1,105 @@
+.block-cubic-globe-block {
+  margin-top: -4em;
+  margin-bottom: -4em;
+  // Please note the negative margins may look off if the block is not placed exactly as dictated in the comps
+  margin-left: 1em;
+  margin-right: 1em;
+
+  h2 {
+    display: none; // We must never show the title because of the margins on .block-cubic-globe-block
+  }
+
+  .cubic-globe-block {
+    background-color: $cubic-blue;
+    background-image: url('../img/globe.svg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    color: $white !important;
+    font-family: $font-main;
+    padding-top: 5em;
+    position: relative;
+    z-index: 10;
+
+    .grid {
+      @include clear-floats;
+      @include grid-layout(1, '.cols');
+
+      .cols {
+        text-align: left;
+        padding-left: 2em;
+        margin-bottom: 1em;
+      }
+
+      .cubic-globe-block-logo {
+        text-align: center;
+        padding-right: 1em;
+
+        @include breakpoint(medium) {
+          text-align: right;
+        }
+
+        svg {
+          fill: $white;
+        }
+      }
+
+      .cubic-globe-block-text {
+        border-left: none;
+        color: $white !important;
+        padding-bottom: 5em;
+        margin-bottom: 0;
+
+        h2 {
+          margin-bottom: 1em;
+          position: relative;
+          top: -.2em;
+        }
+
+        p {
+          color: $white !important;
+          font-size: 1.25em;
+        }
+
+        .more-info-about-cubic {
+          margin-bottom: 1em;
+          font-family: $font-bold;
+          // font-size: 1.25em;
+
+          a {
+            color: $white !important;
+
+            svg {
+              height: 0.75em;
+              position: relative;
+              top: 0.0625em;
+              transition: all $transition-time;
+              fill: $white;
+            }
+
+            &:hover {
+              svg {
+                margin-left: rem-calc(5);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include breakpoint(large) {
+    .cubic-globe-block {
+
+      .grid {
+        @include grid-layout(2, '.cols', 0);
+
+        .cubic-globe-block-text {
+          border-left: solid 1px $white;
+          padding-left: 3em;
+          padding-right: 10%;
+        }
+      }
+    }
+  }
+}

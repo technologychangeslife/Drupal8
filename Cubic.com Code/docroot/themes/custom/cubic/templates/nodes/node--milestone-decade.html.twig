@@ -1,0 +1,44 @@
+{#
+/**
+ * @file
+ * Theme override to display a node.
+ */
+#}
+{%
+  set classes = [
+    'node',
+    'node-' ~ node.label,
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  ]
+%}
+{{ attach_library('classy/node') }}
+
+<span class="inview-marker"></span>
+
+<div id="decade-{{ node.label }}" {{ attributes.addClass(classes) }} style="background-image: url({{ file_url(node.field_background_image.entity.fileuri) }})">
+  <div class="outer__wrapper">
+    <span class="inview-marker"></span>
+
+    {{ title_prefix }}
+    {{ title_suffix }}
+
+    <div{{ content_attributes.addClass('node__content') }}>
+      <div class="decade__wrapper">
+        <div class="decade-title">
+          <h2>
+            {{ node.label }}
+          </h2>
+          <div class="decade-icon"><span></span></div>
+        </div>
+
+        {{ content.field_background_image }}
+
+        {{ content | without('field_background_image') }}
+      </div>
+    </div>
+  </div>
+</div>

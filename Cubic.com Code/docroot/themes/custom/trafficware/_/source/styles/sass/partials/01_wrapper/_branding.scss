@@ -1,0 +1,40 @@
+.site-branding {
+  &__logo {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+    @include breakpoint(medium down) {
+      height: rem-calc(50);
+    }
+
+    .logo {
+      height: auto;
+
+      * {
+        fill: $cubic-blue;
+
+        @include breakpoint(large) {
+          // sass-lint:disable force-pseudo-nesting
+          .path-frontpage:not(.menu-fixed):not(.user-logged-in) & {
+            fill: $white;
+          }
+          // sass-lint:enable force-pseudo-nesting
+        }
+      }
+
+      &.logo-mark {
+        width: rem-calc(30);
+      }
+
+      &.logo-type {
+        margin-left: rem-calc(5);
+        width: rem-calc(105);
+
+        @include breakpoint(large) {
+          width: rem-calc(134);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,40 @@
+name: Events
+description: 'Code and configuration for the Event content type.'
+type: module
+core: 8.x
+dependencies:
+  - address
+  - block
+  - cubic_annual_reports
+  - cubic_businesses
+  - cubic_controller
+  - cubic_entity_browser
+  - cubic_events
+  - cubic_people
+  - cubic_success_stories
+  - datetime
+  - datetime_range
+  - entity_browser
+  - entity_reference_revisions
+  - field
+  - field_group
+  - file
+  - image
+  - menu_ui
+  - metatag
+  - node
+  - paragraphs
+  - path
+  - pathauto
+  - scheduler
+  - smart_trim
+  - system
+  - taxonomy
+  - text
+  - tzfield
+  - user
+  - video_embed_field
+  - views
+  - workbench_moderation
+package: Cubic
+version: 8.x-1.0

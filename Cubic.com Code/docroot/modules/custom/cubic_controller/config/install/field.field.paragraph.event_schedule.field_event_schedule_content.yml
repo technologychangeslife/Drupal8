@@ -1,0 +1,111 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_event_schedule_content
+    - paragraphs.paragraphs_type.event_schedule
+    - paragraphs.paragraphs_type.event_schedule_item
+  module:
+    - entity_reference_revisions
+id: paragraph.event_schedule.field_event_schedule_content
+field_name: field_event_schedule_content
+entity_type: paragraph
+bundle: event_schedule
+label: 'Event Schedule Content'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      event_schedule_item: event_schedule_item
+    target_bundles_drag_drop:
+      '50_50':
+        weight: -57
+        enabled: false
+      accordion:
+        weight: -56
+        enabled: false
+      accordions:
+        weight: -55
+        enabled: false
+      basic_image:
+        weight: -54
+        enabled: false
+      basic_text:
+        weight: -53
+        enabled: false
+      callouts:
+        weight: -52
+        enabled: false
+      cross_link:
+        weight: -51
+        enabled: false
+      cross_links:
+        weight: -50
+        enabled: false
+      divider_bar:
+        weight: -49
+        enabled: false
+      event_schedule:
+        weight: -48
+        enabled: false
+      event_schedule_item:
+        enabled: true
+        weight: -47
+      grid_of_products:
+        weight: -46
+        enabled: false
+      grid_of_success_stories:
+        weight: -45
+        enabled: false
+      image_and_menu:
+        weight: -44
+        enabled: false
+      image_and_text_slider:
+        weight: -43
+        enabled: false
+      image_grid_slider:
+        weight: -42
+        enabled: false
+      image_text_slider_item:
+        weight: -41
+        enabled: false
+      people_grid:
+        weight: -40
+        enabled: false
+      people_grid_item:
+        weight: -39
+        enabled: false
+      people_grid_item_external:
+        weight: -38
+        enabled: false
+      annual_reports_slider:
+        weight: -37
+        enabled: false
+      schedule_tabs:
+        weight: -36
+        enabled: false
+      social_icon_link:
+        weight: -35
+        enabled: false
+      social_icon_links:
+        weight: -34
+        enabled: false
+      solutions_product:
+        weight: -33
+        enabled: false
+      tab:
+        weight: -32
+        enabled: false
+      tabs:
+        weight: -31
+        enabled: false
+      webform:
+        weight: -30
+        enabled: false
+field_type: entity_reference_revisions

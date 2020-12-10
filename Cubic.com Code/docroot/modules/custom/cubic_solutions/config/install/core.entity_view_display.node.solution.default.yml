@@ -1,0 +1,49 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.solution.body
+    - field.field.node.solution.field_color
+    - field.field.node.solution.field_hero_image
+    - field.field.node.solution.field_metadata
+    - field.field.node.solution.field_paragraphs
+    - node.type.solution
+  module:
+    - entity_reference_revisions
+    - metatag
+    - user
+id: node.solution.default
+targetEntityType: node
+bundle: solution
+mode: default
+content:
+  field_metadata:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
+  field_paragraphs:
+    type: entity_reference_revisions_entity_view
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  workbench_moderation_control:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  body: true
+  field_color: true
+  field_hero_image: true

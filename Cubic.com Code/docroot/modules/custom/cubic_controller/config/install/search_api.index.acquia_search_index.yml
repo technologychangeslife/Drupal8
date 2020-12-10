@@ -1,0 +1,237 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.body
+    - search_api.server.acquia_search_server
+  module:
+    - node
+    - search_api
+    - cubic_search
+id: acquia_search_index
+name: 'Acquia Search Solr Index'
+description: ''
+read_only: false
+field_settings:
+  body:
+    label: Body
+    datasource_id: 'entity:node'
+    property_path: body
+    type: text
+    boost: !!float 3
+    indexed_locked: true
+    type_locked: true
+    dependencies:
+      config:
+        - field.storage.node.body
+  created:
+    label: created
+    datasource_id: 'entity:node'
+    property_path: created
+    type: date
+    indexed_locked: true
+    type_locked: true
+    dependencies:
+      module:
+        - node
+  nid:
+    label: nid
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
+    indexed_locked: true
+    type_locked: true
+    dependencies:
+      module:
+        - node
+  sort_title:
+    label: 'Sortable Title'
+    datasource_id: 'entity:node'
+    property_path: sort_title
+    type: string
+    indexed_locked: true
+    type_locked: true
+  text_payload:
+    label: 'Full Text Bucket'
+    datasource_id: 'entity:node'
+    property_path: text_payload
+    type: text
+    indexed_locked: true
+    type_locked: true
+  title:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: text
+    boost: !!float 8
+    indexed_locked: true
+    type_locked: true
+    dependencies:
+      module:
+        - node
+  type:
+    label: type
+    datasource_id: 'entity:node'
+    property_path: type
+    type: string
+    indexed_locked: true
+    type_locked: true
+    dependencies:
+      module:
+        - node
+datasource_settings:
+  'entity:node':
+    bundles:
+      default: false
+      selected:
+        - award
+        - business
+        - event
+        - expertise
+        - insight
+        - location
+        - page
+        - person
+        - post
+        - press_release
+        - product
+        - product_accessory
+        - solution
+        - success_story
+    languages:
+      default: true
+      selected: {  }
+processor_settings:
+  add_url:
+    plugin_id: add_url
+    settings: {  }
+  aggregated_field: {  }
+  cubic_search_general_data: {  }
+  entity_status: {  }
+  html_filter:
+    all_fields: true
+    fields:
+      - body
+      - sort_title
+      - text_payload
+      - title
+      - type
+    title: true
+    alt: true
+    tags:
+      b: 2
+      em: 1
+      h1: 5
+      h2: 3
+      h3: 2
+      strong: 2
+      u: 1
+    weights:
+      preprocess_index: -15
+      preprocess_query: -15
+  ignorecase:
+    all_fields: true
+    fields:
+      - body
+      - sort_title
+      - text_payload
+      - title
+      - type
+    weights:
+      preprocess_index: -20
+      preprocess_query: -20
+  language_with_fallback: {  }
+  rendered_item: {  }
+  stemmer:
+    all_fields: true
+    fields:
+      - body
+      - text_payload
+      - title
+    exceptions:
+      mexican: mexic
+      texan: texa
+    weights:
+      preprocess_index: 0
+      preprocess_query: 0
+  stopwords:
+    all_fields: true
+    fields:
+      - body
+      - text_payload
+      - title
+    stopwords:
+      - a
+      - an
+      - and
+      - are
+      - as
+      - at
+      - be
+      - but
+      - by
+      - for
+      - if
+      - in
+      - into
+      - is
+      - it
+      - 'no'
+      - not
+      - of
+      - 'on'
+      - or
+      - s
+      - such
+      - t
+      - that
+      - the
+      - their
+      - then
+      - there
+      - these
+      - they
+      - this
+      - to
+      - was
+      - will
+      - with
+    weights:
+      preprocess_index: -5
+      preprocess_query: -2
+  tokenizer:
+    all_fields: true
+    fields:
+      - body
+      - text_payload
+      - title
+    spaces: ''
+    overlap_cjk: 1
+    minimum_word_size: '3'
+    weights:
+      preprocess_index: -6
+      preprocess_query: -6
+  transliteration:
+    all_fields: true
+    fields:
+      - body
+      - sort_title
+      - text_payload
+      - title
+      - type
+    weights:
+      preprocess_index: -20
+      preprocess_query: -20
+tracker_settings:
+  default:
+    indexing_order: fifo
+options:
+  index_directly: false
+  cron_limit: 50
+  processors:
+    language:
+      status: '1'
+      weight: -50
+      settings: {  }
+      processorPluginId: language
+server: acquia_search_server

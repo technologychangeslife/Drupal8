@@ -1,0 +1,5 @@
+bundle: cubic
+excluded:
+  - context.context.search_page_title
+  - search_api.server.local_solr
+required: true

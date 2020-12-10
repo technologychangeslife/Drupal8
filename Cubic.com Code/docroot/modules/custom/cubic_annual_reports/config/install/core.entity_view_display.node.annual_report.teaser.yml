@@ -1,0 +1,49 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.annual_report.body
+    - field.field.node.annual_report.field_additional_downloads
+    - field.field.node.annual_report.field_report_category
+    - field.field.node.annual_report.field_report_cover
+    - field.field.node.annual_report.field_report_download
+    - image.style.large
+    - node.type.annual_report
+  module:
+    - file
+    - image
+    - user
+id: node.annual_report.teaser
+targetEntityType: node
+bundle: annual_report
+mode: teaser
+content:
+  field_additional_downloads:
+    type: file_default
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+  field_report_cover:
+    type: image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: large
+      image_link: ''
+    third_party_settings: {  }
+  field_report_download:
+    type: file_url_plain
+    weight: 2
+    region: content
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  body: true
+  field_report_category: true
+  links: true

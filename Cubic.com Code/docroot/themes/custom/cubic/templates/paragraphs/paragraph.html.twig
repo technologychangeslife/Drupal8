@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a paragraph.
+ */
+#}
+{%
+  set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    item_count_class,
+    has_body_class,
+  ]
+%}
+{% block paragraph %}
+  <div{{ attributes.addClass(classes) }}>
+    {% if anchor_id %}
+      <a name="{{ anchor_id }}" id="{{ anchor_id }}" class="paragraph__anchor"></a>
+    {% endif %}
+    {% block content %}
+      {{ content }}
+    {% endblock %}
+  </div>
+{% endblock paragraph %}

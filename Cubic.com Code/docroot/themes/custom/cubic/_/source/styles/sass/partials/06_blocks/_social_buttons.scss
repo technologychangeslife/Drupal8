@@ -1,0 +1,80 @@
+.block-cubic-social-buttons-block {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.cubic-social-buttons {
+  align-items: center;
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    margin: 0 2em 0 0;
+
+    svg {
+      height: 100%;
+      fill: $cubic-blue;
+      transition: fill $transition-time;
+      width: 100%;
+    }
+
+    a {
+      height: rem-calc(14);
+      display: block;
+      width: rem-calc(14);
+
+      &:hover,
+      &:focus {
+        svg {
+          fill: $color-social-hover;
+        }
+      }
+    }
+
+    &:last-child {
+      margin: 0;
+    }
+  }
+
+  @include breakpoint(medium) {
+    width: 100%;
+
+    li {
+      margin: 0 1.5em 0 0;
+    }
+  }
+}
+
+footer {
+  .cubic-social-buttons {
+    li {
+      margin-right: 1em;
+    }
+
+    &:last-child {
+      margin: 0;
+    }
+  }
+}
+
+.user-logged-in {
+  .region-menus {
+    #block-cubicsocialbuttonsblock {
+      display: none;
+    }
+  }
+}
+
+.main-columns {
+  .field--name-field-aside-paragraphs {
+    .at-share-btn-elements {
+      .at-share-btn {
+        margin-left: 0;
+        margin-right: 4px;
+      }
+    }
+  }
+}

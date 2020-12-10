@@ -1,0 +1,7 @@
+name: Cubic Workbench
+type: module
+description: Wrapper module for integration with Workbench
+core: 8.x
+package: Cubic
+dependencies:
+  - workbench

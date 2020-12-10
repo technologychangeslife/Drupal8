@@ -1,0 +1,31 @@
+.page-node-type-post,
+.page-node-type-insight,
+.page-node-type-success-story {
+  .block-page-title-block {
+    .page-title-content {
+      .before-title,
+      .cubic-social-addthis {
+        @include breakpoint(medium) {
+          bottom: map-get($paragraph-padding, medium);
+          position: absolute;
+          right: map-get($paragraph-padding, medium);
+        }
+
+        @include breakpoint(large) {
+          bottom: map-get($paragraph-padding, large);
+          right: map-get($paragraph-padding, large);
+        }
+      }
+
+      .cubic-social-addthis {
+        @include breakpoint(medium) {
+          bottom: calc(#{map-get($paragraph-padding, medium)} + #{rem-calc(40)});
+        }
+
+        @include breakpoint(large) {
+          bottom: calc(#{map-get($paragraph-padding, large)} + #{rem-calc(40)});
+        }
+      }
+    }
+  }
+}

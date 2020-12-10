@@ -1,0 +1,24 @@
+{#
+
+Markup for the cubic_globe_block.
+
+#}
+
+<div class="cubic-globe-block">
+    <a id="cubic-globe-block" name="cubic-globe-block"></a>
+
+    <div class="grid">
+        <div class="cols col-1 cubic-globe-block-logo">
+            {% include directory ~ '/_/img/logo-type-white.svg' %}
+        </div>
+        <div class="cols col-2 cubic-globe-block-text">
+           {{ body }}
+            {%  if path %}
+                <div class="more-info more-info-about-cubic"><a href="{{ path }}">About Cubic {% include directory ~ '/_/img/icon_small-arrow.svg' %}</a></div>
+            {%  endif %}
+        </div>
+    </div>
+
+</div>
+
+

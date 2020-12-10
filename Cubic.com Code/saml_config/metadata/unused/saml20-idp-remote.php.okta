@@ -1,0 +1,67 @@
+<?php
+/**
+ * SAML 2.0 remote IdP metadata for SimpleSAMLphp.
+ *
+ * Remember to remove the IdPs you don't use from this file.
+ *
+ * See: https://simplesamlphp.org/docs/stable/simplesamlphp-reference-idp-remote 
+ */
+
+$metadata['http://www.okta.com/exkbmlzqun7sQEnNr0h7'] = array (
+  'entityid' => 'http://www.okta.com/exkbmlzqun7sQEnNr0h7',
+  'contacts' =>
+    array (
+    ),
+  'metadata-set' => 'saml20-idp-remote',
+  'SingleSignOnService' =>
+    array (
+      0 =>
+        array (
+          'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
+          'Location' => 'https://cubic.oktapreview.com/app/cubic_drupaladmindev_1/exkbmlzqun7sQEnNr0h7/sso/saml',
+        ),
+      1 =>
+        array (
+          'Binding' => 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect',
+          'Location' => 'https://cubic.oktapreview.com/app/cubic_drupaladmindev_1/exkbmlzqun7sQEnNr0h7/sso/saml',
+        ),
+    ),
+  'SingleLogoutService' =>
+    array (
+    ),
+  'ArtifactResolutionService' =>
+    array (
+    ),
+  'NameIDFormats' =>
+    array (
+      0 => 'urn:oasis:names:tc:SAML:1.1:nameid-format:NameID',
+      1 => 'urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified',
+    ),
+  'keys' =>
+    array (
+      0 =>
+        array (
+          'encryption' => false,
+          'signing' => true,
+          'type' => 'X509Certificate',
+          'X509Certificate' => 'MIIDmjCCAoKgAwIBAgIGAV2Sgp26MA0GCSqGSIb3DQEBCwUAMIGNMQswCQYDVQQGEwJVUzETMBEG
+A1UECAwKQ2FsaWZvcm5pYTEWMBQGA1UEBwwNU2FuIEZyYW5jaXNjbzENMAsGA1UECgwET2t0YTEU
+MBIGA1UECwwLU1NPUHJvdmlkZXIxDjAMBgNVBAMMBWN1YmljMRwwGgYJKoZIhvcNAQkBFg1pbmZv
+QG9rdGEuY29tMB4XDTE3MDczMDA3NTkxOVoXDTI3MDczMDA4MDAxOVowgY0xCzAJBgNVBAYTAlVT
+MRMwEQYDVQQIDApDYWxpZm9ybmlhMRYwFAYDVQQHDA1TYW4gRnJhbmNpc2NvMQ0wCwYDVQQKDARP
+a3RhMRQwEgYDVQQLDAtTU09Qcm92aWRlcjEOMAwGA1UEAwwFY3ViaWMxHDAaBgkqhkiG9w0BCQEW
+DWluZm9Ab2t0YS5jb20wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCdK4WIFyZzoBq0
+A77cVHAkFkp52QOq86oSgOGNnKyP0DNvg7SujCuMG3uyQonE5WdBEEvHpmiMD4LwXjE3LyAw4C/J
+jXrpBlJzSaVLeJF4IWIGS30rvLharZC7ExBmWmzfaUSGDqxQg9F+VEp/uUCGcZD5eYDssDU34r+M
+uDsRwBM9gF1jBP+zXaAmF+6BDCBWciM+4fWJjmYYXhbxGj5tNBAM1sXXHja2bDLwuzN7ArzGb1T+
+lhpYSJXUNIzqNtPqgbfhgmJTz/LcKYv59AViKM8YMxUTEsRNjtXv+VcBrOW2JzCTbsaXF9LHTToN
+TKT6q8LqecaZWsQqAmZIAq4ZAgMBAAEwDQYJKoZIhvcNAQELBQADggEBABklwo3wj3B1jaeWAv77
+jOMzu6mRobMt576NAL9UdsTDLuEBDy4yEp69QFBUBhv8SMJ5w7A/cGlvw7Dww7D3ruSplhC679+C
+UxSSP5qsGU8IPTMRxo8PFBEf+sJ372SBWCWlEpo+DXD3Ln0d3lGEqHMbJAELK0B4rYiRL+XjEcEe
+n0eiWa1dOu+6bPjTRPJ5iVIzUL5n8HgjneKzmxu1DFkceFQ0L+xpMy5dpOSFyXztD7if9hrAbyQh
+eB6eWVXQcPPw0tv+6lX3xLCIcLG94nBOlcc6Wt4h+6ThwDFJslI31MueNqGjJfEH+m7rvOXbQHva
+SoXuiEBrXBKtS1wpQI0=',
+        ),
+    ),
+);
+

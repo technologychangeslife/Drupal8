@@ -1,0 +1,35 @@
+{% extends 'paragraph.html.twig' %}
+{% block content %}
+  <div class="field--body--wrapper">
+    {{ content.field_body }}
+    {{ content.field_social_icon_links }}
+  </div>
+  <div class="extra-content--wrapper">
+    {% if subtype == 'image-gallery' %}
+      {{ content.field_image_gallery }}
+    {% elseif subtype == 'video' %}
+      <div class="video-embed-5050">
+        <a href="javascript:void(0)" data-open="video-modal-{{ paragraph.id() }}">
+          {{ content.field_image_video }}
+          {% if title_string %}
+            <span class="video-title">{{ title_string }}</span>
+          {% endif %}
+        </a>
+        <div class="reveal large" id="video-modal-{{ paragraph.id() }}" data-reveal data-reset-on-close="true">
+          <button class="close-button" data-close aria-label="Close video" type="button">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          {{ content.field_video }}
+        </div>
+      </div>
+    {% else %}
+      <div class="group-statistic">
+        <div class="stat-align">
+          {{ content.field_stat_title }}
+          {{ content.field_stat_number }}
+          {{ content.field_stat_label }}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

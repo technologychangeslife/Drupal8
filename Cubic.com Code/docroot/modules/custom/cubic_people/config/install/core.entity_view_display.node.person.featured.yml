@@ -1,0 +1,101 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.featured
+    - field.field.node.person.body
+    - field.field.node.person.field_aside_paragraphs
+    - field.field.node.person.field_business
+    - field.field.node.person.field_contained_paragraphs
+    - field.field.node.person.field_first_name
+    - field.field.node.person.field_last_name
+    - field.field.node.person.field_lower_paragraphs
+    - field.field.node.person.field_main_column
+    - field.field.node.person.field_metadata
+    - field.field.node.person.field_paragraphs
+    - field.field.node.person.field_person_facebook_link
+    - field.field.node.person.field_person_linkedin_link
+    - field.field.node.person.field_person_twitter_link
+    - field.field.node.person.field_photo
+    - field.field.node.person.field_region
+    - field.field.node.person.field_role
+    - field.field.node.person.field_title
+    - image.style.large
+    - node.type.person
+  module:
+    - image
+    - link
+    - user
+id: node.person.featured
+targetEntityType: node
+bundle: person
+mode: featured
+content:
+  field_person_facebook_link:
+    weight: 2
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_person_linkedin_link:
+    weight: 3
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_person_twitter_link:
+    weight: 4
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_photo:
+    type: image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: large
+      image_link: ''
+    third_party_settings: {  }
+  field_title:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  body: true
+  field_aside_paragraphs: true
+  field_business: true
+  field_contained_paragraphs: true
+  field_first_name: true
+  field_last_name: true
+  field_lower_paragraphs: true
+  field_main_column: true
+  field_metadata: true
+  field_paragraphs: true
+  field_region: true
+  field_role: true
+  links: true
+  workbench_moderation_control: true

@@ -1,0 +1,60 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display a paragraph.
+ */
+#}
+{%
+    set classes = [
+    'paragraph',
+    'paragraph--type--' ~ paragraph.bundle|clean_class,
+    view_mode ? 'paragraph--view-mode--' ~ view_mode|clean_class,
+    item_count_class,
+    has_body_class,
+]
+%}
+<span class="inview-marker"></span>
+
+{% block paragraph %}
+    <div{{ attributes.addClass(classes) }}>
+        {% if anchor_id %}
+            <a name="{{ anchor_id }}" id="{{ anchor_id }}" class="paragraph__anchor"></a>
+        {% endif %}
+        {% block content %}
+            {{ content.field_milestone_year }}
+            <div class="field--body--wrapper">
+                {{ content.field_body }}
+            </div>
+            <div class="extra-content--wrapper">
+                {% if subtype == 'image-gallery' %}
+                    <a href="javascript:void(0)" data-open="video-modal-{{ paragraph.id() }}">
+                        {{ content.field_image_gallery }}
+                    </a>
+                    <div class="reveal large" id="video-modal-{{ paragraph.id() }}" data-reveal data-reset-on-close="true">
+                        <button class="close-button" data-close aria-label="Close video" type="button">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ full_image }}
+                    </div>
+                {% elseif subtype == 'video' %}
+                    <div class="video-embed-5050">
+                        <a href="javascript:void(0)" data-open="video-modal-{{ paragraph.id() }}">
+                            {{ content.field_image_video }}
+                            {% if title_string %}
+                                <span class="video-title">{{ title_string }}</span>
+                            {% endif %}
+                        </a>
+                        <div class="reveal large" id="video-modal-{{ paragraph.id() }}" data-reveal data-reset-on-close="true">
+                            <button class="close-button" data-close aria-label="Close video" type="button">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {{ content.field_video }}
+                        </div>
+                    </div>
+                {% elseif subtype == 'image-gallery-link' %}
+                    {{ content.field_image_gallery }}
+                {% endif %}
+            </div>
+        {% endblock %}
+    </div>
+{% endblock paragraph %}

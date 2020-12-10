@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: event_recap_slider_item
+label: 'Event Recap Slider Item'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

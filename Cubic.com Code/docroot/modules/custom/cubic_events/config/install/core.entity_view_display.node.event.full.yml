@@ -1,0 +1,63 @@
+langcode: en
+status: false
+dependencies:
+  config:
+    - core.entity_view_mode.node.full
+    - field.field.node.event.field_additional_information
+    - field.field.node.event.field_brand
+    - field.field.node.event.field_business
+    - field.field.node.event.field_date
+    - field.field.node.event.field_event_type
+    - field.field.node.event.field_hero_image
+    - field.field.node.event.field_location
+    - field.field.node.event.field_metadata
+    - field.field.node.event.field_paragraphs
+    - field.field.node.event.field_region
+    - node.type.event
+  module:
+    - datetime_range
+    - entity_reference_revisions
+    - user
+id: node.event.full
+targetEntityType: node
+bundle: event
+mode: full
+content:
+  field_date:
+    weight: 2
+    label: hidden
+    settings:
+      separator: '-'
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: daterange_default
+    region: content
+  field_paragraphs:
+    weight: 4
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  workbench_moderation_control:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_additional_information: true
+  field_brand: true
+  field_business: true
+  field_event_type: true
+  field_hero_image: true
+  field_location: true
+  field_metadata: true
+  field_region: true

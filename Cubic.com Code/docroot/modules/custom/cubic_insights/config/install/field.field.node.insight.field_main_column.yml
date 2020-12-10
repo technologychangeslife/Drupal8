@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_main_column
+    - node.type.insight
+  module:
+    - text
+id: node.insight.field_main_column
+field_name: field_main_column
+entity_type: node
+bundle: insight
+label: 'Main Column'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

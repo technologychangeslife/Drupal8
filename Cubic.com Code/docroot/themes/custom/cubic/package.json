@@ -1,0 +1,23 @@
+{
+  "name": "cubic",
+  "version": "0.0.0",
+  "devDependencies": {
+    "grunt": "^1.0.3",
+    "grunt-browser-sync": "^2.2.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-cssmin": "^1.0.1",
+    "grunt-contrib-jshint": "^1.1.0",
+    "grunt-contrib-uglify": "^1.0.1",
+    "grunt-contrib-watch": "^1.1.0",
+    "grunt-curl": "^2.4.1",
+    "grunt-postcss": "^0.8.0",
+    "grunt-sass": "^3.1.0",
+    "grunt-sass-globbing": "^1.5.1",
+    "grunt-sass-lint": "^0.2.4",
+    "grunt-svgstore": "^1.0.0",
+    "matchdep": "^1.0.1",
+    "node-sass": "^4.13.1",
+    "postcss-cssnext": "^2.9.0"
+  }
+}

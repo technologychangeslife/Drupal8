@@ -1,0 +1,87 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.post.body
+    - field.field.node.post.field_aside_paragraphs
+    - field.field.node.post.field_brand
+    - field.field.node.post.field_business
+    - field.field.node.post.field_contain_header_image
+    - field.field.node.post.field_contained_paragraphs
+    - field.field.node.post.field_external_link
+    - field.field.node.post.field_hero_image
+    - field.field.node.post.field_lower_paragraphs
+    - field.field.node.post.field_main_column
+    - field.field.node.post.field_metadata
+    - field.field.node.post.field_paragraphs
+    - field.field.node.post.field_post_type
+    - field.field.node.post.field_region
+    - image.style.large
+    - node.type.post
+  module:
+    - image
+    - smart_trim
+    - user
+id: node.post.teaser
+targetEntityType: node
+bundle: post
+mode: teaser
+content:
+  body:
+    label: hidden
+    type: smart_trim
+    weight: 3
+    settings:
+      trim_length: 250
+      trim_type: chars
+      trim_suffix: ''
+      wrap_class: trimmed
+      more_text: More
+      more_class: more-link
+      summary_handler: trim
+      trim_options:
+        text: true
+        trim_zero: false
+      wrap_output: false
+      more_link: false
+    third_party_settings: {  }
+    region: content
+  field_business:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_hero_image:
+    type: image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: large
+      image_link: ''
+    third_party_settings: {  }
+  field_region:
+    type: entity_reference_label
+    weight: 2
+    region: content
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+hidden:
+  field_aside_paragraphs: true
+  field_brand: true
+  field_contain_header_image: true
+  field_contained_paragraphs: true
+  field_external_link: true
+  field_lower_paragraphs: true
+  field_main_column: true
+  field_metadata: true
+  field_paragraphs: true
+  field_post_type: true
+  links: true
+  workbench_moderation_control: true

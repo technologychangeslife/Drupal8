@@ -1,0 +1,8 @@
+cubic_charts_doughnut:
+  version: VERSION
+  js:
+    js/chart.min.js: {}
+    js/chart_config.js: {}
+  dependencies:
+    - core/drupalSettings
+

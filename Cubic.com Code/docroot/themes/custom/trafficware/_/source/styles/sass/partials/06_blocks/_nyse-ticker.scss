@@ -1,0 +1,53 @@
+// sass-lint:disable force-element-nesting
+.block.block-cubic-nyse-ticker {
+  color: $white;
+  font-size: rem-calc(13);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+
+  .amount,
+  .nyse-ticker-label {
+    margin-right: 0.5em;
+  }
+
+  .currency {
+    display: inline-block;
+    font-size: 0.75em;
+    line-height: 1.4em;
+    padding-right: rem-calc(2);
+    vertical-align: text-top;
+  }
+
+  .change {
+    color: $cubic-green;
+
+    &::before {
+      content: '↑';
+      display: inline-block;
+    }
+
+    &.change-down {
+      color: $cubic-red;
+
+      .section-color-red & {
+        color: darken($cubic-red, 10%);
+      }
+
+      &::before {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .path-frontpage & {
+    position: absolute;
+    right: rem-calc(20);
+    top: rem-calc(20);
+    z-index: 3;
+
+    @include breakpoint(large) {
+      right: rem-calc(45);
+      top: rem-calc(75);
+    }
+  }
+}

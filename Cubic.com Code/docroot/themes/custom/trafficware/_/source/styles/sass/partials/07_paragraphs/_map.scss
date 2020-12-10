@@ -1,0 +1,9 @@
+.paragraph--type--map {
+  background-color: $color-footer-bg;
+
+  .field--name-field-map-embed-code {
+    iframe {
+      display: block;
+    }
+  }
+}

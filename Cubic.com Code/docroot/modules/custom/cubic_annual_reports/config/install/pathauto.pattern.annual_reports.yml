@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: annual_reports
+label: 'Annual Reports'
+type: 'canonical_entities:node'
+pattern: 'investor-relations/financials/[node:title]'
+selection_criteria:
+  1af47b68-f973-4090-b0ea-5e7ce45878be:
+    id: node_type
+    bundles:
+      annual_report: annual_report
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 1af47b68-f973-4090-b0ea-5e7ce45878be
+selection_logic: and
+weight: -5
+relationships: {  }

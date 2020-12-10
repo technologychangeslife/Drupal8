@@ -1,0 +1,179 @@
+// sass-lint:disable force-element-nesting
+.page-node-type-event {
+  .block-page-title-block {
+    .page-title-content {
+      .event-info {
+        width: 100%;
+      }
+
+      .event-type {
+        font-size: rem-calc(12);
+        margin-bottom: rem-calc(-20);
+        position: relative;
+        text-transform: uppercase;
+
+        @include breakpoint(medium) {
+          position: absolute;
+          right: rem-calc(60);
+        }
+      }
+
+      .event-details {
+        flex-direction: column;
+        margin-left: rem-calc(-40);
+        margin-right: rem-calc(-40);
+        max-width: 100%;
+
+        @include breakpoint(medium) {
+          display: flex;
+          font-size: rem-calc(18);
+          max-width: 90%;
+          margin-bottom: rem-calc(-20);
+        }
+
+        @include breakpoint (large) {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+
+        @include breakpoint(xlarge) {
+          flex-wrap: nowrap;
+        }
+
+        &__item {
+          flex: 1 1 auto;
+          padding: 0 rem-calc(40);
+          @include breakpoint(xxlarge) {
+            flex-shrink: 0;
+          }
+
+          &:last-child {
+            flex-shrink: 1;
+          }
+
+          a {
+            color: inherit;
+            text-decoration: underline;
+
+            @include hovered {
+              text-decoration: none;
+            }
+          }
+
+          .icon {
+            backface-visibility: hidden;
+            flex-shrink: 0;
+            height: rem-calc(22);
+            margin-right: rem-calc(24);
+            width: rem-calc(22);
+
+            @include breakpoint(medium) {
+              fill: $white;
+            }
+          }
+        }
+
+        .field--name-field-date,
+        .field--name-field-location,
+        .field--name-field-additional-information {
+          display: flex;
+        }
+
+        .field--name-field-location {
+          .country {
+            display: none;
+          }
+
+          .icon {
+            transition: transform $transition-time;
+          }
+
+          @include hovered {
+            .icon {
+              transform: scale(1.2);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .paragraphs-jump-links {
+    background-color: $cubic-blue;
+    box-shadow: 0 1px 0 0 transparent;
+    font-family: $font-bold;
+    text-transform: uppercase;
+    transition: box-shadow $transition-time;
+
+    &.fixed {
+      box-shadow: 0 1px 0 0 $white;
+
+      @include breakpoint(large) {
+        left: 0;
+        position: fixed;
+        width: 100%;
+        z-index: 100;
+      }
+    }
+
+    ul {
+      &.jump-links-list {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 0;
+        padding-bottom: rem-calc(17);
+        padding-left: map-get($paragraph-padding, small);
+        padding-right: map-get($paragraph-padding, small);
+        padding-top: rem-calc(17);
+
+        @include breakpoint(medium) {
+          padding-left: map-get($paragraph-padding, medium);
+          padding-right: map-get($paragraph-padding, medium);
+        }
+
+        @include breakpoint(large) {
+          padding-left: map-get($paragraph-padding, large);
+          padding-right: map-get($paragraph-padding, large);
+        }
+
+        > li {
+          margin-bottom: 0;
+          margin-right: map-get($paragraph-padding, medium);
+          padding: 0;
+
+          @include breakpoint(large) {
+            margin-right: map-get($paragraph-padding, large);
+          }
+
+          &:last-child {
+            margin-right: 0;
+          }
+
+          &::before {
+            display: none !important;
+          }
+        }
+      }
+    }
+
+    a {
+      @extend %link-noline;
+      color: $white;
+      display: block;
+      font-size: rem-calc(14);
+      line-height: 1.15em;
+      padding-top: rem-calc(15);
+      padding-bottom: rem-calc(15);
+    }
+  }
+
+  .field--name-field-paragraphs {
+    > .field__item {
+      > .paragraph {
+        > .paragraph__anchor {
+          top: rem-calc(-80) !important;
+        }
+      }
+    }
+  }
+}

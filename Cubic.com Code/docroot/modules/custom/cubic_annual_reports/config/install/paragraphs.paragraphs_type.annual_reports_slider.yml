@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: annual_reports_slider
+label: 'Reports Slider'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

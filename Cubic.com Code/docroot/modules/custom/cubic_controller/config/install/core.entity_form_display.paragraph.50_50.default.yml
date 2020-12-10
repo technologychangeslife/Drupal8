@@ -1,0 +1,184 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.image_browser
+    - field.field.paragraph.50_50.field_body
+    - field.field.paragraph.50_50.field_contain
+    - field.field.paragraph.50_50.field_image_gallery
+    - field.field.paragraph.50_50.field_image_link
+    - field.field.paragraph.50_50.field_image_video
+    - field.field.paragraph.50_50.field_social_icon_links
+    - field.field.paragraph.50_50.field_stat_label
+    - field.field.paragraph.50_50.field_stat_number
+    - field.field.paragraph.50_50.field_stat_title
+    - field.field.paragraph.50_50.field_title
+    - field.field.paragraph.50_50.field_video
+    - paragraphs.paragraphs_type.50_50
+  module:
+    - entity_browser
+    - field_group
+    - link_attributes
+    - paragraphs
+    - text
+    - video_embed_field
+third_party_settings:
+  field_group:
+    group_video:
+      children:
+        - field_video
+        - field_image_video
+      parent_name: ''
+      weight: 5
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: false
+        required_fields: true
+        description: ''
+        direction: vertical
+      label: Video
+      region: content
+    group_statistics:
+      children:
+        - field_stat_title
+        - field_stat_number
+        - field_stat_label
+      parent_name: ''
+      weight: 6
+      format_type: details
+      format_settings:
+        id: ''
+        classes: ''
+        open: false
+        required_fields: true
+        description: ''
+        direction: vertical
+      label: Statistics
+      region: content
+id: paragraph.50_50.default
+targetEntityType: paragraph
+bundle: '50_50'
+mode: default
+content:
+  field_body:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_contain:
+    weight: 4
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_image_gallery:
+    type: entity_browser_file
+    weight: 2
+    region: content
+    settings:
+      entity_browser: image_browser
+      field_widget_remove: true
+      open: true
+      selection_mode: selection_append
+      preview_image_style: thumbnail
+      field_widget_edit: true
+      view_mode: default
+      field_widget_replace: false
+    third_party_settings: {  }
+  field_image_link:
+    weight: 3
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+      enabled_attributes:
+        target: true
+        id: false
+        name: false
+        rel: false
+        class: false
+        accesskey: false
+        aria-label: false
+    third_party_settings: {  }
+    type: link_attributes
+    region: content
+  field_image_video:
+    type: entity_browser_file
+    weight: 2
+    region: content
+    settings:
+      entity_browser: image_browser
+      field_widget_remove: true
+      open: true
+      selection_mode: selection_append
+      preview_image_style: thumbnail
+      field_widget_edit: true
+      view_mode: default
+      field_widget_replace: false
+    third_party_settings: {  }
+  field_social_icon_links:
+    type: paragraphs
+    weight: 9
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: _none
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: '0'
+    third_party_settings: {  }
+    region: content
+  field_stat_label:
+    weight: 8
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_stat_number:
+    weight: 7
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_stat_title:
+    weight: 6
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_video:
+    weight: 1
+    settings: {  }
+    third_party_settings: {  }
+    type: video_embed_field_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

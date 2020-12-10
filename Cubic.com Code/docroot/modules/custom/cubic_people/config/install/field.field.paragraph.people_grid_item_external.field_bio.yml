@@ -1,0 +1,20 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_bio
+    - paragraphs.paragraphs_type.people_grid_item_external
+  module:
+    - text
+id: paragraph.people_grid_item_external.field_bio
+field_name: field_bio
+entity_type: paragraph
+bundle: people_grid_item_external
+label: Bio
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: text_long

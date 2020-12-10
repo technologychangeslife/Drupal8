@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: statistic_slider_item
+label: 'Statistic Slider Item'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

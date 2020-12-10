@@ -1,0 +1,121 @@
+// sass-lint:disable force-pseudo-nesting
+// sass-lint:disable nesting-depth
+// sass-lint:disable force-element-nesting
+// sass-lint:disable force-attribute-nesting
+
+.paragraph--type--callouts {
+  background: $color-callout-bg;
+  padding: rem-calc(40);
+
+  > .paragraph-title {
+    margin: 0;
+  }
+
+  .field--name-field-title {
+    @include flex-grid-row;
+    padding-bottom: 1.5rem;
+    padding-top: 1.5rem;
+
+    .field__item {
+      @include flex-grid-column(12);
+      text-align: center;
+    }
+  }
+
+  .field--name-field-callout {
+    @include flex-grid-row(null, 'expand');
+    margin-top: rem-calc(40);
+
+    @include breakpoint(medium) {
+      justify-content: center;
+    }
+
+    .field__item {
+      @include flex-grid-column(100%);
+      margin-bottom: 2rem;
+
+      @include breakpoint(medium) {
+        max-width: 50%;
+      }
+
+      @include breakpoint(large) {
+        max-width: 25%;
+      }
+
+      &__inner {
+        background: $white;
+        padding: 1em;
+        border-top: 10px solid $color-section-default;
+
+        @include breakpoint(large) {
+          height: 100%;
+        }
+      }
+
+      a {
+        font-family: $font-bold;
+        @extend %link-w-arrow;
+
+        &:hover {
+          color: $cubic-teal;
+          text-decoration: none;
+        }
+
+      }
+    }
+
+    &.contains-2 {
+      @include breakpoint(large) {
+        .field__item {
+          max-width: 50%;
+        }
+      }
+    }
+
+    &.contains-1,
+    &.contains-3 {
+      @include breakpoint(large) {
+        .field__item {
+          max-width: 33.333%;
+        }
+      }
+    }
+  }
+
+  @each $color in ($section-colors) {
+    .section-color-#{$color} & {
+      .field--name-field-callout {
+        .field__item {
+          &__inner {
+            @extend %section-#{$color}-border-top;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Top-level Callouts in main Paragraphs fields.
+.field--type-entity-reference-revisions[class*='paragraphs'] {
+  > .field__item {
+    > .paragraph--type--callouts {
+      // sass-lint:disable force-pseudo-nesting
+      @include anonymous('.advanced-animations') {
+        @include has-js {
+          .field--name-field-callout {
+            > .field__item {
+              opacity: 0;
+              transform: translateY(50%);
+              transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+              &.in {
+                opacity: 1;
+                transform: translateY(0);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

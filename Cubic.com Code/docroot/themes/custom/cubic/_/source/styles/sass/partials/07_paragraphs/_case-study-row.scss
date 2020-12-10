@@ -1,0 +1,152 @@
+// sass-lint:disable force-pseudo-nesting
+// sass-lint:disable nesting-depth
+// sass-lint:disable force-element-nesting
+// sass-lint:disable force-attribute-nesting
+
+.paragraph--type--case-study-row {
+  background-color: $color-case-study-row-bg;
+  padding: rem-calc(30 16);
+  position: relative;
+
+  @include breakpoint(medium) {
+    @include flex-grid-row($behavior: nest);
+    padding: rem-calc(60 40);
+
+    > * {
+      @include flex-grid-column($columns: expand);
+    }
+  }
+
+  > .field--name-field-title {
+    @include breakpoint(medium) {
+      @include flex-grid-size($columns: 1 of 3);
+    }
+
+    @include breakpoint(large) {
+      @include flex-grid-size($columns: 1 of 4);
+    }
+  }
+
+  aside {
+    color: $text-color;
+
+    > .field--name-field-sub-points {
+      @include flex-grid-row($behavior: nest, $size: 100%);
+      color: inherit;
+      margin-bottom: rem-calc(-20);
+      margin-top: rem-calc(10);
+
+      > .field__item {
+        @include flex-grid-column($columns: 100%);
+        margin-bottom: rem-calc(20);
+
+        @include breakpoint(medium) {
+          @include flex-grid-size($columns: 50%);
+        }
+
+        @include breakpoint(large) {
+          @include flex-grid-size($columns: 25%);
+        }
+      }
+
+      .paragraph--type--basic-text {
+        .field--name-field-title {
+          font-family: $font-bold;
+          margin-bottom: rem-calc(10);
+        }
+
+        .field--name-field-body {
+          max-width: none;
+        }
+      }
+    }
+
+    > .field--name-field-cta {
+      margin-top: rem-calc(40);
+
+      > a {
+        @extend %button-cta-inverse;
+      }
+    }
+  }
+
+  &.has-background {
+    background-color: transparent;
+    background-position: center;
+    background-size: cover;
+    color: $white;
+    overflow: hidden;
+
+    > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    &::before {
+      @include abs-stretch;
+      background-color: transparentize($black, 0.2);
+      content: '';
+      transition: background-color $transition-time;
+      z-index: 1;
+
+      @include anonymous {
+        background-color: $black;
+      }
+    }
+
+    > img {
+      height: 100%;
+      left: 0;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 0;
+
+      @include anonymous {
+        @include has-js {
+          display: none;
+        }
+      }
+    }
+
+    p {
+      color: inherit;
+    }
+
+    aside {
+      color: inherit;
+
+      > .field--name-field-cta {
+        > a {
+          @extend %button-cta;
+        }
+      }
+    }
+
+    &.parallax-processed {
+      @include has-js {
+        &::before {
+          background-color: transparentize($black, 0.2);
+        }
+      }
+    }
+  }
+}
+
+// Top-level Case Study Rows in main Paragraphs fields.
+.field--type-entity-reference-revisions[class*='paragraphs'] {
+  > .field__item {
+    > .paragraph--type--case-study-row {
+      // sass-lint:disable force-pseudo-nesting
+      @include anonymous('.advanced-animations') {
+        @include has-js {
+          > .field--name-field-title,
+          aside > * {
+            opacity: 0;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+{% extends 'paragraph.html.twig' %}
+{% block content %}
+  {{ content.field_title }}
+  {% if content.field_salesforce_embed_code|render|striptags|trim is not empty %}
+    <a href="#" class="request-link">
+      {{ 'Request a Meeting'|t }}
+      <svg class="icon icon--plus">
+        <use xlink:href="#icon-plus"></use>
+      </svg>
+    </a>
+    <div class="meeting-form">
+      <div class="meeting-form__wrapper">
+        <h4 class="meeting-form__title">{{ 'Request a Meeting'|t }}</h4>
+        <svg class="icon icon--close"><use xlink:href="#icon-close"></use></svg>
+        {{ content.field_salesforce_embed_code }}
+      </div>
+    </div>
+  {% endif %}
+  {{ content|without('field_salesforce_embed_code', 'field_title') }}
+{% endblock %}

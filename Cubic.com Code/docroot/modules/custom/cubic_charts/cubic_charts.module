@@ -1,0 +1,167 @@
+<?php
+
+/**
+ * @file
+ * Contains cubic_charts.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+define('CUBIC_CHARTS_FIELDNAME_WHITELIST', serialize(array('body', 'field_body')));
+
+/**
+ * Implements hook_help().
+ */
+function cubic_charts_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the cubic_nyse_ticker module.
+    case 'help.page.cubic_charts':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Custom module that provides a custom variation loosely based on Drupal Tokens to display interactive charts inline.') . '</p>';
+      $output .= '<h3>' . t('How to use') . '</h3>';
+      $output .= '<p>' . t('Construct your token using the following formula: ((cubic-chart:dougnut^[the-id_you desire-for-the-chart]^[the-config-data])).') . '</p>';
+      $output .= '<ul>';
+      $output .= '<li>'. t('Enclose the tokens with double parenthesis.') . '</li>';
+      $output .= '<li>'. t('Use a unique ID for each chart.') . '</li>';
+      $output .= '<li>'. t('Surround the chart with your desired HTML if it needs a title or some copy.') . '</li>';
+      $output .= '</ul>';
+      $output .= '<h3>' . t('Example') . '</h3>';
+      $output .= '<h4>' . t('Before') . '</h4>';
+      $output .= '<code>&lt;h1&gt;FY2016 Sales&lt;/h1&gt;<br />
+&lt;p&gt;&lt;strong&gt;$1.462&lt;/strong&gt; Billion&lt;/p&gt;<br />
+&lt;canvas id=&quot;chart-sales&quot;&gt;&lt;/canvas&gt;
+  &lt;script&gt;<pre>
+  var ctx = document.getElementById("chart-sales");
+
+  data = {
+    datasets: [{
+      data: [40, 27, 33, 0, 0],
+      backgroundColor: [
+        \'#828282\',
+        \'#a8a8a8\',
+        \'#c1c1c1\',
+        \'#3f6caf\',
+        \'#8bb047\'
+      ],
+    },
+    {
+      data: [0, 0, 0, 45, 55],
+      backgroundColor: [
+        \'#828282\',
+        \'#a8a8a8\',
+        \'#c1c1c1\',
+        \'#3f6caf\',
+        \'#8bb047\'
+      ],
+    }],
+    labels: [
+      \'Transportation Systems\',
+      \'CDG Services\',
+      \'CDG Systems\',
+      \'Products\',
+      \'Services\'
+    ]
+  };&lt;/script&gt;</pre></code>';
+      $output .= '<h4>' . t('After') . '</h4>';
+      $output .= "<code>&lt;h1&gt;FY2016 Sales&lt;/h1&gt;<br />
+&lt;p&gt;&lt;strong&gt;$1.462&lt;/strong&gt; Billion&lt;/p&gt;<br />
+((cubic-chart:doughnut^chart-sales^{datasets:[{data:[40, 27, 33, 0, 0],backgroundColor: ['#828282','#a8a8a8','#c1c1c1','#3f6caf','#8bb047'],},{data: [0, 0, 0, 45, 55],backgroundColor:['#828282','#a8a8a8','#c1c1c1','#3f6caf','#8bb047'],}],labels: ['Transportation Systems','CDG Services','CDG Systems','Products','Services']}))</code>";
+      $output .= '<h3>' . t('Notes') . '</h3>';
+      $output .= '<p>' . t('This module has been written to support the addition of chart-types other than doughnut without major refactoring. Please see %func to define more chart-type tokens .', array('%func' => '_cubic_charts_cubictoken_info()')) . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Custom helper function that defines 'cubictokens'
+ * cubictokens are a bit like Drupal tokens but they can be long enough to hold substantial amounts of configuration
+ */
+function _cubic_charts_cubictoken_info() {
+  // Cubic Chart type cubictokens
+  $info['doughnut'] = array(
+    'name' => t("Doughnut"),
+    'description' => t("Doughnut shaped pie chart."),
+  );
+  return $info;
+}
+
+/**
+ * Returns the correct build array for each cubictoken.
+ */
+function _cubic_charts_cubictokens($token) {
+  // Split the token into token_name and parameters
+  $token_split = explode('^', $token);
+  // Split the token into 3 parts
+  $token_name_part = $token_split[0];
+  $div_id = $token_split[1];
+  $token_parameters = $token_split[2];
+  // Split the token_name_part a bit more
+  $token_name_split = explode(':', $token_name_part);
+  $token_name = $token_name_split[1];
+  $token_parameters = substr($token_parameters, 0, -2); // drop the '))'
+  switch ($token_name) {
+    case 'doughnut':
+      $build = array();
+      $build['#theme'] = 'cubic_charts_'. $token_name;
+      $build['#id'] = $div_id;
+      $build['#attached']['library'] = array('cubic_charts/cubic_charts_'. $token_name);
+      $build['#attached']['drupalSettings']['cubic_charts']['cubic_charts_'. $token_name]['div_id'] = array($div_id => $div_id);
+      $build['#attached']['drupalSettings']['cubic_charts']['cubic_charts_'. $token_name]['config'] = array($div_id => $token_parameters);
+      return \Drupal::service('renderer')->render($build);
+  }
+  return FALSE;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cubic_charts_theme($existing, $type, $theme, $path) {
+  $return = array();
+  $cubictokens = _cubic_charts_cubictoken_info();
+  foreach ($cubictokens as $id => $cubictoken) {
+    $return['cubic_charts_'. $id] = array(
+      'variables' => array(
+        'id' => NULL,
+      ),
+    );
+  }
+  return $return;
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function cubic_charts_preprocess_field(array &$vars, $hook) {
+  if (in_array($vars['element']['#field_name'], unserialize(CUBIC_CHARTS_FIELDNAME_WHITELIST))) {
+    // Only check white-listed fields
+    if (array_key_exists('#formatter', $vars['element']) && $vars['element']['#formatter'] !== 'smart_trim') {
+      foreach ($vars['items'] as $j => $item) {
+        // Transform the inline chart-tokens
+        $output = $item['content']['#text'];
+        // Set variables to sniff out our cubictokens
+        $needle_start = '((cubic-chart:';
+        $needle_end = '))';
+        $limit = substr_count($output, $needle_start);
+        $starting_pos = strpos($output, $needle_start);
+        for ($i = 0; $i < $limit; $i++) {
+          $insertion_pos = strpos($output, $needle_end, ($starting_pos + strlen($needle_start)));
+          $token = substr($output, $starting_pos, ($insertion_pos - $starting_pos) + strlen($needle_end));
+          // Build an array of tokens found
+          $tokens[$i] = $token;
+          $starting_pos = strpos($output, $needle_start, (strpos($output, $token) + strlen($token)));
+        }
+        // Replace each token with the appropriate theme function output
+        if (isset($tokens) && count($tokens)) {
+          foreach ($tokens as $token) {
+            $replacement = _cubic_charts_cubictokens($token);
+            $output = str_replace($token, $replacement, $output);
+          }
+        }
+        $vars['items'][$j]['content']['#text'] = $output;
+      }
+    }
+  }
+}

@@ -1,0 +1,65 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.person.body
+    - field.field.node.person.field_aside_paragraphs
+    - field.field.node.person.field_business
+    - field.field.node.person.field_first_name
+    - field.field.node.person.field_last_name
+    - field.field.node.person.field_lower_paragraphs
+    - field.field.node.person.field_main_column
+    - field.field.node.person.field_metadata
+    - field.field.node.person.field_paragraphs
+    - field.field.node.person.field_person_facebook_link
+    - field.field.node.person.field_person_linkedin_link
+    - field.field.node.person.field_person_twitter_link
+    - field.field.node.person.field_photo
+    - field.field.node.person.field_region
+    - field.field.node.person.field_role
+    - field.field.node.person.field_title
+    - image.style.headshot_small
+    - node.type.person
+  module:
+    - image
+    - user
+id: node.person.teaser
+targetEntityType: node
+bundle: person
+mode: teaser
+content:
+  field_photo:
+    type: image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: headshot_small
+      image_link: ''
+    third_party_settings: {  }
+  field_title:
+    type: string
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden:
+  body: true
+  field_aside_paragraphs: true
+  field_business: true
+  field_first_name: true
+  field_last_name: true
+  field_lower_paragraphs: true
+  field_main_column: true
+  field_metadata: true
+  field_paragraphs: true
+  field_person_facebook_link: true
+  field_person_linkedin_link: true
+  field_person_twitter_link: true
+  field_region: true
+  field_role: true
+  links: true
+  workbench_moderation_control: true

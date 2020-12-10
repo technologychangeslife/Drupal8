@@ -1,0 +1,132 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_testimonial_slider_items
+    - paragraphs.paragraphs_type.testimonial_slider
+    - paragraphs.paragraphs_type.testimonial_slider_item
+  module:
+    - entity_reference_revisions
+id: paragraph.testimonial_slider.field_testimonial_slider_items
+field_name: field_testimonial_slider_items
+entity_type: paragraph
+bundle: testimonial_slider
+label: 'Testimonial Slider Items'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      testimonial_slider_item: testimonial_slider_item
+    target_bundles_drag_drop:
+      testimonial_slider:
+        weight: 36
+        enabled: false
+      '50_50':
+        weight: 37
+        enabled: false
+      accordion:
+        weight: 38
+        enabled: false
+      accordions:
+        weight: 39
+        enabled: false
+      annual_reports_slider:
+        weight: 40
+        enabled: false
+      basic_image:
+        weight: 41
+        enabled: false
+      basic_text:
+        weight: 42
+        enabled: false
+      callouts:
+        weight: 43
+        enabled: false
+      case_study_row:
+        weight: 44
+        enabled: false
+      cross_link:
+        weight: 45
+        enabled: false
+      cross_links:
+        weight: 46
+        enabled: false
+      divider_bar:
+        weight: 47
+        enabled: false
+      event_recap:
+        weight: 48
+        enabled: false
+      event_recap_slider_item:
+        weight: 49
+        enabled: false
+      event_schedule:
+        weight: 50
+        enabled: false
+      event_schedule_item:
+        weight: 51
+        enabled: false
+      grid_of_products:
+        weight: 52
+        enabled: false
+      grid_of_success_stories:
+        weight: 53
+        enabled: false
+      image_and_menu:
+        weight: 54
+        enabled: false
+      image_and_text_slider:
+        weight: 55
+        enabled: false
+      image_grid_slider:
+        weight: 56
+        enabled: false
+      image_text_slider_item:
+        weight: 57
+        enabled: false
+      map:
+        weight: 58
+        enabled: false
+      people_grid:
+        weight: 59
+        enabled: false
+      people_grid_item:
+        weight: 60
+        enabled: false
+      people_grid_item_external:
+        weight: 61
+        enabled: false
+      salesforce_form:
+        weight: 62
+        enabled: false
+      social_icon_link:
+        weight: 63
+        enabled: false
+      social_icon_links:
+        weight: 64
+        enabled: false
+      solutions_product:
+        weight: 65
+        enabled: false
+      tab:
+        weight: 66
+        enabled: false
+      tabs:
+        weight: 67
+        enabled: false
+      taggbox_social_feed:
+        weight: 68
+        enabled: false
+      testimonial_slider_item:
+        enabled: true
+        weight: 69
+      webform:
+        weight: 70
+        enabled: false
+field_type: entity_reference_revisions

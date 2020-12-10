@@ -1,0 +1,6 @@
+bundle: cubic
+excluded:
+  - context.context.simple_header
+  - context.context.tall_header
+  - views.view.workbench_current_user
+required: true

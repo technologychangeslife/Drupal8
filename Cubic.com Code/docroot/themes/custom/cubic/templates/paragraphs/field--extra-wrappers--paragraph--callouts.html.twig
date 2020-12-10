@@ -1,0 +1,34 @@
+{# This kind of extend and override doesn't work. #}
+{#{% extends 'field--extra-wrappers.html.twig' %}#}
+{#{% set attributes = attributes.addAttribute('data-equalizer').addAttribute('data-equalize-on', 'medium') %}#}
+{#{% set item_inner_attributes = create_attribute().addAttribute('data-equalizer-watch') %}#}
+{#
+/**
+ * @file
+ * Theme override for a field.
+ */
+#}
+{%
+  set classes = [
+    'field',
+    'field--name-' ~ field_name|clean_class,
+    'field--type-' ~ field_type|clean_class,
+    'field--label-' ~ label_display,
+    'contains-' ~ items|length
+  ]
+%}
+{%
+  set title_classes = [
+    'field__label',
+    label_display == 'visually_hidden' ? 'visually-hidden',
+  ]
+%}
+<div{{ attributes.addClass(classes, 'field__items') }}>
+  {% for item in items %}
+    <div{{ item.attributes.addClass('field__item') }}>
+      <div class="field__item__inner">
+        {{ item.content }}
+      </div>
+    </div>
+  {% endfor %}
+</div>

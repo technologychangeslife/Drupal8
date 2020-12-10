@@ -1,0 +1,53 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_cross_links
+    - paragraphs.paragraphs_type.cross_link
+    - paragraphs.paragraphs_type.cross_links
+  module:
+    - entity_reference_revisions
+id: paragraph.cross_links.field_cross_links
+field_name: field_cross_links
+entity_type: paragraph
+bundle: cross_links
+label: 'Cross Links'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      cross_link: cross_link
+    target_bundles_drag_drop:
+      basic_image:
+        weight: 10
+        enabled: false
+      basic_text:
+        weight: 11
+        enabled: false
+      callouts:
+        weight: 12
+        enabled: false
+      cross_link:
+        enabled: true
+        weight: 13
+      cross_links:
+        weight: 14
+        enabled: false
+      divider_bar:
+        weight: 15
+        enabled: false
+      grid_of_products:
+        weight: 16
+        enabled: false
+      grid_of_success_stories:
+        weight: 17
+        enabled: false
+      solutions_product:
+        weight: 18
+        enabled: false
+field_type: entity_reference_revisions

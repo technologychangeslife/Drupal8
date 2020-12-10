@@ -1,0 +1,37 @@
+<?php
+
+/**
+ * @file
+ * Contains cubic_timeline.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function cubic_timeline_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the cubic_timeline module.
+    case 'help.page.cubic_timeline':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Custom module that provides a custom block to display an interactive timeline.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cubic_timeline_theme($existing, $type, $theme, $path) {
+
+  return array(
+    // Themes interactive timeline
+    'cubic_timeline_block' => array(
+      'variables' => array(),
+    ),
+  );
+}

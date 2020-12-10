@@ -1,0 +1,84 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_image_text_slider_items
+    - paragraphs.paragraphs_type.image_and_text_slider
+    - paragraphs.paragraphs_type.image_text_slider_item
+  module:
+    - entity_reference_revisions
+id: paragraph.image_and_text_slider.field_image_text_slider_items
+field_name: field_image_text_slider_items
+entity_type: paragraph
+bundle: image_and_text_slider
+label: 'Slider Items'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      image_text_slider_item: image_text_slider_item
+    target_bundles_drag_drop:
+      '50_50':
+        weight: -39
+        enabled: false
+      accordion:
+        weight: -38
+        enabled: false
+      accordions:
+        weight: -37
+        enabled: false
+      annual_reports_slider:
+        weight: -36
+        enabled: false
+      basic_image:
+        weight: -35
+        enabled: false
+      basic_text:
+        weight: -34
+        enabled: false
+      callouts:
+        weight: -33
+        enabled: false
+      cross_link:
+        weight: -32
+        enabled: false
+      cross_links:
+        weight: -31
+        enabled: false
+      divider_bar:
+        weight: -30
+        enabled: false
+      grid_of_products:
+        weight: -29
+        enabled: false
+      grid_of_success_stories:
+        weight: -28
+        enabled: false
+      image_and_menu:
+        weight: -27
+        enabled: false
+      image_and_text_slider:
+        weight: -26
+        enabled: false
+      image_text_slider_item:
+        enabled: true
+        weight: -25
+      image_grid_slider:
+        weight: -24
+        enabled: false
+      solutions_product:
+        weight: -23
+        enabled: false
+      tab:
+        weight: -22
+        enabled: false
+      tabs:
+        weight: -21
+        enabled: false
+field_type: entity_reference_revisions

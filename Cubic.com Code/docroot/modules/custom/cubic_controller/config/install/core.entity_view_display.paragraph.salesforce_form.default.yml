@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.salesforce_form.field_body
+    - field.field.paragraph.salesforce_form.field_salesforce_embed_code
+    - field.field.paragraph.salesforce_form.field_title
+    - paragraphs.paragraphs_type.salesforce_form
+  module:
+    - text
+id: paragraph.salesforce_form.default
+targetEntityType: paragraph
+bundle: salesforce_form
+mode: default
+content:
+  field_body:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_salesforce_embed_code:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

@@ -1,0 +1,52 @@
+{#
+/**
+ * @file
+ * Custom page template.
+ */
+#}
+<div id="page-wrapper" class="page-wrapper">
+  {% if page.menus %}
+    <div id="menus" class="page-wrapper__menus">
+      {{ page.menus }}
+    </div>
+  {% endif %}
+  <div id="page" class="page-wrapper__page">
+    {% if page.top_bar or page.header %}
+      <header id="header" class="site-header clearfix">
+        {{ page.top_bar }}
+        {{ page.header }}
+      </header>
+    {% endif %}
+    <div id="main-wrapper" class="main-wrapper clearfix">
+      <main id="content" class="main-wrapper__content">
+        <section class="clearfix">
+          <a id="main-content" tabindex="-1"></a>
+          {{ page.content }}
+        </section>
+      </main>
+    </div>
+    {% if page.above_footer %}
+      <div id="above-footer" class="page-wrapper__above-footer">
+        {{ page.above_footer }}
+      </div>
+    {% endif %}
+    <footer class="site-footer">
+      <div class="site-footer__logo">
+        {% include directory ~ '/_/img/logo-full.svg' %}
+      </div>
+      {% if page.footer_first or page.footer_second or page.footer_third or page.footer_fourth %}
+        <div class="site-footer__top clearfix">
+          {{ page.footer_first }}
+          {{ page.footer_second }}
+          {{ page.footer_third }}
+          {{ page.footer_fourth }}
+        </div>
+      {% endif %}
+      {% if page.footer_bottom %}
+        <div class="site-footer__bottom clearfix">
+          {{ page.footer_bottom }}
+        </div>
+      {% endif %}
+    </footer>
+  </div>
+</div>

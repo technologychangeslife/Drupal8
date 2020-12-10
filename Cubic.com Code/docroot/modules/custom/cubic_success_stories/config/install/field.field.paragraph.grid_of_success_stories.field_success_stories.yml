@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_success_stories
+    - node.type.award
+    - node.type.event
+    - node.type.insight
+    - node.type.post
+    - node.type.press_release
+    - node.type.success_story
+    - paragraphs.paragraphs_type.grid_of_success_stories
+id: paragraph.grid_of_success_stories.field_success_stories
+field_name: field_success_stories
+entity_type: paragraph
+bundle: grid_of_success_stories
+label: 'Supporting Content'
+description: 'Choose up to 2 nodes.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      award: award
+      event: event
+      insight: insight
+      post: post
+      press_release: press_release
+      success_story: success_story
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: event
+field_type: entity_reference

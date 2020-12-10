@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Contains update functions for Press Releases.
+ */
+
+/**
+ * Migrate the Press Release upper paragraphs content into the Main Column field
+ */
+function cubic_press_releases_update_8301() {
+  foreach(\Drupal::entityTypeManager()->getStorage('node')->loadByProperties([
+    'type' => 'press_release'
+  ]) as $press_release) {
+    // look for paragraphs with an empty main column
+    if (empty($press_release->field_main_column->getValue())) {
+      foreach ($press_release->field_paragraphs as $delta => $p) {
+        $paragraph = $p->entity;
+        $paragraph_type = $paragraph->getParagraphType()->id();
+        if ($paragraph_type == 'basic_text' && $paragraph->hasField('field_body')) {
+          $body = $paragraph->get('field_body')->first();
+
+          $press_release->field_main_column->setValue($body->getValue());
+
+          unset($press_release->field_paragraphs[$delta]);
+          $press_release->save();
+
+          $p->delete();
+          break;
+        }
+      }
+    }
+  }
+}

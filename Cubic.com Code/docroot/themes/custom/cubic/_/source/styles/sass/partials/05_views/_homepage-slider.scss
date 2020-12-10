@@ -1,0 +1,211 @@
+.view-homepage-slider {
+  background-color: $white;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  @include breakpoint(medium) {
+    background-color: $black;
+    height: 550px;
+  }
+
+  @include breakpoint(large) {
+    height: 760px;
+  }
+
+  .view-content,
+  .views-row {
+    @include breakpoint(medium) {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .slick-list,
+  .slick-track {
+    @include breakpoint(medium) {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .slick-dots {
+    display: flex;
+    flex-direction: row;
+    left: 50%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    top: rem-calc(15);
+    transform: translateX(-50%);
+
+    @include breakpoint(medium) {
+      flex-direction: column;
+      left: auto;
+      right: calc(10% - #{rem-calc(15)});
+      top: 50%;
+      transform: translate(100%, -50%);
+    }
+
+    li {
+      background-color: $white;
+      box-shadow: 0 rem-calc(2) rem-calc(3) transparentize($black, 0.5);
+      cursor: pointer;
+      display: block;
+      height: rem-calc(15);
+      margin: 0 rem-calc(5);
+      text-indent: -200vw;
+      transition: all $transition-time / 2;
+      width: rem-calc(15);
+
+      @include breakpoint(medium) {
+        background-color: transparent;
+        box-shadow: inset rem-calc(2) 0 0 $white;
+        height: rem-calc(35);
+        margin: rem-calc(5) 0;
+        width: rem-calc(35);
+      }
+
+      &:hover,
+      &:active {
+        @include breakpoint(medium) {
+          box-shadow: inset rem-calc(4) 0 0 $white;
+        }
+      }
+
+      &.slick-active {
+        background-color: $cubic-teal;
+        cursor: default;
+
+        @include breakpoint(medium) {
+          background-color: transparent;
+          box-shadow: inset rem-calc(7) 0 0 $cubic-teal;
+        }
+      }
+    }
+  }
+
+  .responsive-embed {
+    position: relative;
+    min-height: 300px;
+    overflow: hidden;
+  }
+
+  .node--type-slider {
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+    position: relative;
+
+    @include breakpoint(medium) {
+      align-items: center;
+      display: flex;
+      height: 100%;
+      justify-content: center;
+    }
+
+    video {
+      display: block;
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+
+      @include breakpoint(medium) {
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    .node__content {
+      position: relative;
+      background-color: $white;
+
+      @include breakpoint(medium) {
+        width: 80%;
+        max-width: 550px;
+        color: $white;
+        z-index: 5;
+        background-color: transparent;
+      }
+    }
+
+    h2 {
+      color: $black;
+      font-family: $font-light;
+      font-size: rem-calc(40);
+      line-height: #{(78/88)}em;
+      padding: rem-calc(30) rem-calc(20) rem-calc(16);
+
+      @include breakpoint(medium) {
+        color: $white;
+        font-size: rem-calc(65);
+        font-weight: 300;
+        padding: 0;
+      }
+
+      @include breakpoint(large) {
+        font-size: rem-calc(90);
+      }
+    }
+
+    .field--name-field-photo {
+      @include breakpoint(medium) {
+        display: none;
+      }
+    }
+
+    .field--name-body {
+      color: $text-color;
+      padding: 0 rem-calc(20) rem-calc(20);
+
+      @include breakpoint(medium) {
+        color: $white;
+        font-size: rem-calc(20);
+        padding: 0;
+      }
+
+      p {
+        &:last-child {
+          a {
+            @extend %button-cta;
+            border-color: $color-border;
+            color: $black;
+
+            &:hover {
+              border-color: $black;
+              color: $white;
+              background: $black;
+            }
+
+            @include breakpoint(medium) {
+              border-color: $white;
+              color: $white;
+
+              &:hover {
+                border-color: $white;
+                background: $white;
+                color: $black;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @include breakpoint(medium) {
+      &::after {
+        content: ' ';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: $color-video-overlay;
+        z-index: 2;
+      }
+    }
+  }
+}

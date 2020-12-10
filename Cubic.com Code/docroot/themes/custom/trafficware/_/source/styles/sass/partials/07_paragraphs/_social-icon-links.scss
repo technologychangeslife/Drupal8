@@ -1,0 +1,37 @@
+.paragraph--type--social-icon-links {
+  .field--name-field-social-icon-links-content {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    margin: rem-calc(-8);
+
+    > .field__item {
+      padding: rem-calc(8);
+    }
+  }
+}
+
+.paragraph--type--social-icon-link {
+  a {
+    display: block;
+
+    &:hover {
+      .icon {
+        * {
+          fill: $color-social-hover;
+        }
+      }
+    }
+  }
+
+  .icon {
+    display: block;
+    height: rem-calc(16);
+    width: rem-calc(16);
+
+    * {
+      @include section-color-fill;
+      transition: fill $transition-time;
+    }
+  }
+}

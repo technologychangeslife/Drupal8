@@ -1,0 +1,89 @@
+<?php
+
+/**
+ * @file
+ * Cubic controller install/update scripts.
+ */
+
+/**
+ * Delete the old 5050 field config.
+ */
+function cubic_controller_update_8101() {
+  $entity_type = 'paragraph';
+  $bundle_name = '5050';
+  $field_machine_name = 'field_video';
+  $field = \Drupal::entityTypeManager()->getStorage('field_config')->load("$entity_type.$bundle_name.$field_machine_name");
+  if ($field) {
+    $field->delete();
+    field_purge_field($field);
+  }
+}
+
+/**
+ * Migrate the 50_50 single image fields over to the image gallery.
+ */
+function cubic_controller_update_8301() {
+  $paragraph_ids = [];
+
+  foreach(\Drupal::entityTypeManager()->getStorage('paragraph')->loadByProperties([
+    'type' => '50_50'
+  ]) as $paragraph) {
+    // if the paragraph has an image gallery field
+    if (!empty($paragraph->field_image->getValue()) && $paragraph->hasField('field_image_gallery')) {
+      // this might not be enough
+      $paragraph->field_image_gallery[] = $paragraph->field_image->getValue()[0];
+
+      $paragraph->field_image->setValue(NULL);
+      $paragraph->save();
+
+      $paragraph_ids[] = $paragraph->id();
+    }
+  }
+
+  return t('Image fields copied over on paragraph IDs: @ids.', ['@ids' => implode(',', $paragraph_ids)]);
+}
+
+/**
+ * Save file entities to fix mismatch in DB filesize.
+ */
+function cubic_controller_update_8302(&$sandbox) {
+  // Initialize some variables during the first pass through.
+  if (!isset($sandbox['total'])) {
+    $fids = \Drupal::entityQuery('file')
+      ->condition('status', 1)
+      ->execute();
+    $sandbox['total'] = count($fids);
+    $sandbox['current'] = 0;
+  }
+
+  $files_per_batch = 25;
+
+  // Handle one pass through.
+  $fids = \Drupal::entityQuery('file')
+    ->condition('status', 1)
+    ->range($sandbox['current'], $sandbox['current'] + $files_per_batch)
+    ->execute();
+
+  foreach ($fids as $fid) {
+    $file = \Drupal\file\Entity\File::load($fid);
+    $file->save();
+    $sandbox['current']++;
+  }
+
+  drupal_set_message($sandbox['current'] . ' files processed.');
+
+  $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+}
+
+/**
+ * Fix entity.definitions.bundle_field_map key store with old bundles.
+ */
+function cubic_controller_update_8501() {
+  /** @var \Drupal\Core\KeyValueStore\KeyValueFactoryInterface $key_value_factory */
+  $key_value_factory = \Drupal::service('keyvalue');
+  $field_map_kv_store = $key_value_factory->get('entity.definitions.bundle_field_map');
+  $node_map = $field_map_kv_store->get('paragraph');
+  // Remove the field_dates field from the bundle field map for the page bundle.
+  unset($node_map['field_image_gallery']['bundles']['5050']);
+  $field_map_kv_store->set('paragraph', $node_map);
+}

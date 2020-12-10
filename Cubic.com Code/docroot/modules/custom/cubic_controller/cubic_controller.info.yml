@@ -1,0 +1,69 @@
+name: Controller
+type: module
+core: 8.x
+dependencies:
+  - address
+  - block
+  - ckeditor
+  - context
+  - cubic_annual_reports
+  - cubic_awards
+  - cubic_businesses
+  - cubic_entity_browser
+  - cubic_events
+  - cubic_expertise
+  - cubic_industries
+  - cubic_insights
+  - cubic_locations
+  - cubic_people
+  - cubic_posts
+  - cubic_press_releases
+  - cubic_products
+  - cubic_search
+  - cubic_sliders
+  - cubic_solutions
+  - cubic_success_stories
+  - cubic_views
+  - datetime
+  - datetime_range
+  - editor
+  - entity_browser
+  - entity_embed
+  - entity_reference_revisions
+  - features
+  - field
+  - field_group
+  - file
+  - filter
+  - image
+  - image_effects
+  - link
+  - link_attributes
+  - menu_link_content
+  - menu_ui
+  - metatag
+  - node
+  - options
+  - paragraphs
+  - path
+  - pathauto
+  - rdf
+  - redirect
+  - scheduler
+  - search_api
+  - smart_trim
+  - system
+  - taxonomy
+  - text
+  - token_filter
+  - tzfield
+  - user
+  - video_embed_field
+  - video_embed_wysiwyg
+  - views
+  - webform
+  - workbench_moderation
+package: Cubic
+description: 'Code and configuration for the Cubic website, including the Page content type.'
+version: 8.x-1.0
+core_incompatible: false

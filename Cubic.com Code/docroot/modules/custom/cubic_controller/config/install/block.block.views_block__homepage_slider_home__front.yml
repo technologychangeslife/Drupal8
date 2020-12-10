@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.homepage_slider
+  module:
+    - system
+    - views
+  theme:
+    - cubic
+id: views_block__homepage_slider_home__front
+theme: cubic
+region: header
+weight: -6
+provider: null
+plugin: 'views_block:homepage_slider-home'
+settings:
+  id: 'views_block:homepage_slider-home'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

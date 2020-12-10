@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_image_link
+    - paragraphs.paragraphs_type.milestone_50_50
+  module:
+    - link
+id: paragraph.milestone_50_50.field_image_link
+field_name: field_image_link
+entity_type: paragraph
+bundle: milestone_50_50
+label: 'Image Link'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link

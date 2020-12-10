@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: headshot_small
+label: 'Headshot Small'
+effects:
+  6023af03-3e2a-4dfd-aedb-c24a03b814ab:
+    uuid: 6023af03-3e2a-4dfd-aedb-c24a03b814ab
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 200
+      height: 300
+      anchor: center-center

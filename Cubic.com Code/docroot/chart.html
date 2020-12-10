@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chart Test</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.min.js"></script>
+  <!-- [chart {label, value, color}, {label, value, color}, {label, value, color}] -->
+  <style>
+    body {
+      font-family: 'Helvetica Neue', Helvetica, sans-serif;
+      text-align: center;
+    }
+    h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: normal;
+    }
+    p {
+      font-size: 32px;
+      margin: 0 0 20px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>FY2016 Sales</h1>
+  <p><strong>$1.462</strong> Billion</p>
+  <canvas id="chart-sales"></canvas>
+  <script>
+  var ctx = document.getElementById("chart-sales");
+
+  data = {
+    datasets: [{
+      data: [40, 27, 33, 0, 0],
+      backgroundColor: [
+        '#828282',
+        '#a8a8a8',
+        '#c1c1c1',
+        '#3f6caf',
+        '#8bb047'
+      ],
+    },
+    {
+      data: [0, 0, 0, 45, 55],
+      backgroundColor: [
+        '#828282',
+        '#a8a8a8',
+        '#c1c1c1',
+        '#3f6caf',
+        '#8bb047'
+      ],
+    }],
+    labels: [
+      'Transportation Systems',
+      'CDG Services',
+      'CDG Systems',
+      'Products',
+      'Services'
+    ]
+  };
+
+  var myDoughnutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: data,
+    options: {
+      tooltips: {
+        callbacks: {
+          label: function(tooltipItem, data) {
+            var allData = data.datasets[tooltipItem.datasetIndex].data;
+            var tooltipLabel = data.labels[tooltipItem.index];
+            var tooltipData = allData[tooltipItem.index];
+            var total = 0;
+            for (var i in allData) {
+                total += allData[i];
+            }
+            var tooltipPercentage = Math.round((tooltipData / total) * 100);
+            return tooltipLabel + ': ' + tooltipPercentage + '%';
+          }
+        }
+      }
+    }
+  });
+  </script>
+
+  <br><br><br><br>
+
+  <canvas id="core-markets"></canvas>
+  <script>
+  var ctx = document.getElementById("core-markets");
+
+  data = {
+    datasets: [{
+      data: [19, 57, 24],
+      backgroundColor: [
+        '#00548b',
+        '#00adbb',
+        '#f7a700'
+      ],
+    }],
+    labels: [
+      'Fare Collection',
+      'Mission Support Services',
+      'Live/Virtual/Constructive Training'
+    ]
+  };
+
+  var myDoughnutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: data,
+    options: {
+      tooltips: {
+        callbacks: {
+          label: function(tooltipItem, data) {
+            var allData = data.datasets[tooltipItem.datasetIndex].data;
+            var tooltipLabel = data.labels[tooltipItem.index];
+            var tooltipData = allData[tooltipItem.index];
+            var total = 0;
+            for (var i in allData) {
+                total += allData[i];
+            }
+            var tooltipPercentage = Math.round((tooltipData / total) * 100);
+            return tooltipLabel + ': ' + tooltipPercentage + '%';
+          }
+        }
+      }
+    }
+  });
+  </script>
+
+  <br><br><br><br>
+
+  <canvas id="adjacent-markets"></canvas>
+  <script>
+  var ctx = document.getElementById("adjacent-markets");
+
+  data = {
+    datasets: [{
+      data: [32, 42, 21, 5],
+      backgroundColor: [
+        '#00548b',
+        '#00adbb',
+        '#f7a700',
+        '#9c0012'
+      ],
+    }],
+    labels: [
+      'NextCity',
+      'National Security',
+      'Secure Communications',
+      'Game-Based Training'
+    ]
+  };
+
+  var myDoughnutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: data,
+    options: {
+      tooltips: {
+        callbacks: {
+          label: function(tooltipItem, data) {
+            var allData = data.datasets[tooltipItem.datasetIndex].data;
+            var tooltipLabel = data.labels[tooltipItem.index];
+            var tooltipData = allData[tooltipItem.index];
+            var total = 0;
+            for (var i in allData) {
+                total += allData[i];
+            }
+            var tooltipPercentage = Math.round((tooltipData / total) * 100);
+            return tooltipLabel + ': ' + tooltipPercentage + '%';
+          }
+        }
+      }
+    }
+  });
+  </script>
+</body>
+</html>

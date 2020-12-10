@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @file
+ * Contains cubic_events.module
+ */
+
+use Drupal\Core\Breadcrumb\Breadcrumb;
+use Drupal\Core\Datetime\DrupalDateTime;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_system_breadcrumb_alter().
+ */
+function cubic_events_system_breadcrumb_alter(Breadcrumb &$breadcrumb, RouteMatchInterface $route_match, array $context) {
+  $route_parameters = $route_match->getRawParameters()->all();
+
+  if (array_key_exists('node', $route_parameters)) {
+    /* @var \Drupal\node\Entity\Node $node */
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($route_parameters['node']);
+
+    if ($node->bundle() === 'event' && $node->hasField('field_date') && !$node->get('field_date')->isEmpty()) {
+      $field_date = $node->get('field_date')->first()->getValue();
+      $end_time = $field_date['end_value'];
+
+      if (time() > strtotime($end_time)) {
+        foreach ($breadcrumb->getLinks() as &$link) {
+          $text = $link->getText();
+
+          if (is_string($text) && $text === 'Events' && $link->getUrl()->toString() === '/news-events/events') {
+            $url = Url::fromUri('internal:/news-events/past-events');
+            $link->setText(t('Past Events'));
+            $link->setUrl($url);
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_views_data_alter().
+ */
+function cubic_events_views_data_alter(array &$data) {
+  $data['node_field_data']['date_includes'] = array(
+    'title' => t('Date Includes'),
+    'filter' => array(
+      'title' => t('Date Includes'),
+      'help' => t('Check if the Field field_date includes the exposed option.'),
+      'field' => 'field_date',
+      'id' => 'date_includes',
+    ),
+  );
+}

@@ -1,0 +1,2058 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the cubic theme.
+ */
+
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Asset\AttachedAssetsInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Menu\MenuTreeParameters;
+use Drupal\Core\Render\Element;
+use Drupal\Core\Render\Markup;
+use Drupal\Core\StringTranslation\TranslatableMarkup;
+use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
+use Drupal\file\Entity\File;
+use Drupal\image\Entity\ImageStyle;
+use Drupal\node\Entity\Node;
+use Drupal\node\NodeInterface;
+use Drupal\taxonomy\Entity\Term;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function cubic_preprocess_html(array &$vars) {
+  $vars['html_attributes']->addClass('no-js');
+
+  $node = _cubic_get_current_node();
+  $node_id = \Drupal::routeMatch()->getRawParameter('node');
+  $color = _cubic_get_color_from_menu($node_id);
+
+  if ($color) {
+    $vars['section_color'] = $color;
+  }
+
+  // Add a body class for the current url alias.
+  $current_path = \Drupal::service('path.current')->getPath();
+  $path_alias = \Drupal::service('path.alias_manager')->getAliasByPath($current_path);
+  $path_alias = ltrim($path_alias, '/');
+  $vars['attributes']['class'][] = 'alias-' . Html::cleanCssIdentifier($path_alias);
+  $post_type_kinds = _cubic_get_post_type_kinds();
+
+  if (is_a($node, '\Drupal\node\Entity\Node')) {
+    if (in_array($node->bundle(), $post_type_kinds)) {
+      $vars['attributes']['class'][] = 'page-node-post-kind';
+    }
+
+    if (!array_key_exists('node_type', $vars)) {
+      $vars['node_type'] = $node->bundle();
+    }
+  } 
+  
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function cubic_page_attachments_alter(array &$page) {
+  // Tell IE to use latest rendering engine (not to use compatibility mode).
+  $ie_edge = [
+    '#type' => 'html_tag',
+    '#tag' => 'meta',
+    '#attributes' => [
+      'http-equiv' => 'X-UA-Compatible',
+      'content' => 'IE=edge',
+    ],
+  ];
+  $page['#attached']['html_head'][] = [$ie_edge, 'ie_edge'];
+
+  $favicons = [
+    'android' => [
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'href' => base_path() . drupal_get_path('theme', 'cubic') . '/favicons/android-chrome-192x192.png',
+        'rel' => 'icon',
+        'sizes' => '192x192',
+        'type' => 'image/png',
+      ],
+    ],
+    'apple_touch_icon' => [
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'href' => base_path() . drupal_get_path('theme', 'cubic') . '/favicons/apple-touch-icon.png',
+        'rel' => 'apple-touch-icon',
+        'sizes' => '180x180',
+      ],
+    ],
+    'browserconfig' => [
+      '#type' => 'html_tag',
+      '#tag' => 'meta',
+      '#attributes' => [
+        'content' => base_path() . drupal_get_path('theme', 'cubic') . '/favicons/browserconfig.xml',
+        'name' => 'msapplication-config',
+      ],
+    ],
+    'favicon_16' => [
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'href' => base_path() . drupal_get_path('theme', 'cubic') . '/favicons/favicon-16x16.png',
+        'rel' => 'icon',
+        'sizes' => '16x16',
+        'type' => 'image/png',
+      ],
+    ],
+    'favicon_32' => [
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'href' => base_path() . drupal_get_path('theme', 'cubic') . '/favicons/favicon-32x32.png',
+        'rel' => 'icon',
+        'sizes' => '32x32',
+        'type' => 'image/png',
+      ],
+    ],
+    'manifest' => [
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'href' => base_path() . drupal_get_path('theme', 'cubic') . '/favicons/manifest.json',
+        'rel' => 'manifest',
+      ],
+    ],
+    'mask_icon' => [
+      '#type' => 'html_tag',
+      '#tag' => 'link',
+      '#attributes' => [
+        'color' => '#00548d',
+        'href' => base_path() . drupal_get_path('theme', 'cubic') . '/favicons/safari-pinned-tab.svg',
+        'rel' => 'mask-icon',
+      ],
+    ],
+    'theme_color' => [
+      '#type' => 'html_tag',
+      '#tag' => 'meta',
+      '#attributes' => [
+        'color' => '#ffffff',
+        'name' => 'theme-color',
+      ],
+    ],
+  ];
+
+  foreach ($favicons as $key => $favicon) {
+    $page['#attached']['html_head'][] = [$favicon, 'favicon_' . $key];
+  }
+
+  // Attach the file icon styles library since they're used everywhere.
+  $page['#attached']['library'][] = 'classy/file';
+}
+
+/**
+ * Implements hook_js_alter().
+ */
+function cubic_js_alter(&$javascript, AttachedAssetsInterface $assets) {
+
+}
+
+/**
+ * Implements hook_preprocess_page() for page.html.twig.
+ */
+function cubic_preprocess_page(array &$vars) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  $result = \Drupal::service('path.alias_manager')->getAliasByPath($current_path);
+  $vars['current_path'] = $result;
+  if($result == '/new-careers-page' || $result == '/careers-cubic-wd') {
+	$node = _cubic_get_current_node();
+	$node_id = \Drupal::routeMatch()->getRawParameter('node');
+	$paragraph = $node->field_paragraphs->getValue();
+	$intro = $node->body->value;
+	$node->field_hero_image->getValue();
+	//print '<pre>'; print_r($node->field_hero_image->getValue()); print'</pre>';
+	
+	//Get Career Page Node Title.
+	$title = $node->getTitle();
+	
+	//Getting the hero image.
+	$field_image_gallery = $node->field_hero_image->getValue();
+	$hero_image_url = $field_image_gallery;
+	$fid = $field_image_gallery[0]['target_id'];
+	if(!empty($fid)) {
+	 $file = File::load($fid);
+	 $url = $file->url();
+	 $hero_image_url = $url;
+	}
+	foreach ( $paragraph as $element ) {
+	  $p = \Drupal\paragraphs\Entity\Paragraph::load( $element['target_id'] );
+	  if (!empty($p) && $p instanceof Paragraph) {
+		   "Name of paragraph = ".$p->bundle(); //print '<br>';
+		  /*************Coding for 4 blocks Component***************/
+		  if ($p->bundle() == 'career_components_top_4_blocks') {
+			  $field_select_pages = $p->field_select_pages->referencedEntities();
+			  $career_heading = $p->field_career_4_box_heading->value;
+			  $i = 1;
+			  foreach ($field_select_pages as $select_pages) {
+			   $select_pages_array[] = $select_pages->getTitle();
+			   $select_pages_id[] = $select_pages->id();
+			   $node_id = $select_pages->id();
+			   $node_box = \Drupal\node\Entity\Node::load($select_pages->id());
+			    '<br>';
+               //var_dump($node_box->field_external_links->uri);
+                '<pre>'; //print_r($node_box->field_external_links->uri); //print'</pre>';
+               //var_dump($node_box->field_external_links->title);
+                '<pre>'; //print_r($node_box->field_external_links->title); //print'</pre>';
+			    '<br>';
+			    $related_pages[$i]['node_id'] = $select_pages->id(); //print '<br>';
+			    $related_pages[$i]['title'] = $select_pages->getTitle(); //print '<br>';
+			    "Title = ".$related_pages[$i]['title'] = $node_box->title->value; //print '<br>';
+			   if(!empty($node_box->field_external_links->title)) {
+			      "Hyperlink Text = ".$related_pages[$i]['hypertext'] = $node_box->field_external_links->title; ///print '<br>';
+			   }
+			   if(empty($node_box->field_external_links->title)) {
+			      "Hyperlink Text = ".$related_pages[$i]['hypertext'] = 'Learn More'; //print '<br>';
+			   }
+			   if(!empty($node_box->field_external_links->uri)) {
+			     "Hyperlink = ".$related_pages[$i]['hyperlink'] = $node_box->field_external_links->uri; //print '<br>';
+			   }
+			   if(empty($node_box->field_external_links->uri)) {
+			     "Hyperlink = ".$related_pages[$i]['hyperlink'] = '/node/'.$node_id; //print '<br>';
+			   }
+			    "Body = ".$related_pages[$i]['text'] = $node_box->body->value; //print '<br>';
+			   
+			   $paragraphs = $node_box->field_paragraphs->getValue();
+				foreach ( $paragraphs as $elements ) {
+					$paragraph_related_node = \Drupal\paragraphs\Entity\Paragraph::load( $elements['target_id'] ); 
+
+					if (!empty($paragraph_related_node) && $paragraph_related_node instanceof Paragraph) {
+						if ($paragraph_related_node->bundle() == '50_50') {
+							//print 'Inside 50 50';
+							$field_image_gallery = $paragraph_related_node->field_image_gallery->getValue();
+							//print '<pre>'; print_r($field_image_gallery); print '</pre>';
+							$fid = $field_image_gallery[0]['target_id'];
+							if(!empty($fid)) {
+							 $file = File::load($fid);
+							 $url = $file->url();
+							 $related_pages[$i]['field_product_image'] = $url;
+							}
+							if($uid == 1) {
+							 print $url;
+							}
+							
+						}
+					}
+				}		
+                if(empty($url)) {
+					$field_image_gallery = $node_box->field_hero_image->getValue();
+					$fid = $field_image_gallery[0]['target_id'];
+					if(!empty($fid)) {
+					 $file = File::load($fid);
+					 $url = $file->url();
+					 $related_pages[$i]['field_product_image'] = $url;
+					}
+				}				
+			   //print "Image = ".$url; print '<br>';			
+			   $i++;
+			  }
+		  }
+	      /*************Coding for 4 blocks Component***************/
+		  
+		  /*************Coding for Career Opportunities block Component***************/
+		  $l = 1;
+	      if ($p->bundle() == 'career_components_opp_block') {
+			  //print 'Inside career_components_opp_block';
+			  //var_dump($p->field_block_link);
+			  //var_dump($p->field_block_link[0]->uri);
+			  //print '<pre>'; print_r($p->field_block_link[0]->uri); print'</pre>';
+			  $link[1]['url'] = $p->field_block_link[0]->uri;
+			  $links[] = $p->field_block_link[0]->uri;
+			  //var_dump($p->field_block_link[0]->title);
+			  //print '<pre>'; print_r($p->field_block_link[0]->title); print'</pre>';
+			  $link[1]['text'] = $p->field_block_link[0]->title;
+			  $text[] = $p->field_block_link[0]->title;
+			  
+			  //var_dump($p->field_block_link[1]->uri);
+			  //print '<pre>'; print_r($p->field_block_link[1]->uri); print'</pre>';
+			  $link[2]['url'] = $p->field_block_link[1]->uri;
+			  $links[] = $p->field_block_link[1]->uri;
+			  //var_dump($p->field_block_link[1]->title);
+			  //print '<pre>'; print_r($p->field_block_link[1]->title); print'</pre>';
+			  $link[2]['text'] = $p->field_block_link[1]->title;
+			  $text[] = $p->field_block_link[1]->title;
+			  
+			  //var_dump($p->field_block_link->uri);
+			  //print '<pre>'; print_r($p->field_block_link->uri); print'</pre>';
+			  //var_dump($p->field_block_link->title);
+			 // print '<pre>'; print_r($p->field_block_link->title); print'</pre>';
+			  $l++;
+		  }
+		  for ($x=0;$x<count($links);$x++) {
+			  $links_text[$x]['link'] = $links[$x];
+			  $links_text[$x]['text'] = $text[$x];
+		  }
+		  /*************Coding for Career Opportunities block Component***************/
+		  
+		  /*************Coding for Career Components - Blue Bar***************/
+		  if ($p->bundle() == 'career_components_blue_bar') {
+			  //print "Inside career_components_blue_bar";
+			  //var_dump($p->field_blue_bar_heading);
+			   $blue_bar_heading = $p->field_blue_bar_heading->value;
+			  
+			  //var_dump($p->field_blue_bar_text);
+			   $blue_bar_text = $p->field_blue_bar_text->value;
+			  //print '---------------------';
+			  
+		  }
+		  /*************Coding for Career Components - Blue Bar***************/
+		  
+		   /*************Coding for Career Components - Basic Text***************/
+		   if ($p->bundle() == 'basic_text') {
+			  //print "Inside basic_text";
+			  //var_dump($p->field_body);
+			  $basic_text_body = $p->field_body->value;
+			  $basic_text_title = $p->field_title->value;
+			  //print '---------------------';
+		  }
+		  /*************Coding for Career Components - Basic Text***************/
+		  
+		  
+		  
+		  /*************Coding for Career Components - Employees Heading & Text***************/
+		   if ($p->bundle() == 'career_components_employees_head') {
+			   // Get the Map text heading and body here.
+			   //print "Inside basic_text";
+			  //var_dump($p->field_body);
+			   $employee_body_text = $p->field_employee_body_text->value;
+			   $employee_heading = $p->field_employee_heading->value;
+			  //print '---------------------';
+		  }
+		  /*************Coding for Career Components - Employees Heading & Text***************/
+		  
+		  /*************Coding for Career Components - Map***************/
+		   if ($p->bundle() == 'career_components_map') {
+			   // Get the Map text heading and body here.
+			   //print "Inside basic_text";
+			  //var_dump($p->field_body);
+			   $map_body_text = $p->field_map_body_text->value;
+			   $map_text_heading = $p->field_map_text_heading->value;
+			  //print '---------------------';
+		  }
+		  /*************Coding for Career Components - Map***************/
+	  }
+	}
+  }
+  
+  if($result == '/benefits-cubic') {
+	$node = _cubic_get_current_node();
+	$node_id = \Drupal::routeMatch()->getRawParameter('node');
+	$paragraph = $node->field_paragraphs->getValue();
+	$benefits_intro = $node->body->value;
+	$node->field_hero_image->getValue();
+	//print '<pre>'; print_r($node->field_hero_image->getValue()); print'</pre>';
+	
+	//Get Career Page Node Title.
+	$benefits_title = $node->getTitle();
+	
+	//Getting the hero image.
+	$field_image_gallery = $node->field_hero_image->getValue();
+	$benefits_hero_image_url = $field_image_gallery;
+	$fid = $field_image_gallery[0]['target_id'];
+	if(!empty($fid)) {
+	 $file = File::load($fid);
+	 $url = $file->url();
+	 $benefits_hero_image_url = $url;
+	}
+	
+	foreach ( $paragraph as $element ) {
+	  $p = \Drupal\paragraphs\Entity\Paragraph::load( $element['target_id'] );
+	  if (!empty($p) && $p instanceof Paragraph) {
+		   "Name of paragraph = ".$p->bundle(); //print '<br>';
+		   
+		   /*************Coding for Benefits Components - Health And Wellness***************/
+		  if ($p->bundle() == 'benefits_components_health_and_w') {
+			  $field_top_heading_left = $p->field_top_heading_left->value;
+			  $field_top_description_left = $p->field_top_description_left->value;
+			  $field_bottom_heading_left = $p->field_bottom_heading_left->value;
+			  $field_bottom_description_left = $p->field_bottom_description_left->value;
+			  $field_top_heading_right = $p->field_top_heading_right->value;
+			  $field_top_description_right = $p->field_top_description_right->value;
+		      $field_bottom_heading_left = $p->field_bottom_heading_left->value;
+			  $field_bottom_description_right = $p->field_bottom_description_right->value;
+		  }
+		   /*************Coding for Benefits Components - Health And Wellness***************/
+		  
+		  /*************Coding for Benefits Components - Location Benefits Country Wise***************/
+		  if ($p->bundle() == 'benefits_countrywise_reference') {
+		  $benefits_countrywise_reference = $p->field_benefits_contrywise->referencedEntities();
+		  print "benefits_countrywise_reference = ".count($benefits_countrywise_reference);
+		  $c = 0;
+		  $i = 0;
+		  $x = 0;
+		  foreach ($benefits_countrywise_reference as $benefits_countrywise_content) {
+				  $node_benefits_countrywise_content = \Drupal\node\Entity\Node::load($benefits_countrywise_content->id());
+				  $paragraph_benefits_countrywise = $node_benefits_countrywise_content->field_paragraphs->getValue();
+				  
+			   foreach ( $paragraph_benefits_countrywise as $element_contry ) {	  
+		        $paragraph_benefits_countrywise = \Drupal\paragraphs\Entity\Paragraph::load( $element_contry['target_id'] );	
+                if (!empty($paragraph_benefits_countrywise) && $p instanceof Paragraph) {	
+				
+				if ($paragraph_benefits_countrywise->bundle() == 'benefits_components_location_ben') {
+                  /***Getting the country Name****/  
+				  $field_country_name = $paragraph_benefits_countrywise->field_country_name->value;
+				  $field_country[$c]['name'] = $paragraph_benefits_countrywise->field_country_name->value;
+				  
+				  /***Getting the country flag****/
+				  $field_country_flag = $paragraph_benefits_countrywise->field_country_flag->getValue();				   
+				  $fid = $field_country_flag[0]['target_id'];
+					if(!empty($fid)) {
+					 $file = File::load($fid);
+					 $url = $file->url();
+					 $field_country_flag_url = $url;
+					 $field_country[$c]['flag'] = $url;
+					}
+				  /***Getting the Career Benefits Heading****/
+				  $field_career_benefits_heading = $paragraph_benefits_countrywise->field_career_benefits_heading->value;
+				  $field_country[$c]['career_benefits_heading'] = $paragraph_benefits_countrywise->field_career_benefits_heading->value;
+				  $field_career_benefits = $paragraph_benefits_countrywise->field_career_benefits->referencedEntities();
+				  
+				  /***Getting the Career Benefits Content****/
+				  foreach ($field_career_benefits as $career_benefits_content) {
+					  $node_career_benefits_content = \Drupal\node\Entity\Node::load($career_benefits_content->id());
+					  
+					  $career_benefits_content_array[$i]['node_id'] = $career_benefits_content->id(); //print '<br>';
+					  $career_benefits_content_array[$i]['country'] = $field_country_name; //print '<br>';
+					  $career_benefits_content_array[$i]['title'] = $career_benefits_content->getTitle(); //print '<br>';
+					  $career_benefits_content_array[$i]['intro'] = $node_career_benefits_content->body->value; //print '<br>';
+					  
+					  
+				  }				  
+				  $field_health_wellness_heading = $paragraph_benefits_countrywise->field_health_wellness_heading->value;
+				  $field_country[$c]['health_wellness_heading'] = $paragraph_benefits_countrywise->field_health_wellness_heading->value;
+				  $field_health_wellness_benefits = $paragraph_benefits_countrywise->field_health_wellness_benefits->referencedEntities();
+				  
+				  foreach ($field_health_wellness_benefits as $health_wellness_benefits_content) {
+					  $node_health_wellness_benefits_content = \Drupal\node\Entity\Node::load($health_wellness_benefits_content->id());
+					  
+					  $health_wellness_benefits_content_array[$x]['node_id'] = $health_wellness_benefits_content->id(); //print '<br>';
+					  $health_wellness_benefits_content_array[$x]['country'] = $field_country_name; //print '<br>';
+					  $health_wellness_benefits_content_array[$x]['title'] = $health_wellness_benefits_content->getTitle(); //print '<br>';
+					  $health_wellness_benefits_content_array[$x]['intro'] = $node_health_wellness_benefits_content->body->value; //print '<br>';
+					  
+					  
+				  }	
+				  
+				  $field_work_life_balance_heading = $paragraph_benefits_countrywise->field_work_life_balance_heading->value;
+				  $field_country[$c]['work_life_balance_heading'] = $paragraph_benefits_countrywise->field_work_life_balance_heading->value;
+				  $field_work_life_balance_content = $paragraph_benefits_countrywise->field_work_life_balance_content->value;
+				  $field_country[$c]['work_life_balance_content'] = $paragraph_benefits_countrywise->field_work_life_balance_content->value;
+				  
+				  $field_compensation_recog_heading = $paragraph_benefits_countrywise->field_compensation_recog_heading->value;
+				  $field_country[$c]['compensation_recog_heading'] = $paragraph_benefits_countrywise->field_compensation_recog_heading->value;
+				  $field_compensation_recog_content = $paragraph_benefits_countrywise->field_compensation_recog_content->value;
+				  $field_country[$c]['compensation_recog_content'] = $paragraph_benefits_countrywise->field_compensation_recog_content->value;
+				  
+				 }
+				}
+			   }
+			   $c++;
+			   $i++;
+			   $x++;
+			  }
+		  }
+		  /*************Coding for Benefits Components - Location Benefits Country Wise***************/
+		  
+		  /*************Coding for Benefits Components - Health And Wellness***************/
+		  if ($p->bundle() == 'benefits_components_health_and_w') {
+			  $field_health_and_well_heading = $p->field_health_and_well_heading->value;
+			  $field_bottom_description_left = $p->field_bottom_description_left->value;
+			  $field_bottom_description_right = $p->field_bottom_description_right->value;
+			  $field_bottom_heading_left = $p->field_bottom_heading_left->value;
+			  $field_bottom_heading_right = $p->field_bottom_heading_right->value;
+			  
+			  $field_health_and_wellness_image = $p->field_health_and_wellness_image->value;
+			  
+			  $field_health_and_wellness_image = $p->field_health_and_wellness_image->getValue();
+			  $fid = $field_health_and_wellness_image[0]['target_id'];
+				if(!empty($fid)) {
+				 $file = File::load($fid);
+				 $url = $file->url();
+				 $field_health_and_wellness_image_url = $url;
+				}
+			  
+			  $field_top_description_left = $p->field_top_description_left->value;
+			  $field_top_description_right = $p->field_top_description_right->value;
+			  $field_top_heading_left = $p->field_top_heading_left->value;
+			  $field_top_heading_right = $p->field_top_heading_right->value;
+		  }
+		  /*************Coding for Benefits Components - Health And Wellness***************/
+		  
+		  /*************Coding for Benefits Components - Common Compensation and Recognition***************/
+		  if ($p->bundle() == 'common_compensation_recognition') {
+			  $field_common_comp_recog_heading = $p->field_common_comp_recog_heading->value;
+			  $field_employee_stock_content = $p->field_employee_stock_content->value;
+			  $field_employee_stock_heading = $p->field_employee_stock_heading->value;
+			  $field_employee_stock_image = $p->field_employee_stock_image->getValue();
+			  $fid = $field_employee_stock_image[0]['target_id'];
+				if(!empty($fid)) {
+				 $file = File::load($fid);
+				 $url = $file->url();
+				 $field_employee_stock_image_url = $url;
+				}
+			  
+			  $field_recognition_content = $p->field_recognition_content->value;
+			  $field_recognition_heading = $p->field_recognition_heading->value;
+			  $field_recognition_image = $p->field_recognition_image->getValue();
+			  $fid = $field_recognition_image[0]['target_id'];
+				if(!empty($fid)) {
+				 $file = File::load($fid);
+				 $url = $file->url();
+				 $field_recognition_image_url = $url;
+				}
+			  
+			  $field_retirement_content = $p->field_retirement_content->value;
+			  $field_retirement_heading = $p->field_retirement_heading->value;
+			  $field_retirement_benefits_image = $p->field_retirement_benefits_image->getValue();
+			  $fid = $field_retirement_benefits_image[0]['target_id'];
+				if(!empty($fid)) {
+				 $file = File::load($fid);
+				 $url = $file->url();
+				 $field_retirement_benefits_image_url = $url;
+				}
+			  
+			  $field_talent_referral_content = $p->field_talent_referral_content->value;
+			  $field_talent_referral_heading = $p->field_talent_referral_heading->value;
+			  $field_talent_referral_image = $p->field_talent_referral_image->getValue();
+			  $fid = $field_talent_referral_image[0]['target_id'];
+				if(!empty($fid)) {
+				 $file = File::load($fid);
+				 $url = $file->url();
+				 $field_talent_referral_image_url = $url;
+				}
+			  
+		  }
+		  /*************Coding for Benefits Components - Common Compensation and Recognition***************/
+	  }
+	}
+  }
+  
+  /**************New Career Page Variables******************/
+  $vars['title'] = $title;
+  $vars['node'] = $node;
+  $vars['intro'] = $intro;
+  $vars['hero_image_url'] = $hero_image_url;
+  $vars['employee_body_text'] = $employee_body_text;
+  $vars['employee_heading'] = $employee_heading;
+  $vars['basic_text_body'] = $basic_text_body;
+  $vars['basic_text_title'] = $basic_text_title;
+  $vars['map_body_text'] = $map_body_text;
+  $vars['map_text_heading'] = $map_text_heading;
+  $vars['blue_bar_heading'] = $blue_bar_heading;
+  $vars['blue_bar_text'] = $blue_bar_text;
+  $vars['career_heading'] = $career_heading;
+  $vars['related_pages'] = $related_pages;
+  $vars['links_text'] = $links_text;
+  /**************New Career Page Variables******************/
+  
+  /**************Benefits Page Variables******************/
+  $vars['benefits_title'] = $benefits_title;
+  $vars['benefits_node'] = $benefits_node;
+  $vars['benefits_intro'] = $benefits_intro;
+  $vars['benefits_hero_image_url'] = $benefits_hero_image_url;
+   
+  $vars['field_country'] = $field_country;
+  $vars['field_country_name'] = $field_country_name;
+  $vars['field_country_flag'] = $field_country_flag;
+  $vars['career_benefits_content_array'] = $career_benefits_content_array;
+  $vars['health_wellness_benefits_content_array'] = $health_wellness_benefits_content_array;
+  $vars['field_work_life_balance_heading'] = $field_work_life_balance_heading;
+  $vars['field_work_life_balance_content'] = $field_work_life_balance_content;
+  $vars['field_compensation_recog_heading'] = $field_compensation_recog_heading;
+  $vars['field_compensation_recog_content'] = $field_compensation_recog_content;
+  
+  $vars['field_health_and_well_heading'] = $field_health_and_well_heading;
+  $vars['field_health_and_wellness_image_url'] = $field_health_and_wellness_image_url;
+  $vars['field_top_description_left'] = $field_top_description_left;
+  $vars['field_top_description_right'] = $field_top_description_right;
+  $vars['field_top_heading_left'] = $field_top_heading_left;
+  $vars['field_top_heading_right'] = $field_top_heading_right;
+  $vars['field_bottom_description_left'] = $field_bottom_description_left;
+  $vars['field_bottom_description_right'] = $field_bottom_description_right;
+  $vars['field_bottom_heading_left'] = $field_bottom_heading_left;
+  $vars['field_bottom_heading_right'] = $field_bottom_heading_right;
+  
+  /*******Common Recogination Variables********/
+  $vars['field_common_comp_recog_heading'] = $field_common_comp_recog_heading;
+  $vars['field_employee_stock_content'] = $field_employee_stock_content;
+  $vars['field_employee_stock_heading'] = $field_employee_stock_heading;
+  $vars['field_employee_stock_image_url'] = $field_employee_stock_image_url;
+  $vars['field_recognition_content'] = $field_recognition_content;
+  $vars['field_recognition_heading'] = $field_recognition_heading;
+  $vars['field_recognition_image_url'] = $field_recognition_image_url;
+  $vars['field_retirement_content'] = $field_retirement_content;
+  $vars['field_retirement_heading'] = $field_retirement_heading;
+  $vars['field_retirement_benefits_image_url'] = $field_retirement_benefits_image_url;
+  $vars['field_talent_referral_content'] = $field_talent_referral_content;
+  $vars['field_talent_referral_heading'] = $field_talent_referral_heading;
+  $vars['field_talent_referral_image_url'] = $field_talent_referral_image_url;  
+  /**************Benefits Page Variables******************/
+}
+
+/**
+ * Implements hook_theme_suggestions_page_alter().
+ */
+function cubic_theme_suggestions_page_alter(array &$suggestions, array $vars) {
+	
+   // Response codes for Access Denied and Page Not Found. 
+   $system_codes = [403, 404];
+   if (Drupal::request()->attributes->get('exception') && 
+        $status_code = Drupal::request()->attributes->get('exception')->getStatusCode()) {
+     // Add Basic Page suggestion if one of above response codes.
+     if (in_array($status_code, $system_codes)) {
+       $suggestions[] = 'page';
+     }
+   }
+
+    if ($node = Drupal::routeMatch()->getParameter('node')) {
+      $content_type = $node->bundle();
+      $suggestions[] = 'page__'.$content_type;
+
+        // for "page" content type only
+        // if ($content_type == 'page'){
+
+          if (in_array($content_type, array('webform','page'))) {
+
+          $current_path = Drupal::service('path.current')->getPath();
+          $alias = Drupal::service('path.alias_manager')->getAliasByPath($current_path);
+
+          if ($alias != '')  {
+
+            // break up the alias "/about/us"  => "", "about", "" ,"us"
+            $parts = explode('/', $alias);
+
+            // we only start suggestion with one "-" because first "/" will become extra "-"
+            $suggestion = 'page__alias';
+
+            foreach ($parts as $part) {
+                // subsequent suggestions get appended
+                $suggestion .= "_" . "$part";
+            }
+
+            // turn "-" in "_"
+            $suggestion = str_replace("-", "_", $suggestion);
+            $suggestions[] = $suggestion;
+
+          }
+        }
+
+    }
+
+}
+
+/**
+ * Implements hook_theme_suggestions_node_alter().
+ */
+function cubic_theme_suggestions_node_alter(array &$suggestions, array $vars) {
+  /* @var \Drupal\node\Entity\Node $node */
+  $node = $vars['elements']['#node'];
+
+  $post_type_kinds = _cubic_get_post_type_kinds(array('page'));
+  $sidebar_not_person = ($node->hasField('field_aside_paragraphs') && $node->bundle() !== 'person');
+
+  // this variable will be true if there's something in the aside paragraph section and the CT is Post..
+  $sidebar_is_post = ($node->hasField('field_aside_paragraphs') && $node->bundle() == 'post');
+
+
+  switch ($vars['elements']['#view_mode']) {
+    case 'full':
+      if (in_array($node->bundle(), $post_type_kinds) || $sidebar_not_person) {
+        $suggestions[] = 'node__full__with_sidebar';
+      }
+
+
+      $aside_paragraphs_has_no_grid_people = false;
+      if (in_array('post', $post_type_kinds) && $sidebar_is_post) {
+        //add validation here if there's a basic text in the upper paragraph..
+        if($node->hasField('field_aside_paragraphs') && !empty($node->field_aside_paragraphs->getValue())) {
+
+          $node_2 = $node->field_aside_paragraphs->getValue();
+
+          foreach ($node_2 as $key => $value) {
+            //code to get the name...
+            $paragraph = FALSE;
+
+            if (!empty($value['target_id'])) {
+              $paragraph = Paragraph::load($value['target_id']);
+            }
+
+            if (!empty($paragraph) && $paragraph instanceof Paragraph) {
+              $view_builder = \Drupal::entityTypeManager()->getViewBuilder('paragraph');
+              $array = $view_builder->view($paragraph);
+
+              $array['#cache']['tags'][] = 'node:' . $node->id();
+              if ($paragraph->bundle() !== 'people_grid') {
+                $aside_paragraphs_has_no_grid_people = true;
+               // ksm($aside_paragraphs_has_no_grid_people);
+
+              }
+            }
+          }
+
+          // if there is only one people_grid entity then suggest the template
+          if($aside_paragraphs_has_no_grid_people !== true) {
+            $suggestions[] = 'node__full__post_with_sidebar';
+          }
+        }
+      }
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_page_title().
+ */
+function cubic_preprocess_page_title(array &$vars) {
+  $current_path = \Drupal::service('path.current')->getPath();
+  $keyword = \Drupal::request()->query->get('search');
+  if ($current_path == '/search' && !empty($keyword)) {
+    $vars['title']['#markup'] = new TranslatableMarkup('Search: %k', array('%k' => '"' . trim($keyword, '"') . '"'));
+  }
+}
+
+/**
+ * Implements template_preprocess_breadcrumb().
+ */
+function cubic_preprocess_breadcrumb(&$vars) {
+  if ($vars['breadcrumb']) {
+    $request = \Drupal::request();
+    if (preg_match('/about\/people\/all\?.*role=(\d+).*/i', $request->getRequestUri(), $matches)) {
+      $role = array_pop($matches);
+      $term = Term::load($role);
+      if ($term) {
+        $page_title = $term->getName();
+      }
+    }
+    else {
+      $route_match = \Drupal::routeMatch();
+      $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+    }
+
+    if (!empty($page_title)) {
+      $vars['breadcrumb'][] = [
+        'text' => $page_title,
+        'attributes' => new Attribute(['class' => ['active']]),
+      ];
+    }
+    $vars['#cache']['contexts'][] = 'url';
+  }
+}
+
+/**
+ * Implements hook_preprocess_block().
+ */
+function cubic_preprocess_block(array &$vars) {
+  switch ($vars['plugin_id']) {
+    case 'page_title_block':
+      /* @var \Drupal\node\Entity\Node $node */
+      $node = _cubic_get_current_node();
+      // Hero images come from field_hero_image.
+      if (isset($node->field_hero_image) && !empty($node->field_hero_image->getValue())) {
+        $hero_image = $node->field_hero_image->first()->getValue();
+        /* @var \Drupal\file\Entity\File $file */
+        $file = \Drupal::entityTypeManager()->getStorage('file')->load($hero_image['target_id']);
+        /* @var \Drupal\image\Entity\ImageStyle $style */
+        $style = \Drupal::entityTypeManager()->getStorage('image_style')->load('hero_compressed');
+        $vars['header_background_attributes'] = new Attribute([
+          'style' => [
+            'background-image: url("' . $style->buildUrl($file->getFileUri()) . '")',
+          ],
+        ]);
+        /* @var \Drupal\Core\Image\Image $image */
+        $image = \Drupal::service('image.factory')->get($style->buildUri($file->getFileUri()));
+        $vars['hero_image'] = [
+          '#theme' => 'image_style',
+          '#width' => $image->getWidth(),
+          '#height' => $image->getHeight(),
+          '#style_name' => 'hero_compressed',
+          '#uri' => $file->getFileUri(),
+          '#alt' => $node->getTitle(),
+        ];
+      }
+      else {
+        $vars['attributes']['class'][] = 'no-hero';
+      }
+
+      if (isset($node->field_contain_header_image) && !$node->get('field_contain_header_image')->isEmpty() && intval($node->get('field_contain_header_image')->value)) {
+        $vars['attributes']['class'][] = 'contain-hero';
+      }
+
+      // Or, on person nodes, the Photo field.
+      if (isset($node->field_photo) && !empty($node->field_photo->getValue())) {
+        $hero_image = $node->field_photo->getValue();
+        $file = File::load($hero_image[0]['target_id']);
+        $style = ImageStyle::load('hero_compressed')->buildUrl($file->getFileUri());
+        $vars['hero_image'] = $style;
+      }
+
+      // Copy the body field into the intro variable.
+      if (isset($node->body)) {
+        $render_array = $node->body->view();
+
+        // Hide the label.
+        $render_array['#label_display'] = 'hidden';
+
+        // Render the result.
+        $vars['intro'] = \Drupal::service('renderer')->renderRoot($render_array);
+      }
+
+      // Add a couple extra fields to the header for post-type nodes.
+      $post_type_nodes = _cubic_get_post_type_kinds();
+      if (isset($node) && is_object($node)) {
+        if (in_array($node->bundle(), $post_type_nodes)) {
+          if (isset($node->field_industry) && $node->field_industry->count()) {
+            $entity = $node->field_industry->first()->entity;
+          }
+          elseif (isset($node->field_business) && $node->field_business->count()) {
+            $entity = $node->field_business->first()->entity;
+          }
+          $vars['industry'] = isset($entity) ? $entity->getTitle() : 'corporate';
+          $vars['date_published'] = \Drupal::service('date.formatter')->format($node->getCreatedTime(), 'custom', 'F jS Y');
+
+          $addthis = [
+            '#theme' => 'cubic_social_addthis',
+            '#attached' => array('library' => array('cubic_social/cubic_social_addthis')),
+          ];
+          $vars['addthis'] = $addthis;
+        }
+
+        if ($node->bundle() === 'event') {
+          if (isset($node->field_date) && !$node->field_date->isEmpty()) {
+            $date_field_values = $node->field_date->first()->getValue();
+            $start_timestamp = strtotime($date_field_values['value']);
+            $start_month = date('F', $start_timestamp);
+            $start_day = date('j', $start_timestamp);
+            $start_year = date('Y', $start_timestamp);
+            $end_timestamp = strtotime($date_field_values['end_value']);
+            $end_month = date('F', $end_timestamp);
+            $end_day = date('j', $end_timestamp);
+            $end_year = date('Y', $end_timestamp);
+
+            if ($start_timestamp !== $end_timestamp) {
+              if ($start_month === $end_month && $start_year === $end_year) {
+                $format = '@sm @sd - @ed, @ey';
+              }
+              else if ($start_month !== $end_month && $start_year === $end_year) {
+                $format = '@sm @sd - @em @ed, @ey';
+              }
+              else {
+                $format = '@sm @sd, @sy - @em @ed, @ey';
+              }
+            }
+            else {
+              $format = '@em @ed, @ey';
+            }
+
+            $date_values = [
+              '@sm' => $start_month,
+              '@sd' => $start_day,
+              '@sy' => $start_year,
+              '@em' => $end_month,
+              '@ed' => $end_day,
+              '@ey' => $end_year,
+            ];
+            $date = t($format, $date_values);
+
+            $vars['date'] = $date;
+          }
+
+          if (isset($node->field_location) && !$node->field_location->isEmpty()) {
+            $address = $node->field_location->first()->getValue();
+            $parameters = [
+              $address['organization'],
+              $address['address_line1'],
+              $address['address_line2'],
+              $address['locality'],
+              $address['administrative_area'],
+              $address['postal_code'],
+              $address['country_code'],
+            ];
+            $parameters = array_filter($parameters);
+            $query = [
+              'api' => 1,
+              'query' => implode(', ', $parameters),
+            ];
+            $url = Url::fromUri('https://www.google.com/maps/search/', [
+              'query' => $query,
+              'attributes' => ['target' => '_blank'],
+            ]);
+            $vars['location'] = Link::fromTextAndUrl($node->field_location->view(), $url);
+          }
+
+          if (isset($node->field_additional_information) && !$node->field_additional_information->isEmpty()) {
+            $vars['additional_information'] = $node->field_additional_information->view();
+          }
+
+          if (isset($node->field_event_type) && !$node->field_event_type->isEmpty()) {
+            $vars['event_type'] = $node->field_event_type->first()->entity->getName();
+          }
+        }
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_block_alter().
+ */
+function cubic_theme_suggestions_block_alter(array &$suggestions, array $vars) {
+  if (array_key_exists('elements', $vars)) {
+    switch ($vars['elements']['#plugin_id']) {
+      case 'page_title_block':
+        $node = _cubic_get_current_node();
+        if (is_object($node)) {
+          $suggestions[] = 'block__' . $node->bundle() . '__page_title_block';
+        }
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_field_alter().
+ */
+function cubic_theme_suggestions_field_alter(array &$suggestions, array $vars) {
+  $element = $vars['element'];
+  /*
+  $suggestions[] = 'field__' . $element['#view_mode'];
+  $suggestions[] = 'field__' . $element['#view_mode'] . '__' . $element['#field_name'];*/
+
+  /*$suggestions[] = 'field__extra_wrappers';*/
+  $suggestions[] = 'field__extra_wrappers__' . $element['#field_type'];
+  $suggestions[] = 'field__extra_wrappers__' . $element['#field_name'];
+  $suggestions[] = 'field__extra_wrappers__' . $element['#entity_type'] . '__' . $element['#bundle'];
+  $suggestions[] = 'field__extra_wrappers__' . $element['#entity_type'] . '__' . $element['#field_name'];
+  $suggestions[] = 'field__extra_wrappers__' . $element['#entity_type'] . '__' . $element['#field_name'] . '__' . $element['#bundle'];
+}
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function cubic_preprocess_node(array &$vars) {
+  $node = $vars['node'];
+
+  if ($vars['view_mode'] == 'featured' && isset($vars['node']->field_hero_image)) {
+    $hero_image = $vars['node']->field_hero_image->getValue();
+
+    if ($hero_image) {
+      $file = File::load($hero_image[0]['target_id']);
+      $style = ImageStyle::load('hero_compressed')->buildUrl($file->getFileUri());
+
+      if ($file) {
+        $vars['hero_image'] = $style;
+      }
+    }
+  }
+
+  $function = __FUNCTION__ . '_' . $node->bundle();
+  if (function_exists($function)) {
+    $function($vars);
+  }
+}
+
+/**
+ * Implements hook_preprocess_node_annual_report().
+ *
+ * @see cubic_preprocess_node
+ */
+function cubic_preprocess_node_annual_report(array &$vars) {
+  /* @var \Drupal\node\Entity\Node $node */
+  $node = $vars['node'];
+
+  switch ($vars['view_mode']) {
+    case 'teaser':
+      $report_uri = $node->get('field_report_download')->entity->getFileUri();
+      $vars['report_url'] = file_create_url($report_uri);
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_node_post().
+ *
+ * @see cubic_preprocess_node
+ */
+function cubic_preprocess_node_post(array &$vars) {
+  /* @var \Drupal\node\Entity\Node $node */
+  $node = $vars['node'];
+
+
+  switch ($vars['view_mode']) {
+    case 'full':
+      /*$report_uri = $node->get('field_report_download')->entity->getFileUri();
+      $vars['report_url'] = file_create_url($report_uri);*/
+
+      if ($node->hasField('field_aside_paragraphs') && !$node->get('field_aside_paragraphs')->isEmpty()) {
+        //$field_aside_paragraphs = $node->get('field_aside_paragraphs')->first()->getValue();
+
+        //varible and to get the values in aside paragraph..
+        $node_2 = $node->field_aside_paragraphs->getValue();
+        foreach ($node_2 as $key => $value) {
+          //code to get the name...
+          $paragraph = FALSE;
+
+          if (!empty($value['target_id'])) {
+
+            //load paragraph
+            $paragraph = \Drupal::entityTypeManager()->getStorage('paragraph')->load($value['target_id']);
+
+
+            //Evaluate if is a People Grid..
+            if ($paragraph->hasField('field_people_grid_content') && !$paragraph->get('field_people_grid_content')->isEmpty()) {
+              $field_people_grid_content = $paragraph->get('field_people_grid_content')->first()->getValue();
+              $field_people_grid_content_load = \Drupal::entityTypeManager()->getStorage('paragraph')->load($field_people_grid_content['target_id']);
+
+              // evaluates if is local/external Person...
+              if ($field_people_grid_content_load->hasField('field_bio') && !$field_people_grid_content_load->get('field_bio')->isEmpty()) {
+                $field_people_grid_content_load_content = $field_people_grid_content_load->get('field_bio')->first()->getValue();
+                $vars['bio']['content'] = Markup::create($field_people_grid_content_load_content['value']);
+                $vars['bio']['attributtes'] = 'paragrph bio';
+              }
+              elseif ($field_people_grid_content_load->hasField('field_person') && !$field_people_grid_content_load->get('field_person')->isEmpty()) {
+                $field_people_grid_local_content = $field_people_grid_content_load->get('field_person')->first()->getValue();
+                //load person
+                $field_people_grid_local_content_load = \Drupal::entityTypeManager()->getStorage('node')->load($field_people_grid_local_content['target_id']);
+                //field_main_column
+                $people_grid_local_field_main_column = $field_people_grid_local_content_load->get('field_main_column')->first()->getValue();
+                $vars['bio']['content'] = Markup::create($people_grid_local_field_main_column['value']);
+              }
+            }
+          }
+        }
+      }
+
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_node_post().
+ *
+ * @see cubic_preprocess_node
+ */
+function cubic_preprocess_node_milestone_decade(array &$vars) {
+
+//  translate from P to N
+  $node = $vars['node'];
+
+  if ($node->hasField('field_background_image') && !$node->get('field_background_image')->isEmpty()) {
+    $vars['attributes']['class'][] = 'has-background';
+    $uri = $node->get('field_background_image')->entity->getFileUri();
+    $vars['content']['background_image'] = [
+      '#theme' => 'image_style',
+      '#style_name' => 'hero_compressed',
+      '#uri' => $uri,
+    ];
+  }
+
+}
+
+/**
+ * Implements hook_preprocess_node_person().
+ *
+ * @see cubic_preprocess_node
+ */
+function cubic_preprocess_node_person(array &$vars) {
+  /* @var \Drupal\node\Entity\Node $node */
+  $node = $vars['node'];
+
+  if ($vars['view_mode'] === 'full') {
+    if ($node->hasField('field_person_facebook_link') && !$node->get('field_person_facebook_link')->isEmpty()) {
+      /* @var \Drupal\link\Plugin\Field\FieldType\LinkItem $link */
+      $link = $node->get('field_person_facebook_link')->first();
+      $vars['facebook_url'] = $link->getUrl()->toString();
+    }
+    if ($node->hasField('field_person_linkedin_link') && !$node->get('field_person_linkedin_link')->isEmpty()) {
+      /* @var \Drupal\link\Plugin\Field\FieldType\LinkItem $link */
+      $link = $node->get('field_person_linkedin_link')->first();
+      $vars['linkedin_url'] = $link->getUrl()->toString();
+    }
+    if ($node->hasField('field_person_twitter_link') && !$node->get('field_person_twitter_link')->isEmpty()) {
+      /* @var \Drupal\link\Plugin\Field\FieldType\LinkItem $link */
+      $link = $node->get('field_person_twitter_link')->first();
+      $vars['twitter_url'] = $link->getUrl()->toString();
+    }
+
+    $addthis = [
+      '#theme' => 'cubic_social_addthis',
+      '#twitter_only' => FALSE,
+      '#attached' => array('library' => array('cubic_social/cubic_social_addthis')),
+    ];
+    $vars['addthis'] = $addthis;
+  }
+}
+
+/**
+ * Implements hook_preprocess_node_slider().
+ *
+ * @see cubic_preprocess_node
+ */
+function cubic_preprocess_node_slider(array &$vars) {
+  $node = $vars['node'];
+
+  if ($node->hasField('field_photo') && !$node->get('field_photo')->isEmpty()) {
+    $photo = $node->get('field_photo')->first()->getValue();
+    $photo_file = File::load($photo['target_id']);
+    $style = ImageStyle::load('hero_compressed')->buildUrl($photo_file->getFileUri());
+    $vars['poster_url'] = $style;
+    $vars['attributes']['style'][] = 'background-image: url("' . $style . '");';
+  }
+
+  if ($node->hasField('field_video_file') && !$node->get('field_video_file')->isEmpty()) {
+    $video = $node->get('field_video_file')->first()->getValue();
+    $video_file = File::load($video['target_id']);
+    $vars['video_url'] = file_create_url($video_file->getFileUri());
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_paragraph_alter().
+ */
+function cubic_theme_suggestions_paragraph_alter(array &$suggestions, array $vars) {
+  $elements = $vars['elements'];
+  /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $elements['#paragraph'];
+  $suggestions[] = 'paragraph__' . $paragraph->getParentEntity()->bundle() . '__' . $paragraph->bundle();
+}
+
+/**
+ * Implements of template_preprocess_paragraph().
+ *
+ * Calls more specific paragraph preprocessors.
+ */
+function cubic_preprocess_paragraph(array &$vars) {
+  // Set up our list of paragraph types (ones that will not get an anchor)
+  $list = array(
+    'cross_link',
+  );
+  $paragraph_type = $vars['paragraph']->getParagraphType()->id();
+  $function = __FUNCTION__ . '_' . str_replace('-', '_', $paragraph_type);
+
+  if (function_exists($function)) {
+    $function($vars);
+  }
+
+  if (!in_array($paragraph_type, $list) && function_exists('_cubic_controller_name_path')) {
+    /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $vars['elements']['#paragraph'];
+
+    if ($paragraph->hasField('field_title') && !$paragraph->get('field_title')->isEmpty()) {
+      $title = $paragraph->get('field_title')->first();
+      $title_string = current($title->getValue());
+      $vars['title_string'] = $title_string;
+    }
+    else {
+      $title_string = $paragraph->getParagraphType()->label();
+    }
+
+    $vars['anchor_id'] = _cubic_controller_name_path($title_string . '--id-' . $paragraph->id());
+  }
+
+  // Advanced animated paragraphs, skip these below and add class for basic
+  // fade-in animations.
+  $animated_paragraphs = [
+    '50_50',
+    'case_study_row',
+    'divider_bar',
+    'people-grid-bio',
+  ];
+
+//  ksm($paragraph_type);
+
+  if (!in_array($paragraph_type, $animated_paragraphs)) {
+    $vars['attributes']['class'][] = 'basic-animation';
+  }
+}
+
+/**
+ * Implements template_preprocess_paragraph() for 50/50 components.
+ */
+function cubic_preprocess_paragraph_50_50(array &$vars) {
+  /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $vars['elements']['#paragraph'];
+  $vars['subtype'] = 'image-gallery';
+
+  $image_gallery_count = isset($vars['content']['field_image_gallery']) ? count(Element::children($vars['content']['field_image_gallery'])) : 0;
+  $video_count = isset($vars['content']['field_video']) ? count(Element::children($vars['content']['field_video'])) : 0;
+
+  if ($image_gallery_count >= 1) {
+    $vars['attributes']['class'][] = 'subtype--image--gallery';
+    $vars['subtype'] = 'image-gallery';
+  }
+  elseif ($video_count > 0) {
+    $vars['attributes']['class'][] = 'subtype--video';
+    $vars['subtype'] = 'video';
+  }
+  else {
+    $vars['attributes']['class'][] = 'subtype--statistics';
+    $vars['subtype'] = 'statistics';
+  }
+
+  if ($image_gallery_count <= 1 && $paragraph->hasField('field_image_link') && !$paragraph->get('field_image_link')->isEmpty()) {
+    $link_field = $paragraph->get('field_image_link')->first()->getValue();
+    $text[] = $vars['content']['field_image_gallery'];
+    $text[] = [
+      '#markup' => Markup::create('<span class="image-link-title"><svg class="icon icon--link"><use xlink:href="#icon-link"></use></svg>' . $link_field['title'] . '</span>'),
+      '#weight' => 10,
+    ];
+    $link = Link::fromTextAndUrl($text, Url::fromUri($link_field['uri'], $link_field['options']))->toRenderable();
+
+    $vars['content']['field_image_gallery'] = $link;
+  }
+
+  if ($paragraph->hasField('field_contain') && !$paragraph->get('field_contain')->isEmpty()) {
+    $contain = $paragraph->get('field_contain')->first()->value;
+    if ($contain == 1) {
+      $vars['attributes']['class'][] = 'subtype--product';
+    }
+  }
+}
+
+
+/**
+ * Implements template_preprocess_paragraph() for 50/50 components.
+ */
+function cubic_preprocess_paragraph_milestone_50_50(array &$vars) {
+  /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $vars['elements']['#paragraph'];
+  $vars['subtype'] = 'image-gallery';
+
+  $image_gallery_count = isset($vars['content']['field_image_gallery']) ? count(Element::children($vars['content']['field_image_gallery'])) : 0;
+  $video_count = isset($vars['content']['field_video']) ? count(Element::children($vars['content']['field_video'])) : 0;
+
+  if ($image_gallery_count >= 1) {
+    $vars['attributes']['class'][] = 'subtype--image--gallery';
+    $vars['subtype'] = 'image-gallery';
+
+    /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $vars['paragraph'];
+
+
+    if ($paragraph->hasField('field_image_gallery') && !$paragraph->get('field_image_gallery')->isEmpty()) {
+
+      $uri = $paragraph->get('field_image_gallery')->entity->getFileUri();
+      $vars['full_image'] = [
+        '#theme' => 'image_style',
+        '#style_name' => 'hero_compressed',
+        '#uri' => $uri,
+      ];
+    }
+
+
+  }
+  elseif ($video_count > 0) {
+    $vars['attributes']['class'][] = 'subtype--video';
+    $vars['subtype'] = 'video';
+  }
+  else {
+    $vars['attributes']['class'][] = 'subtype--statistics';
+    $vars['subtype'] = 'statistics';
+  }
+
+  if ($image_gallery_count <= 1 && $paragraph->hasField('field_image_link') && !$paragraph->get('field_image_link')->isEmpty()) {
+    $vars['subtype'] = 'image-gallery-link';
+
+    $link_field = $paragraph->get('field_image_link')->first()->getValue();
+    $text[] = $vars['content']['field_image_gallery'];
+    $text[] = [
+      '#markup' => Markup::create('<span class="image-link-title"><svg class="icon icon--link"><use xlink:href="#icon-link"></use></svg>' . $link_field['title'] . '</span>'),
+      '#weight' => 10,
+    ];
+    $link = Link::fromTextAndUrl($text, Url::fromUri($link_field['uri'], $link_field['options']))->toRenderable();
+
+    $vars['content']['field_image_gallery'] = $link;
+  }
+
+//  if ($paragraph->hasField('field_contain') && !$paragraph->get('field_contain')->isEmpty()) {
+//    $contain = $paragraph->get('field_contain')->first()->value;
+//    if ($contain == 1) {
+//      $vars['attributes']['class'][] = 'subtype--product';
+//    }
+//  }
+}
+
+
+/**
+ * Implementation of template_preprocess_paragraph for accordion wrappers.
+ *
+ * @see paragraph.html.twig
+ */
+function cubic_preprocess_paragraph_accordions(array &$vars) {
+  /* drupal_static_reset(__FUNCTION__ . '_first_item'); */
+
+  $vars['attributes']['data-accordion'] = 'data-accordion';
+  $vars['attributes']['data-allow-all-closed'] = 'true';
+  $vars['attributes']['class'][] = 'accordion';
+}
+
+/**
+ * Implements template_preprocess_paragraph() for ARS.
+ */
+function cubic_preprocess_paragraph_annual_reports_slider(array &$vars) {
+  /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $vars['paragraph'];
+
+  $query = \Drupal::entityQuery('node')
+    ->condition('type', 'annual_report')
+    ->condition('status', 1)
+    ->sort('created', 'DESC');
+
+  if ($paragraph->hasField('field_report_category') && !$paragraph->get('field_report_category')->isEmpty()) {
+    $categories = $paragraph->get('field_report_category')->getValue();
+    $categories = array_column($categories, 'target_id');
+    $query->condition('field_report_category', $categories, 'IN');
+  }
+
+  $nids = $query->execute();
+
+  foreach ($nids as $nid) {
+    /* @var \Drupal\Core\Entity\EntityViewBuilder $view_builder */
+    $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+    /* @var \Drupal\node\NodeStorage $storage */
+    $storage = \Drupal::service('entity_type.manager')->getStorage('node');
+    /* @var \Drupal\node\Entity\Node $node */
+    $node = $storage->load($nid);
+    /* @var array $build */
+    $build = $view_builder->view($node, 'teaser');
+
+    $vars['annual_reports'][] = $build;
+    $vars['#cache']['tags'][] = 'node:' . $node->id();
+  }
+
+  if (\Drupal::service('module_handler')->moduleExists('handy_cache_tags')) {
+    $vars['#cache']['tags'][] = \Drupal::service('handy_cache_tags.manager')->getBundleTag('node', 'annual_report');
+  }
+}
+
+/**
+ * Implements template_preprocess_paragraph() for ARS.
+ */
+function cubic_preprocess_paragraph_case_study_row(array &$vars) {
+  /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $vars['paragraph'];
+
+  if ($paragraph->hasField('field_background_image') && !$paragraph->get('field_background_image')->isEmpty()) {
+    $vars['attributes']['class'][] = 'has-background';
+    $uri = $paragraph->get('field_background_image')->entity->getFileUri();
+    $vars['content']['background_image'] = [
+      '#theme' => 'image_style',
+      '#style_name' => 'hero_compressed',
+      '#uri' => $uri,
+    ];
+  }
+}
+
+/**
+ * Implementation of template_preprocess_paragraph for cross link.
+ *
+ * @see paragraph.html.twig
+ */
+function cubic_preprocess_paragraph_cross_links(array &$vars) {
+  // Count the number of items so we can set the correct class in the template.
+  $item_count = count(Element::children($vars['content']['field_cross_links']));
+  $vars['item_count_class'] = 'contains-' . $item_count;
+}
+
+/**
+ * Implementation of template_preprocess_paragraph for event recap slider item.
+ *
+ * @see paragraph.html.twig
+ */
+function cubic_preprocess_paragraph_event_recap_slider_item(array &$vars) {
+  /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $vars['paragraph'];
+
+  if ($paragraph->hasField('field_image') && !$paragraph->get('field_image')->isEmpty()) {
+    $uri = $paragraph->get('field_image')->entity->getFileUri();
+    $vars['full_image'] = [
+      '#theme' => 'image_style',
+      '#style_name' => 'hero_compressed',
+      '#uri' => $uri,
+    ];
+  }
+
+  if ($paragraph->hasField('field_video') && !$paragraph->get('field_video')->isEmpty()) {
+    $vars['has_video'] = 'has-video';
+  }
+}
+
+
+/**
+ * Implementation of template_preprocess_paragraph for milestone carousel item.
+ *
+ * @see paragraph.html.twig
+ */
+function cubic_preprocess_paragraph_milestone_carousel_item(array &$vars) {
+  /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $vars['paragraph'];
+
+  if ($paragraph->hasField('field_image') && !$paragraph->get('field_image')->isEmpty()) {
+    $uri = $paragraph->get('field_image')->entity->getFileUri();
+    $vars['full_image'] = [
+      '#theme' => 'image_style',
+      '#style_name' => 'hero_compressed',
+      '#uri' => $uri,
+    ];
+  }
+
+//  if ($paragraph->hasField('field_video') && !$paragraph->get('field_video')->isEmpty()) {
+//    $vars['has_video'] = 'has-video';
+//  }
+}
+
+/**
+ * Implementation of template_preprocess_paragraph for testimonial slider item.
+ *
+ * @see paragraph.html.twig
+ */
+function cubic_preprocess_paragraph_testimonial_slider_item(array &$vars) {
+  /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $vars['paragraph'];
+
+
+  if ($paragraph->hasField('field_image') && !$paragraph->get('field_image')->isEmpty()) {
+    $uri = $paragraph->get('field_image')->entity->getFileUri();
+    $vars['full_image'] = [
+      '#theme' => 'image_style',
+      '#style_name' => 'hero_compressed',
+      '#uri' => $uri,
+    ];
+
+    $image_url = file_create_url($uri);
+
+    $vars['attributes']['class'][] = 'testimonial-video-slider-item';
+    $vars['attributes']['style'][] = 'background-image : url("' . $image_url . '")';
+
+
+    $vars['has_image'] = 'has_image';
+
+
+
+
+  } else {
+
+    $vars['attributes']['class'][] = 'testimonial-no-video-slider-item';
+
+    $parent_paragraph = $paragraph->getParentEntity();
+    if ($parent_paragraph->hasField('field_one_column') && !$parent_paragraph->get('field_one_column')->isEmpty()) {
+
+      $field_one_column = $parent_paragraph->get('field_one_column')->first()->getValue();
+
+      if($field_one_column['value']=='1') {
+        $vars['one_column'] = 'one_column';
+        $vars['attributes']['class'][] = 'one-column-testimonial-slider-item';
+      }
+    }
+  }
+
+  if ($paragraph->hasField('field_video') && !$paragraph->get('field_video')->isEmpty()) {
+    $vars['has_video'] = 'has-video';
+  }
+
+}
+
+/**
+ * Implementation of template_preprocess_paragraph for testimonial slider item.
+ *
+ * @see paragraph.html.twig
+ */
+function cubic_preprocess_paragraph_testimonial_slider(array &$vars) {
+  /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $vars['paragraph'];
+
+  if ($paragraph->hasField('field_one_column') && !$paragraph->get('field_one_column')->isEmpty()) {
+
+    $field_one_column = $paragraph->get('field_one_column')->first()->getValue();
+
+    if($field_one_column['value']=='1') {
+      $vars['attributes']['class'][] = 'one-column-testimonial-slider';
+    }
+  }
+}
+
+/**
+ * Implementation of template_preprocess_paragraph for grids of success stories.
+ *
+ * @see paragraph.html.twig
+ */
+function cubic_preprocess_paragraph_grid_of_success_stories(array &$vars) {
+  $item_count = count(Element::children($vars['content']['field_success_stories']));
+  $vars['has_body_class'] = 'no-body';
+
+  // Is there also a body field?  If so, add it.
+  if (isset($vars['content']['field_body'][0])) {
+    $item_count += 1;
+    $vars['has_body_class'] = 'has-body';
+  }
+
+  $vars['item_count_class'] = 'contains-' . $item_count;
+}
+
+/**
+ * Implementation of template_preprocess_paragraph for image + menu.
+ *
+ * @see paragraph.html.twig
+ */
+function cubic_preprocess_paragraph_image_and_menu(array &$vars) {
+  $even_odd = &drupal_static(__FUNCTION__);
+
+  if (!$even_odd) {
+    $even_odd = 'odd';
+  }
+  else {
+    $even_odd = $even_odd == 'even' ? 'odd' : 'even';
+  }
+  $vars['attributes']['class'][] = $even_odd;
+
+  // Transform the selected menu item into its menu tree.
+  $referenced_menu_id = $vars['paragraph']->get('field_menu_item')->first()->get('target_id')->getValue();
+
+  $menu = _cubic_get_submenu_tree_from_item($referenced_menu_id, 3);
+
+  $vars['rendered_menu'] = \Drupal::service('renderer')->render($menu);
+}
+
+/**
+ * Implementation of template_preprocess_paragraph for social icon link.
+ *
+ * @see paragraph.html.twig
+ */
+function cubic_preprocess_paragraph_social_icon_link(array &$vars) {
+  // Pull out the link so we can make the whole thing clickable.
+  $paragraph = $vars['elements']['#paragraph'];
+
+  $link_field = $paragraph->get('field_link')->first()->getValue();
+  $icon = $paragraph->get('field_social_icon')->first()->value;
+  $attributes = array_merge(['href' => Url::fromUri($link_field['uri'])->toString()], $link_field['options']['attributes']);
+
+  $vars['social_link'] = [
+    'attributes' => new Attribute($attributes),
+    'id' => 'social-' . $icon,
+  ];
+}
+
+/**
+ * Implementation of template_preprocess_paragraph for grids of success stories.
+ *
+ * @see paragraph.html.twig
+ */
+function cubic_preprocess_paragraph_solutions_product(array &$vars) {
+  // Pull out the link so we can make the whole thing clickable.
+  $paragraph = $vars['elements']['#paragraph'];
+  $field_cta_val = current($paragraph->get('field_cta')->getValue());
+  // Make all the values of the CTA available to the template.
+  foreach ($field_cta_val as $i => $v) {
+    $vars['field_cta_' . $i] = $v;
+  }
+  // Convert the URI into a URL.
+  $uri_parts = explode(':', $field_cta_val['uri']);
+  // Make URL available in the template.
+  $vars['field_cta_url'] = $uri_parts[1];
+
+  // This field comes through with all its wrappers - strip it.
+  if (isset($vars['content']['field_background_image'])) {
+    $rendered = \Drupal::service('renderer')->render($vars['content']['field_background_image']);
+    $vars['background_image'] = trim(strip_tags($rendered));
+  }
+  else {
+    $vars['background_image'] = NULL;
+  }
+}
+
+/**
+ * Implements template_preprocess_entity_embed_container().
+ */
+function cubic_preprocess_entity_embed_container(&$vars) {
+  /* @var \Drupal\file\Entity\File $file */
+  $file = $vars['element']['#entity'];
+  $uri = $file->getFileUri();
+  $stream_wrapper_manager = \Drupal::service('stream_wrapper_manager')->getViaUri($uri);
+  $file_path = $stream_wrapper_manager->realpath();
+  $type = (file_exists($file_path) && getimagesize($file_path)) ? 'image' : 'file';
+  $vars['attributes']['class'][] = "entity--$type";
+}
+
+/**
+ * Implements template_preprocess_form().
+ */
+function cubic_preprocess_form(array &$vars) {
+  $form = &$vars['element'];
+  $views = [
+    '^views-exposed-form-list',
+    '^views-exposed-form-people-teaser-list',
+  ];
+
+  // Add the auto-submit class to view exposed forms that need it
+  // (preprocess_views_exposed_form fires too late).
+  foreach ($views as $id) {
+    if (preg_match("#$id#", $form['#id'])) {
+      $vars['attributes']['class'][] = 'auto-submit';
+    }
+  }
+}
+
+/**
+ * Implements hook_preprocess_field().
+ */
+function cubic_preprocess_field(array &$vars, $hook) {
+  switch ($vars['element']['#field_name']) {
+    case 'field_aside_paragraphs':
+      $node = $vars['element']['#object'];
+
+      if (!in_array($node->bundle(), array('person'))) {
+        // Append an AddThis implementation, at the bottoms of all the aside
+        // content.
+        $addthis = [
+          '#theme' => 'cubic_social_addthis',
+          '#twitter_only' => FALSE,
+          '#attached' => array('library' => array('cubic_social/cubic_social_addthis')),
+        ];
+        $vars['addthis'] = $addthis;
+      }
+      break;
+
+    case 'field_cross_links':
+      // Separate field_image from the rest of the content.
+      foreach ($vars['items'] as $i => $item) {
+        // Initialize our color variable.
+        $section_color = FALSE;
+        $paragraph = $item['content']['#paragraph'];
+        // Pull out the target_id.
+        $reference_item = $paragraph->get('field_linked_content')->first();
+
+        if ($reference_item && $reference_item->entity) {
+          $entity = $reference_item->entity;
+          if ($entity->hasField('field_color')) {
+            // Get the color from the referenced entity.
+            $langcode = current($entity->get('langcode')->getValue());
+            $langcode_val = $langcode['value'];
+            $color = $entity->getTranslation($langcode_val)->get('field_color')->first();
+            if ($color) {
+              $section_color = current($color->getValue());
+            }
+          }
+          $vars['items'][$i]['target_id'] = $entity->id();
+          $vars['items'][$i]['alias'] = \Drupal::service('path.alias_manager')->getAliasByPath('/node/' . $entity->id());
+        }
+
+        $vars['items'][$i]['section_color'] = ($section_color ? 'section-color-' . $section_color : 'section-color-teal');
+        // We may want to disable this so we add this stub controller that is
+        // always on for now.
+        $vars['items'][$i]['learn_more'] = TRUE;
+        // Pull out the field_image markup into a variable we will pass the
+        // template. Instead we will use an imagestyle defined in the theme.
+        $fid = current(current($paragraph->field_image->getValue('target_id')));
+        $file = File::load($fid);
+        $path = $file->getFileUri();
+        // Now that we have the path, we will use it in our render array.
+        $render = [
+          '#theme' => 'image_style',
+          '#style_name' => 'square_700x700',
+          '#uri' => $path,
+        ];
+        $vars['items'][$i]['image_content'] = $render;
+        // Remove the field_image markup from the rest of the content markup.
+        unset($paragraph->field_image);
+      }
+      break;
+
+    case 'field_event_schedule_content':
+      switch ($vars['entity_type']) {
+        case 'paragraph':
+          /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+          $paragraph = $vars['element']['#object'];
+
+          if ($paragraph->bundle() === 'event_schedule') {
+            foreach ($vars['items'] as &$item) {
+              /* @var \Drupal\paragraphs\Entity\Paragraph $item_paragraph */
+              $item_paragraph = $item['content']['#paragraph'];
+              $dates = [];
+
+              if ($item_paragraph->hasField('field_time') && !$item_paragraph->get('field_time')->isEmpty()) {
+                $time = $item_paragraph->get('field_time')->first()->getValue();
+                $time_start = new DateTime($time['value'], new DateTimeZone('GMT'));
+                $time_end = new DateTime($time['end_value'], new DateTimeZone('GMT'));
+                $start_timestamp = $time_start->getTimestamp();
+                $end_timestamp = $time_end->getTimestamp();
+                $dates[$start_timestamp] = date('F-d', $start_timestamp);
+                $dates[$end_timestamp] = date('F-d', $end_timestamp);
+
+                krsort($dates);
+                $dates = array_unique($dates);
+
+                /* @var \Drupal\Core\Template\Attribute $attributes */
+                $attributes = &$item['attributes'];
+                $attributes->setAttribute('data-dates', $dates);
+              }
+            }
+          }
+          break;
+      }
+      break;
+
+    // Grid image field should turn into sliders when there are more than 4
+    // items.
+    case 'field_grid_image':
+      $item_count = isset($vars['items']) ? count($vars['items']) : 0;
+      $vars['is_slider'] = $item_count > 4;
+      break;
+
+    case 'field_image':
+    case 'field_image_gallery':
+      $item_count = isset($vars['items']) ? count($vars['items']) : 0;
+      $vars['is_multiple'] = $item_count > 1;
+      break;
+
+    case 'field_paragraphs':
+      $node = $vars['element']['#object'];
+
+      if (in_array($node->bundle(), array('event'))) {
+        foreach ($vars['items'] as $item) {
+          /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+          $paragraph = $item['content']['#paragraph'];
+          if (function_exists('_cubic_controller_name_path')) {
+            if (isset($paragraph->field_title) && !$paragraph->field_title->isEmpty()) {
+              $title_string = $paragraph->field_title->first()->value;
+            }
+            else {
+              $title_string = $paragraph->getParagraphType()->label();
+            }
+
+            $vars['jump_links'][] = [
+              'id' => _cubic_controller_name_path($title_string . '--id-' . $paragraph->id()),
+              'value' => $title_string,
+            ];
+          }
+        }
+      }
+      break;
+
+    // Grid of products needs to know whether there's an even or odd number of
+    // products.
+    case 'field_products':
+      $item_count = isset($vars['items']) ? count($vars['items']) : 0;
+      $vars['even_odd_class'] = $item_count % 2 == 0 ? 'items--even' : 'items--odd';
+      break;
+
+    case 'field_salesforce_embed_code':
+    case 'field_social_embed_code':
+      $raw_content = $vars['items'][0]['content']['#context']['value'];
+      $vars['items'][0]['content'] = [
+        '#markup' => Markup::create($raw_content),
+      ];
+      break;
+
+    // Grid image field should turn into sliders when there are more than 4
+    // items.
+    case 'field_success_stories':
+      $item_count = isset($vars['items']) ? count($vars['items']) : 0;
+      $vars['item_count_class'] = 'contains-' . $item_count;
+      break;
+
+    // Separate tab title and content.
+    case 'field_tabs':
+      $vars['tab_id'] = $vars['element']['#object']->id();
+      // Add an AddThis implementation for product nodes.
+      $current_path = \Drupal::service('path.current')->getPath();
+      $params = Url::fromUserInput($current_path)->getRouteParameters();
+      if (isset($params['node'])) {
+        $node = Node::load($params['node']);
+        if ('product' == $node->bundle()) {
+          $addthis = [
+            '#theme' => 'cubic_social_addthis',
+            '#twitter_only' => TRUE,
+            '#attached' => array('library' => array('cubic_social/cubic_social_addthis')),
+          ];
+          $vars['addthis'] = $addthis;
+        }
+      }
+
+      $vars['tab_content'] = [];
+      foreach ($vars['items'] as $item) {
+        $paragraph = $item['content']['#paragraph'];
+
+        $tab_content = $paragraph->field_tab_content->view('default');
+
+        $vars['tab_content'][] = [
+          'field_title' => $paragraph->get('field_title')->value,
+          'field_tab_content' => $tab_content,
+        ];
+      }
+      break;
+
+    case 'field_time':
+      switch ($vars['entity_type']) {
+        case 'paragraph':
+          /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+          $paragraph = $vars['element']['#object'];
+
+          if ($paragraph->bundle() === 'event_schedule_item') {
+            if ($paragraph->hasField('field_timezone') && !$paragraph->get('field_timezone')->isEmpty()) {
+              $full_timezone = $paragraph->get('field_timezone')->first()->value;
+              $dateTime = new DateTime();
+              $dateTime->setTimeZone(new DateTimeZone($full_timezone));
+              $vars['timezone'] = $dateTime->format('T');
+            }
+          }
+          break;
+      }
+      break;
+
+    case 'field_title':
+      switch ($vars['entity_type']) {
+        case 'paragraph':
+          /* @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+          $paragraph = $vars['element']['#object'];
+
+          if ($paragraph->bundle() === 'accordion') {
+            if ($paragraph->hasField('field_subtitle') && !$paragraph->get('field_subtitle')->isEmpty()) {
+              $vars['subtitle'] = $paragraph->get('field_subtitle')->first()->value;
+            }
+          }
+          break;
+      }
+      break;
+
+    case 'field_map_embed_code':
+      $raw_content = $vars['items'][0]['content']['#context']['value'];
+      $vars['items'][0]['content'] = [
+        '#markup' => Markup::create($raw_content),
+      ];
+      break;
+  }
+}
+
+/**
+ * Implements hook_preprocess_details().
+ */
+function cubic_preprocess_details(array &$vars) {
+  /*$vars['attributes']['class'][] = 'details';
+  $vars['summary_attributes']['class'] = 'summary';*/
+}
+
+/**
+ * Implements hook_theme_suggestions_details_alter().
+ */
+function cubic_theme_suggestions_details_alter(array &$suggestions, array $vars) {
+
+}
+
+/**
+ * Implements hook_preprocess_menu_local_task().
+ */
+function cubic_preprocess_menu_local_task(array &$vars) {
+
+}
+
+/**
+ * Implements hook_preprocess_file_link().
+ */
+function cubic_preprocess_file_link(&$variables) {
+//  if (empty($variables['link']->getGeneratedLink())) {
+//    // If we dont have a generated link by Drupal standard
+//    // it knows more than we do, and we can just quit out.
+//    return;
+//  }
+
+  $file = $variables['file'];
+  $url = file_create_url($file->uri->value);
+
+  // Use the description as the link text if available.
+  if (empty($variables['description'])) {
+    $link_text = $file->filename->value;
+  }
+  else {
+    $link_text = $variables['description']->__toString();
+  }
+
+  $link = Url::fromUri($url);
+
+  // All of these options are standard file link, with the exception
+  // of target and rel - the two attributes we actually want to add.
+  $link_options = array(
+    'attributes' => array(
+      'type' => $file->filemime->value,
+      'length' => $file->filesize->value,
+      'title' => Html::escape($file->filename->value),
+      'target' => '_blank',
+      'rel' => 'noopener',
+    ),
+  );
+  $link->setOptions($link_options);
+  $link_html = Link::fromTextAndUrl(Html::decodeEntities($link_text), $link)->toString();
+
+  $variables['link']= $link_html;
+
+//  ksm('this is $link_htm');
+//  ksm($link_html);
+//
+//
+//  ksm('this is $variable');
+//  ksm($variables['link']);
+}
+
+/**
+ * Implements template_preprocess_views_exposed_form().
+ */
+function cubic_preprocess_views_exposed_form(&$vars) {
+  $form = &$vars['form'];
+
+  // Change the default (All) entry in dropdown menus into the item label.
+  foreach ($form as &$form_item) {
+    if (is_array($form_item) && isset($form_item['#type']) && 'select' == $form_item['#type']) {
+      if (isset($form_item['#options']['All'])) {
+        $form_item['#options']['All'] = $form_item['#title'];
+      }
+    }
+  }
+}
+
+/**
+ * Custom function to find the nearest color field value from menu ancestors.
+ *
+ * @param int $node_id
+ *   The node id of the descendant.
+ */
+function _cubic_get_color_from_menu($node_id) {
+  // Make sure we're looking at a node.
+  if ($node_id) {
+    $menu_link_manager = \Drupal::service('plugin.manager.menu.link');
+    $menu_links = $menu_link_manager->loadLinksByRoute('entity.node.canonical', array('node' => $node_id));
+
+    foreach ($menu_links as $menu_link) {
+      // Make sure the node has a menu link.
+      if ($menu_link) {
+        $parents = $menu_link_manager->getParentIds($menu_link->getParent());
+
+        // Make sure the menu item has parents.
+        if (is_array($parents)) {
+          array_unshift($parents, $menu_link->getPluginId());
+
+          foreach ($parents as $parent) {
+            $uuid = str_replace('menu_link_content:', '', $parent);
+            $entity = \Drupal::service('entity.repository')->loadEntityByUuid('menu_link_content', $uuid);
+
+            if ($entity) {
+              $route = $entity->getUrlObject()->getRouteParameters();
+
+              if (array_key_exists('node', $route)) {
+                $node = Node::load($route['node']);
+
+                if (isset($node->field_color)) {
+                  $color = $node->field_color->getString();
+
+                  if (!empty($color)) {
+                    return $color;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return NULL;
+}
+
+/**
+ * Helper function that takes a menu ID (via custom link entity reference)
+ *
+ * Returns its menu tree.
+ *
+ * @param int $referenced_menu_id
+ *   Menu item ID.
+ *
+ * @return array
+ *   The built menu tree.
+ */
+function _cubic_get_submenu_tree_from_item($referenced_menu_id, $depth = NULL) {
+  $storage = \Drupal::entityTypeManager()->getStorage('menu_link_content');
+  $menu_links = $storage->loadByProperties(['id' => $referenced_menu_id]);
+  $menu_link = reset($menu_links);
+
+  $menu_tree = \Drupal::menuTree();
+  $parameters = new MenuTreeParameters();
+  $parameters->setRoot($menu_link->getPluginId())->onlyEnabledLinks();
+  if ($depth) {
+    $parameters->setMaxDepth($depth);
+  }
+  $tree = $menu_tree->load(NULL, $parameters);
+
+  // Transform the tree using the manipulators you want.
+  $manipulators = [
+    // Only show links that are accessible for the current user.
+    ['callable' => 'menu.default_tree_manipulators:checkAccess'],
+    // Use the default sorting of menu links.
+    ['callable' => 'menu.default_tree_manipulators:generateIndexAndSort'],
+  ];
+  $tree = $menu_tree->transform($tree, $manipulators);
+  return $menu_tree->build($tree);
+}
+
+/**
+ * Get the current node from the current route.
+ *
+ * @return \Drupal\node\Entity\Node|null
+ *   Node or null.
+ */
+function _cubic_get_current_node() {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  switch ($route_name) {
+    case 'entity.node.preview':
+      $node = \Drupal::routeMatch()->getParameter('node_preview');
+      break;
+
+    case 'entity.node.revision':
+      $node = \Drupal::routeMatch()->getParameter('node_revision');
+      if (intval($node) > 0) {
+        $node = node_revision_load($node);
+      }
+      break;
+
+    default:
+      $node = \Drupal::routeMatch()->getParameter('node');
+      break;
+  }
+
+  if (isset($node) && $node instanceof NodeInterface) {
+    return $node;
+  }
+
+  return NULL;
+}
+
+/**
+ * Custom function to return post-kind content types.
+ *
+ * @param array $add
+ *   Additional types to be appended to defaults.
+ *
+ * @return array
+ *   Array of content type machine names.
+ */
+function _cubic_get_post_type_kinds(array $add = []) {
+  $defaults = array(
+    'award',
+    'insight',
+    'post',
+    'press_release',
+    'success_story',
+  );
+
+  return array_merge($defaults, $add);
+}

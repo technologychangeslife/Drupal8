@@ -1,0 +1,8 @@
+# Cubic NYSE Ticker endpoint.
+
+cubic_nyse_ticker.get:
+  path: 'cubic-nyse-quote.json'
+  defaults: { _controller: '\Drupal\cubic_nyse_ticker\Controller\CubicQuoteTickerController::get' }
+  methods:  [GET]
+  requirements:
+    _access: 'TRUE'

@@ -1,0 +1,40 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.image_browser
+  module:
+    - views
+name: image_browser
+label: 'Image Browser'
+display: modal
+display_configuration:
+  width: '1070'
+  height: '840'
+  link_text: 'Select Image(s)'
+  auto_open: false
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  20c8109a-d085-4b60-85f7-b9960f4d9c5e:
+    settings:
+      view: image_browser
+      view_display: entity_browser_1
+      submit_text: 'Select Image(s)'
+      auto_select: null
+    uuid: 20c8109a-d085-4b60-85f7-b9960f4d9c5e
+    weight: 1
+    label: 'Image Library'
+    id: view
+  5a6928ee-8441-4d7c-8e2b-9a06adb93f79:
+    settings:
+      upload_location: 'public://'
+      multiple: true
+      submit_text: Upload
+      extensions: 'jpg jpeg png gif'
+    uuid: 5a6928ee-8441-4d7c-8e2b-9a06adb93f79
+    weight: 2
+    label: 'Upload Image(s)'
+    id: upload

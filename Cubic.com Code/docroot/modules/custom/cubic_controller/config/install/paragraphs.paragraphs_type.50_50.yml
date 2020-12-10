@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: '50_50'
+label: 50/50
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

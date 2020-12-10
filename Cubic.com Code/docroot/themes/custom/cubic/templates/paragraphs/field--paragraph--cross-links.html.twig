@@ -1,0 +1,36 @@
+{%
+  set classes = [
+    'field',
+    'field--name-' ~ field_name|clean_class,
+    'field--type-' ~ field_type|clean_class,
+    'field--label-' ~ label_display
+  ]
+%}
+{%
+  set title_classes = [
+    'field__label',
+    label_display == 'visually_hidden' ? 'visually-hidden',
+]
+%}
+
+{% for item in items %}
+  <a href="{{ item.alias }}" class="cross-link-anchor">
+    <div{{ item.attributes.addClass('field__item').addClass('cross-link').addClass(item.section_color) }}>
+      <div class="field--name-field-image">
+        {{ item.image_content }}
+      </div>
+
+      <div class="color"></div>
+
+      <div class="copy{% if loop.last %} copy-last{% endif %}">
+        {{ item.content }}
+
+        {% if item.learn_more %}
+          <div class="learn-more">
+            <span class="text-toggle">Learn More{% include directory ~ '/_/img/icon_extended-arrow.svg' %}</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </a>
+{% endfor %}

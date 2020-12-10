@@ -1,0 +1,46 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.event_recap_slider_item.field_image
+    - field.field.paragraph.event_recap_slider_item.field_title
+    - field.field.paragraph.event_recap_slider_item.field_video
+    - image.style.large
+    - paragraphs.paragraphs_type.event_recap_slider_item
+  module:
+    - image
+    - video_embed_field
+id: paragraph.event_recap_slider_item.default
+targetEntityType: paragraph
+bundle: event_recap_slider_item
+mode: default
+content:
+  field_image:
+    weight: 1
+    label: hidden
+    settings:
+      image_style: large
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+  field_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_video:
+    weight: 2
+    label: hidden
+    settings:
+      responsive: true
+      width: 854
+      height: 480
+      autoplay: false
+    third_party_settings: {  }
+    type: video_embed_field_video
+    region: content
+hidden: {  }

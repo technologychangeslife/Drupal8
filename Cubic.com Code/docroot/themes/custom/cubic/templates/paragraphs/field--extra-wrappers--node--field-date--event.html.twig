@@ -1,0 +1,24 @@
+{#
+/**
+ * @file
+ * Theme override for a field.
+ */
+#}
+{%
+  set classes = [
+    'field',
+    'field--name-' ~ field_name|clean_class,
+    'field--type-' ~ field_type|clean_class,
+    'field--label-' ~ label_display,
+  ]
+%}
+
+{% for item in items %}
+  <div{{ attributes.addClass(classes, 'field__item') }}>
+    <svg class="icon icon--calendar"><use xlink:href="#icon-calendar"></use></svg>
+    {{ item.content }}
+    <svg class="icon icon--calendar end"><use xlink:href="#icon-calendar"></use></svg>
+    <svg class="icon icon--arrow-bordered"><use xlink:href="#icon-arrow-bordered"></use></svg>
+    <svg class="icon icon--arrow-bordered-inner"><use xlink:href="#icon-arrow-bordered-inner"></use></svg>
+  </div>
+{% endfor %}

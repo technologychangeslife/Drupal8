@@ -1,0 +1,90 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_social_icon_links
+    - paragraphs.paragraphs_type.50_50
+    - paragraphs.paragraphs_type.social_icon_links
+  module:
+    - entity_reference_revisions
+id: paragraph.50_50.field_social_icon_links
+field_name: field_social_icon_links
+entity_type: paragraph
+bundle: '50_50'
+label: 'Social Icon Links'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      social_icon_links: social_icon_links
+    target_bundles_drag_drop:
+      '50_50':
+        weight: -43
+        enabled: false
+      accordion:
+        weight: -42
+        enabled: false
+      accordions:
+        weight: -41
+        enabled: false
+      annual_reports_slider:
+        weight: -40
+        enabled: false
+      basic_image:
+        weight: -39
+        enabled: false
+      basic_text:
+        weight: -38
+        enabled: false
+      callouts:
+        weight: -37
+        enabled: false
+      cross_link:
+        weight: -36
+        enabled: false
+      cross_links:
+        weight: -35
+        enabled: false
+      divider_bar:
+        weight: -34
+        enabled: false
+      grid_of_products:
+        weight: -33
+        enabled: false
+      grid_of_success_stories:
+        weight: -32
+        enabled: false
+      image_and_menu:
+        weight: -31
+        enabled: false
+      image_and_text_slider:
+        weight: -30
+        enabled: false
+      image_grid_slider:
+        weight: -29
+        enabled: false
+      image_text_slider_item:
+        weight: -28
+        enabled: false
+      social_icon_link:
+        weight: -27
+        enabled: false
+      social_icon_links:
+        enabled: true
+        weight: -26
+      solutions_product:
+        weight: -25
+        enabled: false
+      tab:
+        weight: -24
+        enabled: false
+      tabs:
+        weight: -23
+        enabled: false
+field_type: entity_reference_revisions

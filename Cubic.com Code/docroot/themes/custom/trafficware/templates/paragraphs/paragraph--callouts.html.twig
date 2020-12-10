@@ -1,0 +1,9 @@
+{% extends 'paragraph.html.twig' %}
+{% block content %}
+  {% if content.field_title %}
+    <h2 class="paragraph-title">{{ content.field_title }}</h2>
+  {% endif %}
+  <div class="grid">
+    {{ content|without('field_title') }}
+  </div>
+{% endblock %}

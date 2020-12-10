@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - paragraphs
+    - tzfield
+id: paragraph.field_timezone
+field_name: field_timezone
+entity_type: paragraph
+type: tzfield
+settings: {  }
+module: tzfield
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

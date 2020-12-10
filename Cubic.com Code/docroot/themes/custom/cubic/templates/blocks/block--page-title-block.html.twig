@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ */
+#}
+{%
+  set classes = [
+    'block',
+    'block-' ~ configuration.provider|clean_class,
+    'block-' ~ plugin_id|clean_class,
+  ]
+%}
+<div{{ attributes.addClass(classes) }}>
+  <div class="page-header-background"{{ header_background_attributes }}>
+    {{ hero_image }}
+  </div>
+  <div class="page-title-content">
+    {% if industry or date_published %}
+    <div class="before-title">
+      <span class="industry">{{ industry }}</span>{% if date_published %} | <span class="date">{{ date_published }}</span>{% endif %}
+    </div>
+    {% endif %}
+
+    {{ title_prefix }}
+    {% if label %}
+      <h2{{ title_attributes }}>{{ label }}</h2>
+    {% endif %}
+    {{ title_suffix }}
+    {% block content %}
+      {{ content }}
+    {% endblock %}
+    {% if intro %}
+      <div class="intro">
+        {{ intro|raw }}
+      </div>
+    {% endif %}
+    {% if addthis %}
+      {{ addthis }}
+    {% endif %}
+  </div>
+</div>

@@ -1,0 +1,194 @@
+// sass-lint:disable force-element-nesting
+.node--type-event.node--view-mode-teaser {
+  background-color: transparent !important;
+
+  .text {
+    display: flex;
+    flex-wrap: wrap;
+
+    &__title {
+      color: $black;
+      flex: 1 1 0;
+      transition: color $transition-time;
+    }
+
+    &__date {
+      color: $black;
+      flex: 0 0 auto;
+      margin-left: auto;
+      transition: color $transition-time;
+    }
+  }
+
+  .body {
+    color: $black;
+    flex: 1 0 100%;
+    transition: color $transition-time;
+
+    font-size: rem-calc(14);
+    padding-top: rem-calc(30);
+
+    p {
+      font-size: rem-calc(14);
+      transition: color $transition-time;
+    }
+  }
+
+  .field--name-field-date {
+    display: flex !important;
+    position: relative;
+
+    .icon--calendar {
+      height: rem-calc(51);
+      left: 0;
+      position: absolute;
+      top: 0;
+      transition: fill $transition-time;
+      width: rem-calc(51);
+      z-index: 0;
+
+      &.end {
+        display: none;
+        left: auto;
+        right: 0;
+      }
+    }
+
+    .icon--arrow-bordered,
+    .icon--arrow-bordered-inner {
+      display: none;
+      left: 50%;
+      position: absolute;
+      top: 62%;
+      transform: translate(-50%, -50%);
+      transition: fill $transition-time;
+    }
+
+    .icon--arrow-bordered {
+      fill: $white;
+      height: rem-calc(27);
+      width: rem-calc(27);
+    }
+
+    .icon--arrow-bordered-inner {
+      height: rem-calc(22);
+      width: rem-calc(22);
+    }
+
+    .item {
+      display: block;
+      height: rem-calc(51);
+      padding-top: rem-calc(19);
+      text-align: center;
+      width: rem-calc(51);
+
+      &.end {
+        margin-left: rem-calc(5);
+
+        + .icon--calendar.end {
+          display: block;
+
+          + .icon--arrow-bordered {
+            display: block;
+
+            + .icon--arrow-bordered-inner {
+              display: block;
+            }
+          }
+        }
+      }
+
+      > span {
+        display: block;
+        font-family: $font-bold;
+        line-height: 1em;
+
+        &.month {
+          font-size: rem-calc(9);
+          text-transform: uppercase;
+        }
+
+        &.day {
+          font-size: rem-calc(19);
+        }
+      }
+    }
+  }
+
+  .field--name-field-additional-information,
+  .field--name-field-location {
+    display: flex;
+    margin-top: rem-calc(15);
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    svg {
+      flex: 0 0 auto;
+      fill: $black;
+      height: rem-calc(20);
+      margin-right: rem-calc(10);
+      transition: fill $transition-time;
+      width: rem-calc(20);
+    }
+  }
+
+  .field--name-field-location {
+    .address {
+      .country {
+        display: none;
+      }
+    }
+  }
+
+  .field--name-field-additional-information {
+    .field__item {
+      margin-bottom: rem-calc(5);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      p {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .field--name-field-event-type {
+    @extend %content-type-before;
+    bottom: rem-calc(10);
+    color: inherit;
+    font-family: $font-bold;
+    font-size: rem-calc(11);
+    line-height: 1em;
+    margin-bottom: 0;
+    position: absolute;
+    right: rem-calc(10);
+  }
+
+  > a {
+    background-color: $white;
+    display: block;
+    height: 100%;
+    transition: background-color $transition-time;
+
+    &:hover {
+      p,
+      .body,
+      .text__title,
+      .text__date {
+        color: $white;
+      }
+
+      svg {
+        fill: $white;
+
+        &.icon--arrow-bordered {
+          fill: $cubic-teal;
+        }
+      }
+    }
+  }
+}

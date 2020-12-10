@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.image_and_menu.field_image
+    - field.field.paragraph.image_and_menu.field_menu_item
+    - field.field.paragraph.image_and_menu.field_title
+    - image.style.square_700x700
+    - paragraphs.paragraphs_type.image_and_menu
+  module:
+    - image
+id: paragraph.image_and_menu.default
+targetEntityType: paragraph
+bundle: image_and_menu
+mode: default
+content:
+  field_image:
+    type: image
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      image_style: square_700x700
+      image_link: ''
+    third_party_settings: {  }
+  field_menu_item:
+    type: entity_reference_label
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+hidden:
+  field_title: true

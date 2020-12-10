@@ -1,0 +1,452 @@
+// Mixins and extendables
+// sass-lint:disable force-element-nesting force-pseudo-nesting no-qualifying-elements
+@mixin anonymous($other-classes: '') {
+  body#{$other-classes}:not(.user-logged-in) & {
+    @content;
+  }
+}
+
+@mixin has-js {
+  html:not(.no-js) & {
+    @content;
+  }
+}
+
+@mixin hovered {
+  @media screen and (any-hover: $hover) {
+    &:hover,
+    &:focus {
+      @content;
+    }
+  }
+
+  &:active {
+    @content;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+%hide-text {
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-align: left;
+}
+
+%overflow-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+%link-noline {
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: underline;
+  }
+}
+
+%link-nothing {
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+%link-jumplink {
+  &[href^='#'] {
+    background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="40.5419" height="24.0293" viewBox="0 0 40.5419 24.0293"><polygon points="33.996 0 20.271 12.285 6.546 0 0 5.88 20.271 24.029 40.542 5.88 33.996 0"/></svg>') no-repeat right center;
+    background-size: 12px auto;
+    color: $black;
+    padding-right: 1em;
+    position: relative;
+    transition: all $transition-time;
+
+    &::before {
+      background-color: $black;
+      border-radius: 1px 1px 0 0;
+      content: '';
+      display: block;
+      height: 0;
+      position: absolute;
+      right: 3px;
+      top: 10px;
+      transform: translate(-50%, -100%);
+      transition: all $transition-time;
+      width: 3px;
+    }
+
+    &:hover {
+      background-position: right calc(50% + 3px);
+      color: $black;
+      text-decoration: underline;
+
+      &::before {
+        height: 8px;
+        top: 13px;
+      }
+    }
+  }
+}
+
+%link-w-arrow {
+  background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4LjY5MDkgMTQuNTU0MiI+PHBvbHlnb24gcG9pbnRzPSIxLjQxNCAxNC41NTQgMCAxMy4xNCA1Ljg2MyA3LjI3NyAwIDEuNDE0IDEuNDE0IDAgOC42OTEgNy4yNzcgMS40MTQgMTQuNTU0Ii8+PC9zdmc+');
+  background-position: right 4px;
+  background-repeat: no-repeat;
+  background-size: 7px 12px;
+  color: $black;
+  font-family: $font-main;
+  padding-right: 1em;
+  position: relative;
+  transition: all $transition-time;
+
+  &::before {
+    background-color: $black;
+    content: '';
+    display: block;
+    height: 2px;
+    position: absolute;
+    right: 1px;
+    top: 10px;
+    transform: translateY(-50%);
+    transition: all $transition-time;
+    width: 0;
+  }
+
+  &:hover {
+    background-image: url('/themes/custom/cubic/_/img/teal-arrow.svg');
+    color: $black;
+    padding-right: 1.235em;
+    text-decoration: underline;
+
+    &::before {
+      width: 10px;
+      background-color: $cubic-teal;
+    }
+  }
+}
+
+%link-w-icon {
+  align-items: center;
+  background-color: $cubic-blue;
+  border-radius: rem-calc(3);
+  box-shadow: inset 0 0 0 rem-calc(2) $cubic-blue;
+  color: $white;
+  display: flex;
+  font-family: $font-main;
+  font-size: rem-calc(14);
+  padding: rem-calc(10) rem-calc(15);
+  transition: all $transition-time;
+
+  &:hover {
+    background-color: $white;
+    color: $cubic-blue;
+  }
+
+  .icon {
+    fill: currentColor;
+    height: rem-calc(14);
+    margin-left: rem-calc(10);
+    transition: fill $transition-time;
+    width: rem-calc(14);
+  }
+}
+
+%screen-reader-text {
+  position: absolute;
+  margin: -1px;
+  padding: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+  word-wrap: normal !important; // many screen reader and browser combinations announce broken words as they would appear visually
+}
+
+%transform-scale {
+  transform: scale($background-scale);
+}
+
+@mixin clear-floats {
+  zoom: 1;
+
+  &:after {
+    content: '\0020';
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
+
+@mixin abs-stretch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+%button-cta-start {
+  font-family: $font-bold;
+  display: inline-block;
+  border: 2px solid $white;
+  padding: 0.5em 1em;
+  color: $white;
+  transition: $transition-time color, $transition-time background-color;
+}
+
+%button-cta {
+  @extend %button-cta-start;
+
+  @include hovered {
+    background-color: $white;
+    color: $black;
+  }
+}
+
+%button-cta-inverse {
+  @extend %button-cta-start;
+  border-color: $black;
+  color: $black;
+
+  @include hovered {
+    background-color: $black;
+    color: $white;
+  }
+}
+
+// elements whose background color should follow sections
+@mixin section-color-bg {
+  background-color: $color-section-default;
+
+  @each $color in ($section-colors) {
+    .section-color-#{$color} & {
+      @extend %section-#{$color}-bg;
+    }
+  }
+}
+
+%section-brown-bg {
+  background-color: $color-section-brown;
+}
+
+%section-red-bg {
+  background-color: $color-section-red;
+}
+
+%section-yellow-bg {
+  background-color: $color-section-yellow;
+}
+
+%section-teal-bg {
+  background-color: $color-section-default;
+}
+
+%section-brown-bg-trans {
+  background-color: transparentize($color-section-brown, 0.4);
+}
+
+%section-red-bg-trans {
+  background-color: transparentize($color-section-red, 0.4);
+}
+
+%section-yellow-bg-trans {
+  background-color: transparentize($color-section-yellow, 0.4);
+}
+
+%section-teal-bg-trans {
+  background-color: transparentize($color-section-default, 0.4);
+}
+
+// elements whose border color should follow sections
+@mixin section-color-border {
+  border-color: $color-section-default;
+
+  @each $color in ($section-colors) {
+    .section-color-#{$color} & {
+      @extend %section-#{$color}-border;
+    }
+  }
+}
+
+%section-brown-border {
+  border-color: $color-section-brown;
+}
+
+%section-red-border {
+  border-color: $color-section-red;
+}
+
+%section-yellow-border {
+  border-color: $color-section-yellow;
+}
+
+%section-teal-border {
+  border-color: $color-section-default;
+}
+
+%section-brown-border-top {
+  border-top-color: $color-section-brown;
+}
+
+%section-red-border-top {
+  border-top-color: $color-section-red;
+}
+
+%section-yellow-border-top {
+  border-top-color: $color-section-yellow;
+}
+
+%section-teal-border-top {
+  border-top-color: $color-section-default;
+}
+
+// elements whose border color should follow sections
+@mixin section-color-fill {
+  fill: $color-section-default;
+
+  @each $color in ($section-colors) {
+    .section-color-#{$color} & {
+      @extend %section-#{$color}-fill;
+    }
+  }
+}
+
+%section-brown-fill {
+  fill: $color-section-brown;
+}
+
+%section-red-fill {
+  fill: $color-section-red;
+}
+
+%section-yellow-fill {
+  fill: $color-section-yellow;
+}
+
+%section-teal-fill {
+  fill: $color-section-default;
+}
+
+@mixin placeholder {
+  &::-webkit-input-placeholder {
+    @content;
+  }
+
+  &:-moz-placeholder {
+    @content;
+  }
+
+  &::-moz-placeholder {
+    @content;
+  }
+
+  &:-ms-input-placeholder {
+    @content;
+  }
+}
+
+%content-type-before {
+  display: block;
+  text-transform: uppercase;
+  font-size: rem-calc(12);
+  font-family: $font-bold;
+  margin-bottom: 0.75em;
+}
+
+%shadow-box {
+  border-top: 10px solid $color-section-default;
+  box-shadow: 0 2px 4px $drop-shadow;
+}
+
+@mixin slick-slider {
+  .slick-arrow {
+    cursor: pointer;
+    display: block;
+    height: rem-calc(40);
+    left: rem-calc(10);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all $transition-time;
+    width: rem-calc(20);
+    z-index: 1;
+
+    @include breakpoint(medium) {
+      left: rem-calc(15);
+    }
+
+    &.slick-next {
+      left: auto;
+      right: rem-calc(10);
+      transform: translateY(-50%) rotate(180deg);
+
+      @include breakpoint(medium) {
+        right: rem-calc(15);
+      }
+    }
+
+    &.slick-disabled {
+      cursor: default;
+      opacity: 0.1;
+    }
+
+    &:hover:not(.slick-disabled) {
+      * {
+        fill: $cubic-teal;
+      }
+    }
+
+    * {
+      fill: $black;
+      transition: fill $transition-time;
+    }
+  }
+
+  .slick-dots {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: rem-calc(15);
+
+    @include breakpoint(medium) {
+      margin-top: rem-calc(30);
+    }
+
+    li {
+      background-color: scale-color($black, $lightness: 90%);
+      border-radius: 100vw;
+      cursor: pointer;
+      height: rem-calc(10);
+      margin: 0 rem-calc(5) !important;
+      padding: 0 !important;
+      text-indent: -200vw;
+      transition: all $transition-time;
+      width: rem-calc(10);
+
+      &::before {
+        display: none !important;
+      }
+
+      &.slick-active {
+        background-color: scale-color($black, $lightness: 50%);
+      }
+
+      &:hover {
+        background-color: $cubic-teal;
+      }
+    }
+  }
+}

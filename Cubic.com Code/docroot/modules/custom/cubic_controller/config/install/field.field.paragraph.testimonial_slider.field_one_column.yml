@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_one_column
+    - paragraphs.paragraphs_type.testimonial_slider
+id: paragraph.testimonial_slider.field_one_column
+field_name: field_one_column
+entity_type: paragraph
+bundle: testimonial_slider
+label: 'One column'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

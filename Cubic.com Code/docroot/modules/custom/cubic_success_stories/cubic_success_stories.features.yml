@@ -1,0 +1,14 @@
+bundle: cubic
+excluded:
+  - block.block.views_block__list_block_1
+  - block.block.views_block__list_block_2
+  - block.block.views_block__list_block_3
+  - block.block.views_block__list_block_5
+  - block.block.views_block__list_block_6
+  - block.block.views_block__list_block_7
+  - block.block.views_block__list_collection_point
+  - block.block.views_block__list_posts
+  - block.block.views_block__list_success_stories_2
+  - block.block.views_block__news_block_1
+  - field.storage.node.field_lower_paragraphs
+required: true

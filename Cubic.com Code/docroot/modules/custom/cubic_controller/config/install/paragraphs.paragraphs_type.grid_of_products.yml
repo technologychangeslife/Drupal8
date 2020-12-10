@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: grid_of_products
+label: 'Grid of Products'
+behavior_plugins: {  }

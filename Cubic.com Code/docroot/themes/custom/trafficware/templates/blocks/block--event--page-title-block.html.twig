@@ -1,0 +1,39 @@
+{% extends 'block--page-title-block.html.twig' %}
+{#
+/**
+ * @file
+ * Theme override to display a block.
+ */
+#}
+{% block content %}
+  <div class="event-info">
+    {{ content }}
+    {% if date or location or additional_information %}
+      <div class="event-details">
+        {% if date %}
+          <div class="event-details__item">
+            <div class="field field--name-field-date">
+              <svg class="icon icon--calendar">
+                <use xlink:href="#icon-calendar"></use>
+              </svg>
+              <p class="event-date">{{ date }}</p>
+            </div>
+          </div>
+        {% endif %}
+        {% if location %}
+          <div class="event-details__item">
+            {{ location }}
+          </div>
+        {% endif %}
+        {% if additional_information %}
+          <div class="event-details__item">
+            {{ additional_information }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+  {% if event_type %}
+    <span class="event-type">{{ event_type }}</span>
+  {% endif %}
+{% endblock %}

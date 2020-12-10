@@ -1,0 +1,150 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_milestone_slider_item
+    - paragraphs.paragraphs_type.milestone_50_50
+    - paragraphs.paragraphs_type.milestone_slider
+  module:
+    - entity_reference_revisions
+id: paragraph.milestone_slider.field_milestone_slider_item
+field_name: field_milestone_slider_item
+entity_type: paragraph
+bundle: milestone_slider
+label: 'Milestone Slider Item'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      milestone_50_50: milestone_50_50
+    target_bundles_drag_drop:
+      milestone_slider:
+        weight: 42
+        enabled: false
+      '50_50':
+        weight: 43
+        enabled: false
+      accordion:
+        weight: 44
+        enabled: false
+      accordions:
+        weight: 45
+        enabled: false
+      annual_reports_slider:
+        weight: 46
+        enabled: false
+      basic_image:
+        weight: 47
+        enabled: false
+      basic_text:
+        weight: 48
+        enabled: false
+      callouts:
+        weight: 49
+        enabled: false
+      case_study_row:
+        weight: 50
+        enabled: false
+      cross_link:
+        weight: 51
+        enabled: false
+      cross_links:
+        weight: 52
+        enabled: false
+      divider_bar:
+        weight: 53
+        enabled: false
+      event_recap:
+        weight: 54
+        enabled: false
+      event_recap_slider_item:
+        weight: 55
+        enabled: false
+      event_schedule:
+        weight: 56
+        enabled: false
+      event_schedule_item:
+        weight: 57
+        enabled: false
+      grid_of_products:
+        weight: 58
+        enabled: false
+      grid_of_success_stories:
+        weight: 59
+        enabled: false
+      image_and_menu:
+        weight: 60
+        enabled: false
+      image_and_text_slider:
+        weight: 61
+        enabled: false
+      image_grid_slider:
+        weight: 62
+        enabled: false
+      image_text_slider_item:
+        weight: 63
+        enabled: false
+      map:
+        weight: 64
+        enabled: false
+      milestone_50_50:
+        enabled: true
+        weight: 65
+      milestone_text_image:
+        weight: 66
+        enabled: false
+      milestone_text_video:
+        weight: 67
+        enabled: false
+      people_grid:
+        weight: 68
+        enabled: false
+      people_grid_item:
+        weight: 69
+        enabled: false
+      people_grid_item_external:
+        weight: 70
+        enabled: false
+      salesforce_form:
+        weight: 71
+        enabled: false
+      social_icon_link:
+        weight: 72
+        enabled: false
+      social_icon_links:
+        weight: 73
+        enabled: false
+      solutions_product:
+        weight: 74
+        enabled: false
+      statistic_slider:
+        weight: 75
+        enabled: false
+      statistic_slider_item:
+        weight: 76
+        enabled: false
+      tab:
+        weight: 77
+        enabled: false
+      tabs:
+        weight: 78
+        enabled: false
+      taggbox_social_feed:
+        weight: 79
+        enabled: false
+      testimonial_slider:
+        weight: 80
+        enabled: false
+      testimonial_slider_item:
+        weight: 81
+        enabled: false
+      webform:
+        weight: 82
+        enabled: false
+field_type: entity_reference_revisions

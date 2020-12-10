@@ -1,0 +1,27 @@
+name: 'Annual Reports'
+description: 'Code and configuration for the Annual Report content type.'
+type: module
+core: 8.x
+dependencies:
+  - block
+  - cubic_controller
+  - cubic_entity_browser
+  - entity_browser
+  - field
+  - file
+  - handy_cache_tags
+  - image
+  - menu_ui
+  - node
+  - paragraphs
+  - path
+  - pathauto
+  - scheduler
+  - system
+  - taxonomy
+  - text
+  - user
+  - views
+  - workbench_moderation
+version: 8.x-1.0
+package: Cubic

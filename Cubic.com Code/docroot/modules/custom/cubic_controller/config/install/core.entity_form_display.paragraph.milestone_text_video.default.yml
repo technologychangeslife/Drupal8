@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.milestone_text_video.field_body
+    - field.field.paragraph.milestone_text_video.field_milestone_year
+    - field.field.paragraph.milestone_text_video.field_video
+    - paragraphs.paragraphs_type.milestone_text_video
+  module:
+    - text
+    - video_embed_field
+id: paragraph.milestone_text_video.default
+targetEntityType: paragraph
+bundle: milestone_text_video
+mode: default
+content:
+  field_body:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_milestone_year:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_video:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: video_embed_field_textfield
+    region: content
+hidden:
+  created: true
+  status: true

@@ -1,0 +1,40 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.grid_of_success_stories.field_body
+    - field.field.paragraph.grid_of_success_stories.field_success_stories
+    - field.field.paragraph.grid_of_success_stories.field_title
+    - paragraphs.paragraphs_type.grid_of_success_stories
+  module:
+    - text
+id: paragraph.grid_of_success_stories.default
+targetEntityType: paragraph
+bundle: grid_of_success_stories
+mode: default
+content:
+  field_body:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_success_stories:
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: teaser
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+  field_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

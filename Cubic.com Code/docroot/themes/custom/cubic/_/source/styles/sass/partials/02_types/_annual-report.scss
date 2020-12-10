@@ -1,0 +1,123 @@
+// sass-lint:disable force-element-nesting no-qualifying-elements
+article.node--type-annual-report {
+  &.node--view-mode-teaser {
+    .node__content {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a {
+      font-size: rem-calc(14);
+    }
+
+    .report-cover-link {
+      outline: none;
+    }
+
+    .field--name-field-report-cover {
+      border: 1px solid $color-border;
+      margin-bottom: rem-calc(15);
+      max-width: rem-calc(210);
+      overflow: hidden;
+      position: relative;
+
+      &::before {
+        content: '';
+        height: 100%;
+        position: absolute;
+        transition: all $transition-time;
+        width: 100%;
+        z-index: 1;
+      }
+
+      &:hover {
+        img {
+          transform: scale(1.025);
+        }
+
+        &::before {
+          background-color: transparentize($black, 0.65);
+        }
+      }
+
+      @include breakpoint(medium) {
+        margin-bottom: rem-calc(30);
+      }
+
+      img {
+        display: block;
+        height: auto;
+        transition: transform $transition-time;
+        width: 100%;
+      }
+    }
+
+    .field--name-field-additional-downloads {
+      display: flex;
+      flex-wrap: wrap;
+      font-size: rem-calc(14);
+      justify-content: center;
+      margin-bottom: rem-calc(15);
+
+      .file {
+        background: none;
+        min-height: auto;
+        padding: 0;
+      }
+
+      .field__item {
+        flex: 0 0 auto;
+        padding: 0 rem-calc(8);
+        position: relative;
+
+        &::after {
+          background-color: $black;
+          content: '';
+          height: rem-calc(12);
+          left: 100%;
+          position: absolute;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          width: 1px;
+        }
+
+        &:last-of-type {
+          &::after {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .download-report {
+      position: relative;
+
+      .icon {
+        background-color: $cubic-teal;
+        border-radius: 100vw;
+        height: rem-calc(16);
+        left: 100%;
+        margin-left: rem-calc(10);
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: rem-calc(16);
+      }
+
+      svg {
+        $height: 10;
+        height: rem-calc($height / 1.714);
+        left: 50%;
+        position: absolute;
+        top: 55%;
+        transform: translate(-50%, -50%);
+        width: rem-calc($height);
+
+        * {
+          fill: $white;
+        }
+      }
+    }
+  }
+}

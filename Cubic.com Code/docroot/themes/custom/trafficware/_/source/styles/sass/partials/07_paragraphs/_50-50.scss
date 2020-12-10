@@ -1,0 +1,568 @@
+// sass-lint:disable force-attribute-nesting force-element-nesting force-pseudo-nesting
+.paragraph--type--milestone-50-50,
+.paragraph--type--_0-50 {
+  @include flex-grid-row($size: expand);
+  align-items: center;
+  display: flex;
+
+
+  @media (max-width: 639px) {
+    overflow: hidden;
+  }
+
+  .field--body--wrapper {
+    padding: 1rem;
+
+    @include breakpoint(medium) {
+      @include flex-grid-column(50%);
+    }
+
+    .field--name-field-accordion-content > & {
+      padding-bottom: 0;
+      padding-top: 0;
+    }
+  }
+
+  .field--name-field-body {
+    @include breakpoint(medium) {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+
+      .field__item__inner {
+        width: 85%;
+      }
+    }
+
+    p,
+    ul,
+    ol,
+    .embedded-entity {
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    a {
+      @extend %link-jumplink;
+    }
+
+    + .field--name-field-social-icon-links {
+      margin-top: rem-calc(20);
+    }
+  }
+
+  .field--name-field-social-icon-links {
+    @include breakpoint(medium) {
+      margin: 0 auto;
+      max-width: 85%;
+    }
+  }
+
+  .extra-content--wrapper {
+    width: 100%;
+
+    @include breakpoint(medium) {
+      @include flex-grid-column(50%, 0);
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    > a {
+      display: block;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+
+      .image-gallery {
+        transition: transform $transition-time;
+      }
+
+      &::after {
+        @include abs-stretch;
+        content: '';
+        display: block;
+        transition: all $transition-time;
+        z-index: 1;
+      }
+
+      &:hover {
+        .image-gallery {
+          transform: scale(1.05);
+        }
+
+        &::after {
+          background-color: transparentize($black, 0.65);
+        }
+      }
+    }
+  }
+
+  .image-link-title {
+    align-items: center;
+    bottom: 8%;
+    color: $white;
+    display: flex;
+    font-family: $font-oblique;
+    line-height: 1em;
+    position: absolute;
+    right: 8%;
+    transition: opacity $transition-time;
+    z-index: 2;
+
+    svg {
+      height: rem-calc(20);
+      margin-right: rem-calc(10);
+      width: rem-calc(20);
+
+      * {
+        fill: $white;
+      }
+    }
+  }
+
+  .image-gallery {
+    width: 100%;
+
+    &.not-slider {
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 100%;
+      max-height: rem-calc(450);
+      min-height: rem-calc(200);
+      position: relative;
+
+      @include breakpoint(medium) {
+        max-height: rem-calc(600);
+        min-height: rem-calc(450);
+      }
+    }
+
+    &.is-slider {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+
+      .image-slider {
+        align-items: center;
+        display: flex;
+        height: 100%;
+        justify-content: center;
+
+        img {
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 100% !important;
+        }
+      }
+    }
+
+    .field--name-field-accordion-content & {
+      background-repeat: no-repeat;
+      background-size: contain;
+    }
+
+    .bx-wrapper {
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 30px;
+      position: relative;
+      width: 100%;
+    }
+
+    .bx-next,
+    .bx-prev {
+      @extend %hide-text;
+      display: block;
+      position: absolute;
+      top: calc(50% - 30px);
+      width: 30px;
+      height: 60px;
+      background: url('../img/spr-slider-arrows.png') no-repeat;
+      background-size: 120px;
+      z-index: 50;
+    }
+
+    .bx-prev {
+      left: 0;
+      background-position: -73px 0;
+
+      &:hover {
+        background-position: -73px -61px;
+      }
+
+      &.disabled {
+        background-position: -73px 0;
+        cursor: default;
+      }
+    }
+
+    .bx-next {
+      right: 0;
+      background-position: -17px 0;
+
+      &:hover {
+        background-position: -17px -61px;
+      }
+
+      &.disabled {
+        background-position: -17px 0;
+        cursor: default;
+      }
+    }
+  }
+
+  .video-embed-5050 {
+    background-size: cover;
+    background-position: center center;
+    position: relative;
+    max-height: rem-calc(600);
+    min-height: rem-calc(300);
+    width: 100%;
+
+    @include breakpoint(medium) {
+      min-height: rem-calc(450);
+    }
+
+    > a {
+      display: block;
+      height: 100%;
+      left: 0;
+      position: absolute;
+      top: 0;
+      transition: all $transition-time;
+      width: 100%;
+
+      &::before {
+        content: ' ';
+        background: url('../img/icon_play-video-white.svg');
+        background-repeat: no-repeat;
+        background-position: 50px calc(100% - 50px);
+        background-size: 70px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+
+      &:hover {
+        background-color: transparentize($black, 0.75);
+      }
+    }
+
+    .video-title {
+      color: $white;
+      font-family: $font-oblique;
+      font-weight: normal;
+      padding-left: 170px; // 70px play button + 50px padding on either side.
+      position: absolute;
+      right: rem-calc(50);
+      top: calc(100% - #{rem-calc(50)});
+      transform: translateY(-100%);
+    }
+  }
+
+  .group-statistic {
+    text-align: center;
+    line-height: 1;
+
+    @include breakpoint(medium) {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    .stat-align {
+      padding: 1em;
+    }
+  }
+
+  .field--name-field-stat-title {
+    text-transform: uppercase;
+    font-family: $font-bold;
+    color: $text-color;
+    padding-bottom: 0.5em;
+  }
+
+  .field--name-field-stat-number {
+    border-bottom: 6px solid $black;
+    color: $cubic-blue;
+    display: inline-block;
+    font-family: $font-bold;
+    font-size: rem-calc(80);
+    line-height: 0.9;
+
+    @include breakpoint(medium) {
+      font-size: rem-calc(110);
+    }
+
+    @include breakpoint(large) {
+      font-size: rem-calc(140);
+    }
+  }
+
+  .field--name-field-stat-label {
+    color: $cubic-blue;
+    font-family: $font-bold;
+    font-size: rem-calc(28);
+    padding-top: 0.5em;
+    text-transform: uppercase;
+  }
+
+  &.subtype--product {
+    align-items: center;
+
+    .image-gallery.not-slider {
+      align-items: center;
+      background: none;
+      display: flex;
+      justify-content: center;
+      max-height: none;
+      min-height: auto;
+
+      .image-slider {
+        display: block;
+
+        img {
+          max-height: rem-calc(600);
+          visibility: visible;
+          width: auto;
+        }
+      }
+    }
+
+    .video-embed-5050 {
+      align-items: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      display: flex;
+      justify-content: center;
+      min-height: auto;
+
+      > a {
+        left: auto;
+        position: relative;
+        top: auto;
+        width: auto;
+      }
+
+      .field--name-field-image-video {
+        display: inline-block;
+        max-height: none;
+        min-height: auto;
+
+        img {
+          max-height: rem-calc(600);
+          width: auto;
+        }
+      }
+    }
+  }
+}
+
+// 50/50s inside accordions.
+.field--name-field-accordion-content {
+  @include breakpoint (small only) {
+    > .paragraph--type--milestone-50-50,
+    > .paragraph--type--_0-50 {
+      .field--body--wrapper {
+        @include flex-order(1);
+      }
+    }
+  }
+
+  &:nth-child(even) {
+    > .paragraph--type--milestone-50-50,
+    > .paragraph--type--_0-50 {
+      background-color: $color-callout-bg;
+
+      @include breakpoint (medium) {
+        .field--body--wrapper {
+          @include flex-order(2);
+        }
+
+        .extra-content--wrapper {
+          @include flex-order(1);
+        }
+      }
+    }
+  }
+}
+
+// 50/50s directly inside of tabs.
+.paragraph {
+  .field--name-field-lower-paragraphs, // Probably not possible
+  .field--name-field-paragraphs, // Probably not possible
+  .field--name-field-tab-content {
+    @include breakpoint (small only) {
+      > .field__item {
+        > .paragraph--type--milestone-50-50,
+        > .paragraph--type--_0-50 {
+          .field--body--wrapper {
+            @include flex-order(1);
+          }
+        }
+      }
+    }
+
+    > .field__item:nth-child(odd) {
+      > .paragraph--type--milestone-50-50,
+      > .paragraph--type--_0-50 {
+        background-color: $color-callout-bg;
+
+        @include breakpoint (medium) {
+          .field--body--wrapper {
+            @include flex-order(2);
+          }
+
+          .extra-content--wrapper {
+            @include flex-order(1);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Top-level 50-50s in main Paragraphs fields.
+.field--type-entity-reference-revisions[class*='paragraphs'] {
+  > .field__item {
+    > .paragraph--type--milestone-50-50,
+    > .paragraph--type--_0-50 {
+      padding: 1rem 0;
+
+      .field--body--wrapper {
+        @include flex-order(2);
+      }
+
+      @include breakpoint(small only) {
+        .image-gallery.not-slider {
+          padding: 0 1rem;
+        }
+      }
+
+      @include breakpoint(medium) {
+        padding: 2.5rem map-get($paragraph-padding, medium);
+      }
+
+      @include breakpoint(large) {
+        padding-left: map-get($paragraph-padding, large);
+        padding-right: map-get($paragraph-padding, large);
+      }
+
+      @include anonymous('.advanced-animations') {
+        @include has-js {
+          > .field--body--wrapper,
+          > .extra-content--wrapper {
+            opacity: 0;
+            transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+          }
+
+          > .field--body--wrapper {
+            transform: translateX(-50%);
+          }
+
+          > .extra-content--wrapper {
+            transform: translateX(50%);
+          }
+
+          &.body-last {
+            > .field--body--wrapper {
+              transform: translateX(50%);
+            }
+
+            > .extra-content--wrapper {
+              transform: translateX(-50%);
+            }
+          }
+
+          &.in {
+            > .field--body--wrapper,
+            > .extra-content--wrapper {
+              opacity: 1 !important;
+              transform: translateX(0) !important;
+            }
+          }
+        }
+      }
+
+      .advanced-animations {
+        @include has-js {
+          > .field--body--wrapper,
+          > .extra-content--wrapper {
+            opacity: 0;
+            transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+          }
+
+          > .field--body--wrapper {
+            transform: translateX(-50%);
+          }
+
+          > .extra-content--wrapper {
+            transform: translateX(50%);
+          }
+
+          &.body-last {
+            > .field--body--wrapper {
+              transform: translateX(50%);
+            }
+
+            > .extra-content--wrapper {
+              transform: translateX(-50%);
+            }
+          }
+
+          &.in {
+            > .field--body--wrapper,
+            > .extra-content--wrapper {
+              opacity: 1 !important;
+              transform: translateX(0) !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  > .field__item:nth-child(even) {
+    > .paragraph--type--milestone-50-50,
+    > .paragraph--type--_0-50 {
+      background-color: $color-callout-bg;
+
+      @include breakpoint(medium) {
+        .field--body--wrapper {
+          @include flex-order(1);
+        }
+
+        .extra-content--wrapper {
+          @include flex-order(2);
+        }
+      }
+    }
+  }
+
+  > .field__item:nth-child(odd) {
+    > .paragraph--type--milestone-50-50,
+    > .paragraph--type--_0-50 {
+      background-color: $white;
+    }
+  }
+
+  .paragraph--type--milestone-50-50 {
+    @include breakpoint(medium down) {
+      .field--body--wrapper {
+        @include flex-order(1);
+        padding-top: 40px;
+      }
+
+      .extra-content--wrapper {
+        @include flex-order(2);
+      }
+    }
+  }
+}

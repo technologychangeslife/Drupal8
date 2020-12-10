@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * @file
+ * Custom code for Cubic controller.
+ *
+ * TODO: Set content type filter on attachment view to that of attached display.
+ */
+
+use \Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_preprocess_views_view_table().
+ */
+function cubic_entity_browser_preprocess_views_view_table(&$vars) {
+  $view = $vars['view'];
+  if ($view->id() == 'image_browser' && $view->current_display === 'entity_browser_1') {
+    foreach ($vars['rows'] as $key => $row) {
+
+      $thumbnail = [
+        '#theme' => 'image_style',
+        '#style_name' => 'thumbnail',
+        '#uri' => $view->result[$key]->_entity->get('uri')->value,
+      ];
+
+      $vars['rows'][$key]['columns']['nothing']['content'][0]['field_output'] = $thumbnail;
+    }
+  }
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function cubic_entity_browser_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id === 'entity_embed_dialog') {
+    if (isset($form['attributes']) && isset($form['attributes']['data-caption'])) {
+      $form['attributes']['data-caption']['#access'] = FALSE;
+    }
+  }
+}

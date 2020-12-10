@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.people_grid_item.field_person
+    - paragraphs.paragraphs_type.people_grid_item
+id: paragraph.people_grid_item.default
+targetEntityType: paragraph
+bundle: people_grid_item
+mode: default
+content:
+  field_person:
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: featured
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
+    region: content
+hidden: {  }

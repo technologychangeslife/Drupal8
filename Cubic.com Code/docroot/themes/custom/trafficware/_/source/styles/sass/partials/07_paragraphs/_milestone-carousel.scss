@@ -1,0 +1,238 @@
+// sass-lint:disable force-pseudo-nesting
+// sass-lint:disable nesting-depth
+// sass-lint:disable force-element-nesting
+
+.paragraph--type--milestone-carousel {
+  @include slick-slider;
+
+  background-color: $color-event-recap-bg;
+  padding: 3rem map-get($paragraph-padding, small);
+
+  @include breakpoint(medium) {
+    padding-left: map-get($paragraph-padding, medium);
+    padding-right: map-get($paragraph-padding, medium);
+
+    .slick-arrow.slick-next {
+      right: -2.0625rem;
+      display: block !important;
+
+    }
+
+    .slick-arrow {
+      left: -2.0625rem;
+      display: block !important;
+
+    }
+  }
+
+  @include breakpoint(large) {
+    padding-left: map-get($paragraph-padding, large);
+    padding-right: map-get($paragraph-padding, large);
+  }
+
+  > .field--name-field-title {
+    font-size: $h1-font-size;
+    margin-bottom: rem-calc(15);
+
+    @include breakpoint(medium) {
+      margin-bottom: rem-calc(30);
+    }
+  }
+
+  .field--name-field-body {
+    padding-top: 35px;
+    margin: 0 rem-calc(50);
+
+    @include breakpoint(medium) {
+      margin: auto;
+    }
+  }
+
+  .field--name-field-event-recap-slider-content {
+    @include flex-grid-row($behavior: nest, $size: expand);
+
+
+
+    > .field__item {
+      @include flex-grid-column($columns: 100%);
+    }
+
+    + .body-container {
+      margin-top: rem-calc(30);
+
+      @include breakpoint(medium) {
+        margin-top: rem-calc(60);
+      }
+    }
+
+    &.slick-slider {
+      .slick-slide {
+        @include grid-column-gutter;
+
+
+
+        border-right: 2px solid $white;
+
+        img {
+          width: 100%;
+        }
+      }
+    }
+
+    &:not(.slick-slider) {
+      > .field__item {
+        @include breakpoint(medium) {
+          @include flex-grid-size(50%);
+        }
+
+        @include breakpoint(large) {
+          @include flex-grid-size(4 of 12);
+        }
+      }
+    }
+  }
+
+  .slick-list {
+    margin: 0 rem-calc(50);
+
+
+    @include breakpoint(medium) {
+      width: 100%;
+      margin: auto;
+    }
+  }
+
+
+
+  .slick-track {
+    align-items: center;
+    display: flex;
+  }
+
+  .body-container {
+    @include breakpoint(large) {
+      @include flex-grid-row($behavior: nest, $size: expand);
+    }
+
+    > .field {
+      margin-bottom: rem-calc(30);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      @include breakpoint(large) {
+        @include flex-grid-column;
+        margin-bottom: 0;
+      }
+
+      p {
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .field--name-field-social-embed-code {
+    max-height: rem-calc(300);
+    overflow-y: scroll;
+
+    @include breakpoint(medium) {
+      max-height: rem-calc(650);
+    }
+  }
+
+
+  .field.field--name-field-milestone-year.field--type-string.field--label-hidden.field__item {
+    background: $timeline-milestone-blue;
+    color: $white;
+    padding: 5px 10px;
+    right: auto;
+    top: auto;
+    border: 1px solid;
+    max-width: 60px;
+    margin-top: -20px;
+    display: block;
+    position: relative;
+  }
+
+  @include breakpoint(medium) {
+
+    .field.field--name-field-milestone-year.field--type-string.field--label-hidden.field__item {
+      margin: auto;
+      margin-top: -20px;
+    }
+
+    .field.field--name-field-image.field--type-image.field--label-hidden.field__items {
+      .field__item {
+        border-right: 2px solid $white;
+      }
+    }
+  }
+}
+
+.paragraph--type--milestone-carousel-slider-item {
+
+
+  position: relative;
+
+  > [data-open^='video-modal-'] {
+    display: block;
+    height: 100%;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    transition: all $transition-time;
+    width: 100%;
+
+    &.has-video {
+      &::before {
+        background-image: url('../img/icon_play-video-white.svg');
+        background-position: calc(100% - 20px) calc(100% - 20px);
+        background-repeat: no-repeat;
+        background-size: 20%;
+        bottom: 0;
+        content: '';
+        left: 0;
+        position: absolute;
+        right: 0;
+        top: 0;
+      }
+
+      //.field--name-field-title {
+      //  width: calc(100% - #{rem-calc(60)} - 20%); // 20 * 3 & play button width.
+      //}
+    }
+
+    &:hover {
+      background-color: transparentize($black, 0.5);
+
+      .field--name-field-title {
+        transform: none;
+      }
+    }
+  }
+
+  .field--name-field-title {
+    bottom: 0;
+    color: $white;
+    font-family: $font-main;
+    font-style: italic;
+    font-weight: normal;
+    left: rem-calc(20);
+    padding-bottom: rem-calc(20);
+    position: absolute;
+    transform: translateY(100%);
+    transition: transform $transition-time / 1.5;
+    width: calc(100% - #{rem-calc(40)}); // 20 * 2.
+    will-change: transform;
+  }
+
+  .field--name-field-video {
+    display: none;
+  }
+
+
+}

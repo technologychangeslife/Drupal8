@@ -1,0 +1,631 @@
+// sass-lint:disable force-pseudo-nesting
+// sass-lint:disable nesting-depth
+.paragraph--type--testimonial-slider {
+  background-color: $color-event-recap-bg;
+  padding: 3rem map-get($paragraph-padding, small);
+
+  @include breakpoint(medium) {
+    padding-left: map-get($paragraph-padding, medium);
+    padding-right: map-get($paragraph-padding, medium);
+  }
+
+  @include breakpoint(large) {
+    padding-left: map-get($paragraph-padding, large);
+    padding-right: map-get($paragraph-padding, large);
+  }
+
+  > .field--name-field-title {
+    font-size: $h1-font-size;
+    margin-bottom: rem-calc(15);
+    text-align: center;
+    padding-bottom: 20px;
+
+    @include breakpoint(medium) {
+      margin-bottom: rem-calc(30);
+    }
+  }
+
+  .field--name-field-testimonial-slider-items {
+    @include flex-grid-row($behavior: nest, $size: expand);
+
+    > .field__item {
+      width: 357px;
+
+      @include flex-grid-column($columns: 100%);
+    }
+
+    + .body-container {
+      margin-top: rem-calc(30);
+
+      @include breakpoint(medium) {
+        margin-top: rem-calc(60);
+      }
+    }
+
+    &.slick-slider {
+      @include slick-slider;
+
+      .slick-slide {
+        @include grid-column-gutter;
+
+        @include breakpoint(large) {
+          padding-right: 1.9375rem;
+          padding-left: 1.9375rem;
+        }
+
+        img {
+          width: 100%;
+        }
+
+        .field--name-field-logo {
+          padding-bottom: rem-calc(25);
+
+          img {
+            max-width: 175px;
+            height: auto;
+            max-height: 80px;
+            width: auto;
+            margin: 10px auto;
+          }
+        }
+
+      }
+    }
+
+    &:not(.slick-slider) {
+      > .field__item {
+        @include breakpoint(medium) {
+          @include flex-grid-size(50%);
+        }
+
+        @include breakpoint(large) {
+          @include flex-grid-size(4 of 12);
+        }
+      }
+    }
+
+    .field--name-field-quote {
+      margin: 5px;
+
+      p {
+        color: $black;
+      }
+
+      &::after {
+        content: '';
+        width: 20px;
+        background: $cubic-teal;
+        height: 1px;
+        position: relative;
+        margin: 27px auto;
+      }
+    }
+
+    .field--name-field-quotee {
+      margin: 5px;
+      text-transform: uppercase;
+      color: $text-color;
+    }
+
+    .field--name-field-quotee-title {
+      margin: 5px;
+    }
+  }
+
+  .slick-list {
+    margin: 0 rem-calc(50);
+    width: 100%;
+    overflow-y: unset;
+  }
+
+  .slick-track {
+    align-items: center;
+    display: flex;
+  }
+
+  .body-container {
+    @include breakpoint(large) {
+      @include flex-grid-row($behavior: nest, $size: expand);
+    }
+
+    > .field {
+      margin-bottom: rem-calc(30);
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      @include breakpoint(large) {
+        @include flex-grid-column;
+        margin-bottom: 0;
+      }
+
+      p {
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  &.one-column-testimonial-slider {
+    //new for when is  a new column...
+    .field--name-field-testimonial-slider-items {
+      @include flex-grid-row($behavior: nest, $size: expand);
+
+      > .field__item {
+        width: 357px;
+
+        @include flex-grid-column($columns: 100%);
+      }
+
+      + .body-container {
+        margin-top: rem-calc(30);
+
+        @include breakpoint(medium) {
+          margin-top: rem-calc(60);
+        }
+      }
+
+      &.slick-slider {
+        .slick-slide {
+          @include breakpoint(large) {
+            padding-right: 0;
+            padding-left: 0;
+          }
+
+          img {
+            width: 100%;
+          }
+
+          .field--name-field-logo {
+            img {
+              max-width: 175px;
+              height: auto;
+              max-height: 80px;
+              width: auto;
+              margin: 10px auto;
+            }
+          }
+        }
+      }
+    }
+
+    //slider item..
+    .paragraph--type--testimonial-slider-item {
+      //styles for one column on small and medium...
+      &.testimonial-no-video-slider-item {
+
+        //testing Animation per item {
+        @include anonymous('.advanced-animations') {
+          @include has-js {
+            > .field--name-field-quote
+            > .field--body--wrapper,
+            > .extra-content--wrapper {
+              opacity: 0;
+              transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+            }
+
+            > .field--name-field-quote {
+              transform: translateX(-50%);
+            }
+
+            > .extra-content--wrapper {
+              transform: translateX(50%);
+            }
+
+            &.body-last {
+              > .field--body--wrapper {
+                transform: translateX(50%);
+              }
+
+              > .extra-content--wrapper {
+                transform: translateX(-50%);
+              }
+            }
+
+            &.in {
+              > .field--name-field-quote,
+              > .field--body--wrapper,
+              > .extra-content--wrapper {
+                opacity: 1 !important;
+                transform: translateX(0) !important;
+              }
+            }
+          }
+        }
+        //ends testing animation per item
+
+        &.one-column-testimonial-slider-item {
+
+          display: flex;
+          margin-top: 5px;
+          margin-bottom: 5px;
+
+          .quotes-items-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .field--name-field-quote {
+              display: block;
+              flex: 1 1 auto;
+            }
+          }
+
+
+          .field--name-field-quote {
+            display: block;
+
+            &::after {
+              content: '';
+              width: 20px;
+              background: $cubic-teal;
+              height: 1px;
+              position: relative;
+              margin: 27px auto;
+            }
+          }
+
+          //quote on blue
+          .quote-on-large {
+            display: none;
+          }
+        }
+      }
+
+      @include breakpoint(medium) {
+        height: 450px;
+        padding: 0 rem-calc(12);
+        max-width: 880px;
+        margin: auto;
+      }
+
+
+      @include breakpoint(large) {
+        height: 450px;
+        padding: 0 rem-calc(45);
+
+
+        //styles for one column on large...
+        &.testimonial-no-video-slider-item {
+          &.one-column-testimonial-slider-item {
+
+            padding: 0;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+
+            .quotes-items-wrapper {
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+              min-width: 40%;
+
+              .field--name-field-quote {
+                display: none;
+              }
+            }
+
+            //quote on blue
+            .quote-on-large {
+              background: $cubic-blue;
+              display: flex;
+              flex-direction: column;
+              flex: 1;
+              justify-content: center;
+              box-shadow: 0 0 3px $black-25;
+
+
+              .field--name-field-quote {
+                padding: 0 rem-calc(40);
+
+                &::after {
+                  display: none;
+                }
+
+                p {
+                  color: $white;
+                  font-size: 24px;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .field--name-field-title {
+        bottom: 0;
+        color: $white;
+        font-family: $font-main;
+        font-style: italic;
+        font-weight: normal;
+        left: rem-calc(20);
+        padding-bottom: rem-calc(20);
+        position: absolute;
+        transform: translateY(100%);
+        transition: transform $transition-time / 1.5;
+        width: calc(100% - #{rem-calc(40)}); // 20 * 2.
+        will-change: transform;
+      }
+
+      .field--name-field-video {
+        display: none;
+      }
+
+      .field--name-field-logo {
+        img {
+          max-width: 175px;
+          height: auto;
+          max-height: 80px;
+          width: auto;
+        }
+      }
+    }
+    //ends new slider item..
+    //ends new for when is a new column...
+  }
+
+  .paragraph--type--testimonial-slider-item {
+    position: relative;
+    background: $white;
+    width: 100%;
+    min-height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 0 3px $black-25;
+    margin: 5px;
+    transition: all $transition-time;
+
+
+    &.testimonial-video-slider-item {
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+
+      > [data-open^='video-modal-'] {
+        display: block;
+        height: 100%;
+        left: 0;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        transition: all $transition-time;
+        width: 100%;
+
+        &.has-video {
+          align-items: flex-end;
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+
+          .field--name-field-title {
+            width: calc(100% - #{rem-calc(60)} - 20%); // 20 * 3 & play button width.
+          }
+
+          .field--name-field-quote {
+            padding: 0 40px 40px 0;
+            max-width: 60%;
+
+            p {
+              color: $white;
+              text-align: left;
+              margin-bottom: 0;
+              font-style: italic;
+            }
+
+            &::after {
+              content: none;
+              display: none;
+            }
+          }
+
+          //to fix mobile issues..
+          @media only screen and (max-width: 850px) {
+
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-start;
+
+            &::before {
+              background-image: url('../img/icon_play-video-white.svg');
+              content: '';
+              position: relative;
+              background-repeat: no-repeat;
+              background-size: 80px;
+              width: 80px;
+              height: 80px;
+              margin: 0 20px 20px;
+              display: block;
+            }
+
+            .field--name-field-quote {
+              padding: 0 20px 20px;
+              max-width: 100%;
+
+
+              p {
+                color: $white;
+                text-align: left;
+                margin-bottom: 0;
+                font-style: italic;
+              }
+
+              &::after {
+                content: none;
+                display: none;
+              }
+            }
+          }
+
+          @media only screen and (min-width: 851px) {
+            &::before {
+              background-image: url('../img/icon_play-video-white.svg');
+              content: '';
+              position: absolute;
+              right: 0;
+              order: 1;
+              background-repeat: no-repeat;
+              background-size: 80px;
+              bottom: 40px;
+              left: 40px;
+              width: 80px;
+              height: 80px;
+            }
+
+          }
+        }
+
+        &:hover {
+          background-color: transparentize($black, .5);
+        }
+      }
+
+      &:hover {
+        .field--name-field-title {
+          transform: none;
+        }
+      }
+
+    }
+
+    @include breakpoint(medium) {
+      padding: 0 rem-calc(12);
+    }
+
+
+    @include breakpoint(large) {
+      height: 450px;
+      padding: 0 rem-calc(45);
+
+    }
+
+    .field--name-field-title {
+      bottom: 0;
+      color: $white;
+      font-family: $font-main;
+      font-style: italic;
+      font-weight: normal;
+      left: rem-calc(20);
+      padding-bottom: rem-calc(20);
+      position: absolute;
+      transform: translateY(100%);
+      transition: transform $transition-time / 1.5;
+      width: calc(100% - #{rem-calc(40)}); // 20 * 2.
+      will-change: transform;
+    }
+
+    .field--name-field-video {
+      display: none;
+    }
+
+
+    .field--name-field-logo {
+      img {
+        max-width: 175px;
+        height: auto;
+        max-height: 80px;
+        width: auto;
+      }
+    }
+  }
+
+  //transition effects...
+  .slick-slide {
+
+    .one-column-testimonial-slider-item {
+      &.testimonial-no-video-slider-item {
+        .quotes-items-wrapper {
+          overflow: hidden;
+
+          div {
+            opacity: 0;
+            //transform: translateY(-40px);
+            transition: all 1s;
+
+            &:nth-child(odd) {
+              transform: translateX(-50%);
+            }
+
+            &:nth-child(even) {
+              transform: translateX(50%);
+            }
+          }
+        }
+      }
+    }
+
+
+    .testimonial-no-video-slider-item {
+      .quotes-items-wrapper {
+        overflow: hidden;
+
+
+        div {
+          opacity: 0;
+          //transform: translateY(-40px);
+          transition: all $transition-time;
+
+          &:nth-child(odd) {
+            transform: translateX(-50%);
+          }
+
+          &:nth-child(even) {
+            transform: translateX(50%);
+          }
+        }
+      }
+    }
+
+    &.slick-active {
+      .testimonial-no-video-slider-item {
+        .quotes-items-wrapper {
+
+          div {
+            opacity: 1;
+            transition: all $transition-time;
+
+            &:nth-child(odd) {
+              transform: translateX(0);
+            }
+
+            &:nth-child(even) {
+              transform: translateX(0);
+            }
+
+          }
+        }
+      }
+
+      .one-column-testimonial-slider-item {
+        &.testimonial-no-video-slider-item {
+          .quotes-items-wrapper {
+
+            div {
+              opacity: 1;
+              transition: all 1.5s;
+
+              &:nth-child(odd) {
+                transform: translateX(0);
+              }
+
+              &:nth-child(even) {
+                transform: translateX(0);
+              }
+
+            }
+          }
+        }
+      }
+
+    }
+  }
+
+
+
+
+
+}

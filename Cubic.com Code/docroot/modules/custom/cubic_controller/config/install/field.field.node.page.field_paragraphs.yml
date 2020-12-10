@@ -1,0 +1,199 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_paragraphs
+    - node.type.page
+    - paragraphs.paragraphs_type.50_50
+    - paragraphs.paragraphs_type.annual_reports_slider
+    - paragraphs.paragraphs_type.basic_text
+    - paragraphs.paragraphs_type.callouts
+    - paragraphs.paragraphs_type.cross_links
+    - paragraphs.paragraphs_type.divider_bar
+    - paragraphs.paragraphs_type.event_recap
+    - paragraphs.paragraphs_type.grid_of_products
+    - paragraphs.paragraphs_type.grid_of_success_stories
+    - paragraphs.paragraphs_type.image_and_menu
+    - paragraphs.paragraphs_type.image_and_text_slider
+    - paragraphs.paragraphs_type.image_grid_slider
+    - paragraphs.paragraphs_type.map
+    - paragraphs.paragraphs_type.milestone_50_50
+    - paragraphs.paragraphs_type.milestone_carousel
+    - paragraphs.paragraphs_type.milestone_group
+    - paragraphs.paragraphs_type.milestone_slider
+    - paragraphs.paragraphs_type.people_grid
+    - paragraphs.paragraphs_type.tabs
+    - paragraphs.paragraphs_type.testimonial_slider
+    - paragraphs.paragraphs_type.webform
+  module:
+    - entity_reference_revisions
+id: node.page.field_paragraphs
+field_name: field_paragraphs
+entity_type: node
+bundle: page
+label: 'Upper Paragraphs'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      '50_50': '50_50'
+      basic_text: basic_text
+      callouts: callouts
+      cross_links: cross_links
+      divider_bar: divider_bar
+      grid_of_products: grid_of_products
+      grid_of_success_stories: grid_of_success_stories
+      event_recap: event_recap
+      image_and_menu: image_and_menu
+      image_and_text_slider: image_and_text_slider
+      image_grid_slider: image_grid_slider
+      people_grid: people_grid
+      map: map
+      annual_reports_slider: annual_reports_slider
+      tabs: tabs
+      webform: webform
+      milestone_slider: milestone_slider
+      milestone_50_50: milestone_50_50
+      milestone_carousel: milestone_carousel
+      testimonial_slider: testimonial_slider
+      milestone_group: milestone_group
+    target_bundles_drag_drop:
+      '50_50':
+        enabled: true
+        weight: -1
+      accordion:
+        weight: 0
+        enabled: false
+      accordions:
+        weight: 1
+        enabled: false
+      basic_image:
+        weight: 2
+        enabled: false
+      basic_text:
+        enabled: true
+        weight: 3
+      callouts:
+        enabled: true
+        weight: 4
+      cross_link:
+        weight: 5
+        enabled: false
+      cross_links:
+        enabled: true
+        weight: 6
+      divider_bar:
+        enabled: true
+        weight: 7
+      grid_of_products:
+        enabled: true
+        weight: 8
+      grid_of_success_stories:
+        enabled: true
+        weight: 9
+      event_recap:
+        enabled: true
+        weight: 10
+      event_recap_slider_item:
+        weight: 11
+        enabled: false
+      event_schedule:
+        weight: 12
+        enabled: false
+      event_schedule_item:
+        weight: 13
+        enabled: false
+      image_and_menu:
+        enabled: true
+        weight: 14
+      image_text_slider_item:
+        weight: 15
+        enabled: false
+      image_and_text_slider:
+        enabled: true
+        weight: 16
+      image_grid_slider:
+        enabled: true
+        weight: 17
+      people_grid:
+        enabled: true
+        weight: 18
+      people_grid_item_external:
+        weight: 19
+        enabled: false
+      people_grid_item:
+        weight: 20
+        enabled: false
+      map:
+        enabled: true
+        weight: 21
+      annual_reports_slider:
+        enabled: true
+        weight: 22
+      salesforce_form:
+        weight: 23
+        enabled: false
+      social_icon_link:
+        weight: 24
+        enabled: false
+      social_icon_links:
+        weight: 25
+        enabled: false
+      solutions_product:
+        weight: 26
+        enabled: false
+      tab:
+        weight: 27
+        enabled: false
+      tabs:
+        enabled: true
+        weight: 28
+      taggbox_social_feed:
+        weight: 29
+        enabled: false
+      webform:
+        enabled: true
+        weight: 30
+      milestone_slider:
+        enabled: true
+        weight: 42
+      case_study_row:
+        weight: 43
+        enabled: false
+      milestone_50_50:
+        enabled: true
+        weight: 65
+      milestone_text_image:
+        weight: 66
+        enabled: false
+      milestone_carousel:
+        enabled: true
+        weight: 66
+      milestone_text_video:
+        weight: 67
+        enabled: false
+      milestone_carousel_item:
+        weight: 68
+        enabled: false
+      testimonial_slider:
+        enabled: true
+        weight: 68
+      testimonial_slider_item:
+        weight: 69
+        enabled: false
+      milestone_group:
+        enabled: true
+        weight: 70
+      statistic_slider:
+        weight: 75
+        enabled: false
+      statistic_slider_item:
+        weight: 76
+        enabled: false
+field_type: entity_reference_revisions

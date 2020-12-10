@@ -1,0 +1,266 @@
+body {
+  font-family: $font-main;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.region-content {
+  p,
+  ul,
+  ol,
+  .embedded-entity {
+    color: $text-color;
+    font-size: rem-calc(16);
+    line-height: 1.6em;
+    margin-bottom: 1.6rem;
+  }
+
+  .text-formatted {
+    > img {
+      margin-bottom: 1.6rem;
+    }
+  }
+
+  a {
+    color: $black;
+    font-family: $font-bold;
+    text-decoration: none;
+    transition: color $transition-time;
+
+    &:hover {
+      color: $cubic-teal;
+    }
+
+    &.cta {
+      font-family: $font-bold;
+      @extend %link-w-arrow;
+
+      &:hover {
+        color: $cubic-teal;
+        text-decoration: none;
+      }
+
+      + .cta {
+        margin-left: rem-calc(30);
+      }
+    }
+  }
+
+  // sass-lint:disable force-pseudo-nesting
+  ul:not(.links):not(.tabs) {
+    list-style: none;
+    margin-left: 0;
+
+    li {
+      margin-bottom: rem-calc(10);
+      padding-left: 20px;
+      position: relative;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      &::before {
+        background-color: $color-bullets;
+        content: '';
+        display: block;
+        height: 8px;
+        left: 0;
+        position: absolute;
+        top: 8px;
+        width: 8px;
+      }
+    }
+  }
+
+  // sass-lint:enable force-pseudo-nesting
+
+  table {
+    table-layout: fixed;
+    width: 100%;
+
+    tr {
+      &:nth-child(even) {
+        background: $color-table-alt-bg;
+      }
+    }
+
+    th,
+    td {
+      text-align: left;
+      vertical-align: top;
+      padding: 0.5em 1em;
+    }
+
+    th {
+      font-weight: normal;
+      font-family: $font-bold;
+      color: $black;
+    }
+
+    td {
+      font-weight: normal;
+      color: $text-color;
+    }
+  }
+
+  .embedded-entity {
+    @include breakpoint(small down) {
+      text-align: left;
+      float: none;
+    }
+
+    @include breakpoint(medium) {
+      &.entity--file {
+        clear: both;
+      }
+
+      &.entity--image {
+        max-width: 50%;
+      }
+
+      &.align-center {
+        text-align: center;
+      }
+
+      &.align-left,
+      &.align-right {
+        margin-bottom: 0;
+      }
+
+      &.align-left {
+        padding: 0 rem-calc(15) rem-calc(10) 0;
+      }
+
+      &.align-right {
+        padding: 0 0 rem-calc(10) rem-calc(15);
+      }
+    }
+  }
+}
+
+h1 {
+  font-family: $font-light;
+  font-size: rem-calc(38);
+  font-weight: normal;
+  letter-spacing: 0.005em;
+  line-height: 1.1em;
+
+  @include breakpoint(medium) {
+    font-size: rem-calc(44);
+  }
+}
+
+h2 {
+  font-size: rem-calc(34);
+  font-weight: normal;
+  line-height: 1.1em;
+}
+
+h3 {
+  font-size: rem-calc(23);
+  font-weight: normal;
+  line-height: 1.2em;
+}
+
+h4 {
+  font-family: $font-bold;
+  font-size: rem-calc(18);
+  font-weight: normal;
+  line-height: 1.25em;
+}
+
+h5 {
+  font-family: $font-bold;
+  font-size: rem-calc(14);
+  font-weight: normal;
+  line-height: 1.4em;
+}
+
+h6 {
+  @extend h5;
+  text-transform: uppercase;
+}
+
+.table-scroll {
+  @include breakpoint(small only) {
+    overflow-x: auto;
+
+    table {
+      width: auto;
+    }
+  }
+}
+
+noscript {
+  &[aria-hidden='true'] {
+    position: absolute;
+  }
+}
+
+.field--type-text-long {
+  blockquote {
+    border: none;
+    clear: both;
+    color: $cubic-blue !important;
+    margin-left: -0.6em;
+    padding-bottom: 0.25em;
+    padding-top: 1.5em;
+    font-size: 1.25em;
+    font-weight: bold;
+    padding-left: 1em;
+
+
+    p {
+      border-left: solid 2px $cubic-blue;
+      font-weight: normal !important;
+      padding-left: 2.5em;      font-style: italic;
+      color: $cubic-blue !important;
+      position: relative;
+
+      &:before {
+        content: '“';
+        display: inline;
+        font-size: 45px;
+        position: absolute;
+        left: 15px;
+        top: 10px;
+      }
+
+      &:after {
+        content: '”';
+        display: inline;
+        font-size: 45px;
+        position: absolute;
+        bottom: -10px;
+      }
+    }
+
+    @include breakpoint(medium) {
+      padding-left: 7rem;
+      padding-right: 6rem;
+
+      p {
+        padding-left: 50px;
+
+        &:before {
+          content: '“';
+          display: inline;
+          font-size: 45px;
+          position: absolute;
+          left: 24px;
+          top: 10px;
+        }
+
+        &:after {
+          content: '”';
+          display: inline;
+          font-size: 45px;
+          position: absolute;
+          bottom: -10px;
+          margin-left: 2px !important;
+        }
+      }
+    }
+  }
+}

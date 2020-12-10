@@ -1,0 +1,56 @@
+{#
+/**
+ * @file
+ * Theme override to display a node teaser in the Lists view.
+ */
+#}
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  ]
+%}
+{{ attach_library('classy/node') }}
+<article{{ attributes.addClass(classes) }}>
+  {{ title_prefix }}
+  {{ title_suffix }}
+  <a href="{{ url }}" rel="bookmark">
+    <div{{ content_attributes.addClass('node__content') }}>
+      {{ content.field_hero_image }}
+
+      <div class="text">
+        <div class="eyebrow">
+          {{ content.field_business }}
+          {{ content.field_industry }}
+        </div>
+
+        <h3{{ title_attributes.addClass('title') }}>{{ label }}</h3>
+
+        {% if node.hasField('field_date') %}
+          {{ content.field_date }}
+        {% else %}
+          <span class="field--name-created">
+            {{ node.getCreatedTime|format_date('default') }}
+          </span>
+        {% endif %}
+
+        {% if content|without('field_business', 'field_date', 'field_hero_image', 'field_industry')|render|striptags is not empty %}
+          <div class="body">
+            {{ content|without('field_business', 'field_date', 'field_hero_image', 'field_industry') }}
+          </div>
+        {% endif %}
+
+        {% set content_type = node.bundle|clean_class %}
+        {% if 'post' in content_type %}
+          <div class="related-posts-read-more">Read More</div>
+        {% endif %}
+
+
+      </div>
+    </div>
+  </a>
+</article>

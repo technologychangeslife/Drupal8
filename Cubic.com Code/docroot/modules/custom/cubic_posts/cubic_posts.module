@@ -1,0 +1,23 @@
+<?php
+
+/**
+ * @file
+ * Contains cubic_posts.module.
+ */
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function cubic_posts_preprocess_node(&$vars) {
+  /* @var \Drupal\node\Entity\Node $node */
+  $node = $vars['node'];
+  if ($node->bundle() == 'post' && $vars['teaser']) {
+    if ($node->hasField('field_external_link')) {
+      /* @var \Drupal\link\Plugin\Field\FieldType\LinkItem $link */
+      $link = $node->get('field_external_link')->first();
+      if ($link) {
+        $vars['url'] = $link->getUrl()->toString();
+      }
+    }
+  }
+}

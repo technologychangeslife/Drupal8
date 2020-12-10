@@ -1,0 +1,30 @@
+{
+  "name": "cubic",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Nathan Stone <nathan@freshform.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bxslider-4": "^4.2.5",
+    "ellipsis.js": "*",
+    "foundation-sites": "6.4.1",
+    "jquery-easing": "*",
+    "outdated-browser": "^1.1.5",
+    "protonet/jquery.inview": "^1.1.2",
+    "rellax": "*",
+    "slick-carousel": "^1.8.1",
+    "parallax.js": "^1.5.0",
+    "jarallax": "^1.10.7"
+  }
+}

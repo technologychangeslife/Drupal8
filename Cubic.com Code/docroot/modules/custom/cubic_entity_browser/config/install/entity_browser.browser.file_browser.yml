@@ -1,0 +1,40 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.file_browser
+  module:
+    - views
+name: file_browser
+label: 'File Browser'
+display: modal
+display_configuration:
+  width: '1070'
+  height: '840'
+  link_text: 'Select File(s)'
+  auto_open: false
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  439c2718-4264-48b6-9df6-4049df47f1c8:
+    settings:
+      upload_location: 'public://'
+      multiple: true
+      submit_text: Upload
+      extensions: 'txt doc docx xls xlsx pdf ppt xsd xml'
+    uuid: 439c2718-4264-48b6-9df6-4049df47f1c8
+    weight: -9
+    label: 'Upload File(s)'
+    id: upload
+  be3ffa59-b6a6-409f-b4eb-333b2d37f232:
+    settings:
+      view: file_browser
+      view_display: entity_browser_1
+      submit_text: 'Select File(s)'
+      auto_select: false
+    uuid: be3ffa59-b6a6-409f-b4eb-333b2d37f232
+    weight: -10
+    label: Library
+    id: view

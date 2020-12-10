@@ -1,0 +1,21 @@
+name: 'Milestone Decade'
+description: 'Provides Milestone Decade content type and related configuration. '
+type: module
+core: 8.x
+dependencies:
+  - cubic_controller
+  - cubic_entity_browser
+  - entity_browser
+  - entity_reference_revisions
+  - field
+  - file
+  - image
+  - menu_ui
+  - node
+  - paragraphs
+  - path
+  - scheduler
+  - text
+  - user
+  - workbench_moderation
+package: Cubic

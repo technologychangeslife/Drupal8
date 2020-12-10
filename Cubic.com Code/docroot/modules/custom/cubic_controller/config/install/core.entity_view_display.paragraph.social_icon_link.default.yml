@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.social_icon_link.field_link
+    - field.field.paragraph.social_icon_link.field_social_icon
+    - paragraphs.paragraphs_type.social_icon_link
+  module:
+    - options
+id: paragraph.social_icon_link.default
+targetEntityType: paragraph
+bundle: social_icon_link
+mode: default
+content:
+  field_social_icon:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+hidden:
+  field_link: true

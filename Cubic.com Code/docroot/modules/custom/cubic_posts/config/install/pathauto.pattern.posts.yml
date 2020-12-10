@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: posts
+label: Posts
+type: 'canonical_entities:node'
+pattern: 'news-events/blogs/[node:title]'
+selection_criteria:
+  b194e3e9-bf6a-4df3-b9f3-895b5f3ee98c:
+    id: node_type
+    bundles:
+      post: post
+    negate: false
+    context_mapping:
+      node: node
+    uuid: b194e3e9-bf6a-4df3-b9f3-895b5f3ee98c
+selection_logic: and
+weight: -5
+relationships: {  }

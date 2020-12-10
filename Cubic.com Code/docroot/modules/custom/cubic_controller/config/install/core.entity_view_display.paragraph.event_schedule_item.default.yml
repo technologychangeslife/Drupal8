@@ -1,0 +1,44 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.event_schedule_item.field_body
+    - field.field.paragraph.event_schedule_item.field_time
+    - field.field.paragraph.event_schedule_item.field_timezone
+    - field.field.paragraph.event_schedule_item.field_title
+    - paragraphs.paragraphs_type.event_schedule_item
+  module:
+    - datetime_range
+    - text
+id: paragraph.event_schedule_item.default
+targetEntityType: paragraph
+bundle: event_schedule_item
+mode: default
+content:
+  field_body:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_time:
+    weight: 2
+    label: hidden
+    settings:
+      timezone_override: ''
+      date_format: 'g:i A'
+      separator: '-'
+    third_party_settings: {  }
+    type: daterange_custom
+    region: content
+  field_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  field_timezone: true

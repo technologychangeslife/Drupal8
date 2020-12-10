@@ -1,0 +1,29 @@
+name: Cubic
+type: theme
+base theme: classy
+description: Custom Drupal 8 theme built for Cubic.
+package: Custom
+core: 8.x
+libraries:
+  - cubic/outdated-browser
+  - cubic/global
+libraries-override:
+  core/jquery: cubic/jquery_replace
+regions:
+  sidenav: Sidenav
+  menus: Menus
+  top_bar: 'Top bar'
+  header: Header
+  page_top: 'Page top'
+  page_bottom: 'Page bottom'
+  content: Content
+  above_footer: 'Above footer'
+  footer_first: 'Footer first'
+  footer_second: 'Footer second'
+  footer_third: 'Footer third'
+  footer_fourth: 'Footer fourth'
+  footer_bottom: 'Footer bottom'
+stylesheets-remove:
+  - core/themes/classy/css/components/form.css
+  - core/themes/classy/css/components/item-list.css
+  - core/themes/classy/css/components/menu.css

@@ -1,0 +1,471 @@
+// Hero headlines.
+.context-simple-header,
+.context-simple-grey-header,
+.context-tall-header,
+.page-node-type-solution {
+  .block-page-title-block {
+    .page-title-content {
+      .page-title {
+        font-family: $font-light;
+        font-size: rem-calc(40);
+        font-weight: normal;
+        letter-spacing: -0.025em;
+        line-height: 1.05em;
+
+        @include breakpoint(medium) {
+          font-size: rem-calc(50);
+        }
+
+        @include breakpoint(large) {
+          font-size: rem-calc(64);
+        }
+
+        @include breakpoint(xlarge) {
+          font-size: rem-calc(80);
+        }
+      }
+    }
+  }
+}
+
+.block-page-title-block {
+  // Default page title style is side-by-side, image on the right
+  align-items: center;
+  background-color: $color-page-title-bg;
+  display: flex;
+  flex-wrap: wrap;
+  position: relative;
+
+  @include breakpoint(medium) {
+    flex-wrap: nowrap;
+  }
+
+  .page-header-background {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: rem-calc(240);
+    width: 100%;
+
+    @include breakpoint(medium) {
+      align-self: stretch;
+      flex: 1 0 50%;
+      height: auto;
+      min-height: rem-calc(500);
+      order: 1;
+    }
+
+    img {
+      display: none;
+    }
+  }
+
+  &.contain-hero {
+    .page-header-background {
+      background-color: $white;
+      background-size: contain;
+      border: rem-calc(25) solid transparent;
+
+      @include breakpoint(medium) {
+        border-left-width: rem-calc(50);
+        border-right-width: rem-calc(50);
+      }
+    }
+  }
+
+  &.no-hero {
+    .page-header-background {
+      @include breakpoint(small only) {
+        background-image: none !important;
+      }
+    }
+  }
+
+  .page-title-content {
+    padding: 3rem map-get($paragraph-padding, small) 2rem map-get($paragraph-padding, small);
+
+    @include breakpoint(medium) {
+      flex: 1 0 50%;
+      max-width: 50%;
+      padding-left: map-get($paragraph-padding, medium);
+      padding-right: map-get($paragraph-padding, medium);
+    }
+
+    @include breakpoint(large) {
+      padding-left: map-get($paragraph-padding, large);
+      padding-right: map-get($paragraph-padding, large);
+    }
+  }
+
+  .page-title {
+    margin-bottom: 0.2em;
+
+    @include breakpoint(medium only) {
+      hyphens: auto;
+    }
+  }
+
+  .intro {
+    color: $text-color;
+
+    a {
+      @extend %link-jumplink;
+      color: $black;
+      font-family: $font-bold;
+      transition: color $transition-time;
+
+      &:hover {
+        color: $cubic-teal;
+      }
+    }
+  }
+
+  .cta {
+    color: $black;
+    display: inline-block;
+    font-family: $font-bold;
+    margin-top: 2.5em;
+  }
+
+  // background image page style used on Solution nodes
+  .page-node-type-solution & {
+    display: block;
+    overflow: hidden;
+
+    .page-header-background {
+      background-position: center top;
+      height: auto;
+      margin-top: rem-calc(-10);
+      max-height: rem-calc(600);
+      min-height: 0;
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      z-index: 1;
+
+      &::before {
+        @include abs-stretch;
+        background-color: transparentize($color-section-default, 0.4);
+        content: '';
+        height: 100%;
+        width: 100%;
+        z-index: 2;
+      }
+
+      img {
+        display: block;
+        height: auto;
+        width: 100%;
+      }
+    }
+
+    .page-title-content {
+      max-width: none;
+      padding: rem-calc(30) 0;
+      position: relative;
+      z-index: 3;
+
+      @include breakpoint(medium) {
+        @include abs-stretch;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .page-title,
+      .intro {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 90%;
+
+        @include breakpoint(medium) {
+          color: $white;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  // background image with more content, class added by Context module
+  .context-tall-header & {
+    @include breakpoint(medium) {
+      align-items: center;
+      display: flex;
+      height: rem-calc(500);
+      justify-content: center;
+      overflow: hidden;
+
+      .page-header-background {
+        @include abs-stretch;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+
+        &::before {
+          @include abs-stretch;
+          background-color: transparentize($black, 0.8);
+          content: '';
+          height: 100%;
+          width: 100%;
+          z-index: 2;
+        }
+      }
+
+      .page-title-content {
+        position: relative;
+        z-index: 3;
+        padding: 0;
+
+        .page-title,
+        .intro {
+          text-align: left;
+          color: $white;
+
+          a {
+            color: $white;
+
+            &[href^='#'] {
+              background-image: url('../img/icon_arrow-dropdown-white.svg');
+
+              &::before {
+                background-color: $white;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    @include breakpoint(large) {
+      height: rem-calc(600);
+    }
+  }
+
+  // background image page style used on post-type nodes
+  .page-node-post-kind & {
+    display: block;
+    overflow: hidden;
+
+    .page-header-background {
+      @include abs-stretch;
+      height: 100%;
+      min-height: 0;
+      width: 100%;
+      z-index: 1;
+
+      &::before {
+        @include abs-stretch;
+        background-color: transparentize($color-section-default, 0.4);
+        content: ' ';
+        height: 100%;
+        width: 100%;
+        z-index: 2;
+      }
+    }
+
+    .page-title-content {
+      color: $white;
+      max-width: none;
+      padding: 4em 0;
+      position: relative;
+      z-index: 3;
+
+      .before-title {
+        color: inherit;
+        font-family: $font-bold;
+        font-size: 85%;
+        margin: 0 -1em;
+        text-align: center;
+        text-transform: uppercase;
+
+        span {
+          padding: 0 1em;
+        }
+      }
+
+      .page-title {
+        color: inherit;
+        margin: 0 auto 0.5em;
+        max-width: 90%;
+        text-align: center;
+      }
+
+      .intro {
+        color: inherit;
+        margin: 0 auto;
+        max-width: 90%;
+        text-align: center;
+
+        a {
+          color: inherit;
+
+          &[href^='#'] {
+            background-image: url('../img/icon_arrow-dropdown-white.svg');
+          }
+        }
+      }
+
+      .cubic-social-addthis {
+        text-align: center;
+      }
+    }
+  }
+
+  // Simple header that displays the title, maybe an intro, and that's it
+  .context-simple-header &,
+  .context-simple-grey-header & {
+    .page-header-background {
+      display: none;
+    }
+
+    .page-title-content {
+      background-color: $color-section-default;
+      height: auto;
+      max-width: none;
+      text-align: center;
+      width: 100%;
+
+      .page-title {
+        color: $white;
+        max-width: 100%;
+      }
+
+      .intro {
+        color: $white;
+        max-width: 100%;
+
+        p {
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+
+        a {
+          color: $white;
+
+          &[href^='#'] {
+            background-image: url('../img/icon_arrow-dropdown-white.svg');
+          }
+        }
+      }
+    }
+  }
+
+  .context-simple-grey-header & {
+    .page-title-content {
+      background-color: $color-grid-background;
+    }
+  }
+
+  .page-node-type-timeline &,
+  .page-node-type-post &,
+  .context-case-study-header &,
+  .page-node-type-event &,
+  .page-node-type-insight &,
+  .page-node-type-success-story & {
+    overflow: hidden;
+    position: relative;
+
+    .page-header-background {
+      background-position: center top;
+      flex-basis: 100%;
+      height: auto;
+      margin-top: rem-calc(-10);
+      min-height: 0;
+      overflow: hidden;
+      position: relative;
+
+      @include breakpoint(large) {
+        max-height: calc(100vh - #{rem-calc(66+39+80)} + #{rem-calc(10)});
+      }
+
+      &::before {
+        display: none;
+      }
+
+      img {
+        display: block;
+        height: auto;
+        width: 100%;
+      }
+    }
+
+    .page-title-content {
+      color: $black;
+      flex-basis: 100%;
+      font-family: $font-bold;
+      max-width: 100%;
+      padding: 3rem map-get($paragraph-padding, small) 2rem map-get($paragraph-padding, small);
+      width: 100%;
+      z-index: 2;
+
+      @include breakpoint(medium) {
+        align-items: flex-end;
+        background-image: linear-gradient(transparentize($black, 1) 10%, transparentize($black, 0.15) 100%);
+        bottom: 0;
+        color: $white;
+        display: flex;
+        height: 100%;
+        padding-left: map-get($paragraph-padding, medium);
+        padding-right: map-get($paragraph-padding, medium);
+        position: absolute;
+      }
+
+      @include breakpoint(large) {
+        padding-left: map-get($paragraph-padding, large);
+        padding-right: map-get($paragraph-padding, large);
+      }
+
+      .page-title {
+        font-size: rem-calc(45);
+        margin-bottom: rem-calc(30);
+        margin-left: 0;
+        margin-right: 0;
+        max-width: none;
+        text-align: left;
+
+        @include breakpoint(medium) {
+          max-width: 50%;
+        }
+      }
+
+      .before-title,
+      .cubic-social-addthis {
+        text-align: left;
+      }
+    }
+  }
+}
+
+@each $color in ($section-colors) {
+  .section-color-#{$color} {
+    &.page-node-type-solution {
+      .block-page-title-block {
+        .page-header-background {
+          &::before {
+            @extend %section-#{$color}-bg-trans;
+          }
+        }
+      }
+    }
+
+    &.context-tall-header {
+      .block-page-title-block {
+        .page-header-background {
+          &::before {
+            @extend %section-#{$color}-bg-trans;
+          }
+        }
+      }
+    }
+
+    &.context-simple-header {
+      .block-page-title-block {
+        .page-title-content {
+          @extend %section-#{$color}-bg;
+        }
+      }
+    }
+  }
+}

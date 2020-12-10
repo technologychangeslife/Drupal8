@@ -1,0 +1,25 @@
+name: Locations
+description: 'Code and configuration for the Location content type.'
+type: module
+core: 8.x
+dependencies:
+  - cubic_annual_reports
+  - cubic_businesses
+  - cubic_controller
+  - cubic_success_stories
+  - entity_reference_revisions
+  - field
+  - image
+  - menu_ui
+  - metatag
+  - node
+  - paragraphs
+  - path
+  - pathauto
+  - scheduler
+  - smart_trim
+  - text
+  - user
+  - workbench_moderation
+package: Cubic
+version: 8.x-1.0

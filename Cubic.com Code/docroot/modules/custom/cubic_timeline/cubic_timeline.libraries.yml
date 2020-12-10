@@ -1,0 +1,12 @@
+cubic_timeline_block:
+  version: VERSION
+  js:
+    js/vue.min.js: {}
+    js/timeline.js: {}
+    js/timeline_nav.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/drupalSettings
+    - core/html5shiv
+    - core/drupal.debounce

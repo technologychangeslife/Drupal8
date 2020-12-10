@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.image_text_slider_item.field_body
+    - field.field.paragraph.image_text_slider_item.field_image
+    - image.style.hero_compressed
+    - paragraphs.paragraphs_type.image_text_slider_item
+  module:
+    - image
+    - text
+id: paragraph.image_text_slider_item.default
+targetEntityType: paragraph
+bundle: image_text_slider_item
+mode: default
+content:
+  field_body:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_image:
+    weight: 0
+    label: hidden
+    settings:
+      image_style: hero_compressed
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden: {  }

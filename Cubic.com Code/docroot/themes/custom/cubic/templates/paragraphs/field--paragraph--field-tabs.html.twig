@@ -1,0 +1,32 @@
+{%
+  set classes = [
+    'field',
+    'field--name-' ~ field_name|clean_class,
+    'field--type-' ~ field_type|clean_class,
+    'field--label-' ~ label_display,
+  ]
+%}
+{%
+  set title_classes = [
+    'field__label',
+    label_display == 'visually_hidden' ? 'visually-hidden',
+  ]
+%}
+
+<ul class="tabs" data-deep-link="true" data-update-history="true" data-tabs id="deeplinked-tabs-{{ tab_id }}">
+  {% for tab in tab_content %}
+    <li class="tabs-title {% if loop.index == 1 %}is-active{% endif %}">
+      <a href="#paragraph-tab-{{ tab_id }}-{{ loop.index }}" aria-selected="true">{{ tab.field_title }}</a>
+    </li>
+  {% endfor %}
+</ul>
+
+{{ addthis }}
+
+<div class="tabs-content" data-tabs-content="deeplinked-tabs-{{ tab_id }}">
+  {% for tab in tab_content %}
+    <div class="tabs-panel {% if loop.index == 1 %}is-active{% endif %}" id="paragraph-tab-{{ tab_id }}-{{ loop.index }}">
+      {{ tab.field_tab_content }}
+    </div>
+  {% endfor %}
+</div>

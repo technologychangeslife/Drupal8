@@ -1,0 +1,26 @@
+name: Sliders
+description: 'Code and configuration for the Slider content type.'
+type: module
+core: 8.x
+dependencies:
+  - block
+  - cubic_controller
+  - cubic_entity_browser
+  - cubic_product_accessories
+  - entity_browser
+  - entityqueue
+  - field
+  - file
+  - image
+  - menu_ui
+  - node
+  - path
+  - scheduler
+  - system
+  - text
+  - user
+  - video_embed_field
+  - views
+  - workbench_moderation
+package: Cubic
+version: 8.x-1.0

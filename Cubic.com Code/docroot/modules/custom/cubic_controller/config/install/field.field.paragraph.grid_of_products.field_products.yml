@@ -1,0 +1,34 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_products
+    - node.type.insight
+    - node.type.page
+    - node.type.product
+    - node.type.success_story
+    - paragraphs.paragraphs_type.grid_of_products
+id: paragraph.grid_of_products.field_products
+field_name: field_products
+entity_type: paragraph
+bundle: grid_of_products
+label: Products
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      insight: insight
+      page: page
+      product: product
+      success_story: success_story
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: insight
+field_type: entity_reference

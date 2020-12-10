@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - image_effects
+name: milestone_carousel_item
+label: 'Milestone Carousel Item'
+effects:
+  9ce2f553-de0c-4558-a0ec-551f0a78b9d3:
+    uuid: 9ce2f553-de0c-4558-a0ec-551f0a78b9d3
+    id: image_effects_scale_and_smart_crop
+    weight: 1
+    data:
+      width: '800'
+      height: '550'
+      upscale: false
+      simulate: false
+      algorithm: entropy_slice

@@ -1,0 +1,11 @@
+{% extends 'paragraph.html.twig' %}
+{% block content %}
+  {{ content }}
+  {% if annual_reports %}
+    <div class="annual-reports">
+      <div class="annual-reports-slider">
+        {{ annual_reports }}
+      </div>
+    </div>
+  {% endif %}
+{% endblock content %}

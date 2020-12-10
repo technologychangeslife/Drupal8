@@ -1,0 +1,14 @@
+.paragraph--type--taggbox-social-feed {
+  background-color: $color-event-recap-bg;
+  padding: 3rem map-get($paragraph-padding, small);
+
+  > .field--name-field-title {
+    font-size: $h1-font-size;
+    margin-bottom: rem-calc(15);
+    text-align: center;
+
+    @include breakpoint(medium) {
+      margin-bottom: rem-calc(30);
+    }
+  }
+}

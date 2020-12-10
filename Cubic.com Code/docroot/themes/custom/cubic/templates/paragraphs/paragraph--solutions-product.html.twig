@@ -1,0 +1,19 @@
+{% extends 'paragraph.html.twig' %}
+{% block content %}
+  <a href="{{ field_cta_url }}" class="solutions-product-link">
+    <div{{ attributes.addClass(classes) }} style="background-image: url({{ background_image }})" data-equalizer data-equalize-on="medium">
+      <div class="darken-overlay">
+          <div class="main" data-equalizer-watch>
+            {{ content.field_title }}
+            {{ content.field_body }}
+            <div class="solutions-product-cta field--name-field-cta">
+              {{ field_cta_title }}
+            </div>
+          </div>
+          <div class="side" data-equalizer-watch>
+            {{ content.field_infographic }}
+          </div>
+      </div>
+    </div>
+  </a>
+{% endblock %}

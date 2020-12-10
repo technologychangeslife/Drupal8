@@ -1,0 +1,21 @@
+// sass-lint:disable force-element-nesting force-pseudo-nesting nesting-depth
+.view-id-people_teaser_list {
+
+  //hiding filtering
+
+  .form-item-business,
+  .form-item-region {
+    display: none;
+  }
+
+  .view-content {
+    .node--view-mode-teaser {
+      border-top: none;
+
+      .person-content {
+        flex-grow: 1;
+        padding: rem-calc(15) rem-calc(20);
+      }
+    }
+  }
+}

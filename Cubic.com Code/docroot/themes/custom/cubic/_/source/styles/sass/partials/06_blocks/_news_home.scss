@@ -1,0 +1,121 @@
+// @see also 05_views/_news.scss
+.view-news {
+  &.view-display-id-block_1 {
+    position: relative;
+    margin-bottom: 2rem;
+
+    @include breakpoint(medium) {
+      margin-top: -2rem;
+      padding-left: 1.5rem;
+    }
+
+    .node {
+      @extend %shadow-box;
+      padding: 1rem;
+      background-color: $white;
+      margin-left: 4px;
+
+      .title {
+        @extend h3;
+        font-family: $font-main;
+      }
+
+      .field--name-field-hero-image {
+        display: none;
+      }
+    }
+
+    .view-content {
+      align-items: stretch;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .views-row {
+      padding-bottom: 4px;
+
+      &:last-child {
+        .node {
+          margin-right: 1rem;
+        }
+      }
+
+      .node {
+        height: 100%;
+      }
+    }
+
+    .more-link {
+      position: absolute;
+      text-align: center;
+      bottom: rem-calc(7);
+      left: 25%;
+      width: 50%;
+
+      a {
+        font-family: $font-bold;
+        @extend %link-w-arrow;
+
+        &:hover {
+          color: $cubic-teal;
+          text-decoration: none;
+        }
+      }
+    }
+
+    .bx-wrapper {
+      padding-left: 1em;
+    }
+
+    .bx-controls {
+      position: relative;
+      height: 40px;
+      margin-right: 1em;
+      margin-top: 1em;
+
+      @include breakpoint(medium) {
+        margin-right: 2em;
+      }
+    }
+
+    .bx-next,
+    .bx-prev {
+      @extend %hide-text;
+      display: block;
+      position: absolute;
+      top: -10px;
+      width: 30px;
+      height: 60px;
+      background: url('../img/spr-slider-arrows.png') no-repeat;
+      background-size: 120px;
+    }
+
+    .bx-prev {
+      left: 0;
+      background-position: -73px 0;
+
+      &:hover {
+        background-position: -73px -61px;
+      }
+
+      &.disabled {
+        background-position: -73px 0;
+        // cursor: default;
+      }
+    }
+
+    .bx-next {
+      right: 0;
+      background-position: -17px 0;
+
+      &:hover {
+        background-position: -17px -61px;
+      }
+
+      &.disabled {
+        background-position: -17px 0;
+        // cursor: default;
+      }
+    }
+  }
+}

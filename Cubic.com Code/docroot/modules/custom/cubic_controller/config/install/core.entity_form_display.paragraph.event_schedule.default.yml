@@ -1,0 +1,62 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - entity_browser.browser.file_browser
+    - field.field.paragraph.event_schedule.field_download_schedule
+    - field.field.paragraph.event_schedule.field_event_schedule_content
+    - field.field.paragraph.event_schedule.field_title
+    - paragraphs.paragraphs_type.event_schedule
+  module:
+    - entity_browser
+    - paragraphs
+id: paragraph.event_schedule.default
+targetEntityType: paragraph
+bundle: event_schedule
+mode: default
+content:
+  field_download_schedule:
+    weight: 2
+    settings:
+      entity_browser: file_browser
+      field_widget_remove: true
+      field_widget_replace: true
+      selection_mode: selection_append
+      field_widget_edit: true
+      open: false
+      view_mode: default
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+    type: entity_browser_file
+    region: content
+  field_event_schedule_content:
+    type: paragraphs
+    weight: 1
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: event_schedule_item
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: '0'
+    third_party_settings: {  }
+    region: content
+  field_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

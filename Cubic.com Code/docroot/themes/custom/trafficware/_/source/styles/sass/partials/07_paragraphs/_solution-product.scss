@@ -1,0 +1,95 @@
+.region-content {
+  .solutions-product-link {
+    font-family: $font-main;
+
+    ul {
+      color: $white;
+
+      li {
+        &::before {
+          background-color: $white !important;
+        }
+      }
+    }
+  }
+}
+
+.solutions-product-link {
+  .paragraph--type--solutions-product {
+    background-color: $black;
+    background-position: center;
+    background-size: cover;
+    color: $white;
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+
+    .darken-overlay {
+      background: transparent;
+      width: 100%;
+      height: 100%;
+      padding: rem-calc(75) rem-calc(60);
+      transition: all 0.5s;
+      -webkit-transition: all 0.5s;
+      -o-transition: all 0.5s;
+      -moz-transition: all 0.5s;
+    }
+
+    .field--name-field-cta {
+      @extend %button-cta;
+
+      a {
+        @extend %button-cta;
+      }
+    }
+
+    a {
+      color: $white;
+    }
+
+    .field--name-field-title {
+      font-size: $h1-font-size;
+    }
+
+    .field--name-field-body {
+      p {
+        color: $white;
+      }
+    }
+
+    .main {
+      margin-bottom: 1em;
+    }
+
+    @include breakpoint(large) {
+      @include grid-row(null, null, expand);
+      display: flex; // equalizer is in place as well
+
+      .main {
+        @include grid-column(7);
+        margin-bottom: 0;
+      }
+
+      .side {
+        @include grid-column(5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+
+  &:hover {
+    .paragraph--type--solutions-product {
+      //background-size: 115%;
+
+      .darken-overlay {
+        background: $black-15;
+      }
+
+    }
+
+  }
+
+}

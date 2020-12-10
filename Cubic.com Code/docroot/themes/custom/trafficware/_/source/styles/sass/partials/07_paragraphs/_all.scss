@@ -1,0 +1,118 @@
+// sass-lint:disable force-pseudo-nesting
+// sass-lint:disable nesting-depth
+// sass-lint:disable force-element-nesting
+// sass-lint:disable force-attribute-nesting
+
+$basic-animation-time: 0.5s;
+
+.field--type-entity-reference-revisions {
+  > .field__item {
+    position: relative;
+
+    > .inview-marker {
+      left: 50%;
+      position: absolute;
+      top: 0;
+      z-index: 100;
+    }
+
+    > .paragraph {
+      position: relative;
+
+      > .paragraph__anchor {
+        left: 50%;
+        position: absolute;
+        top: 0;
+        z-index: 100;
+      }
+    }
+  }
+}
+
+.field--name-field-milestones,
+.region.region-above-footer,
+.field--name-field-aside-paragraphs,
+.field--name-field-lower-paragraphs,
+.field--name-field-paragraphs {
+  > .field__item {
+    > .inview-marker {
+      @include anonymous('.advanced-animations') {
+        @include has-js {
+          top: 33.333vh;
+        }
+      }
+    }
+
+    > .paragraph {
+      &.basic-animation {
+        @include anonymous('.advanced-animations') {
+          @include has-js {
+            > *:not(.paragraph__anchor) {
+              transition: opacity $basic-animation-time cubic-bezier(0.25, 0.1, 0.25, 1), transform $basic-animation-time cubic-bezier(0.25, 0.1, 0.25, 1);
+            }
+
+            &:not(.in) {
+              > *:not(.paragraph__anchor) {
+                opacity: 0;
+                transform: translateY(25vh);
+              }
+            }
+
+            .view-display-id-related_posts {
+              .view-content {
+                > .views-row {
+                  opacity: 0;
+                  transform: translateY(50%);
+                  transition: opacity 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+
+                  &.in {
+                    opacity: 1;
+                    transform: translateY(0);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+.field--name-field-milestones {
+  > .field__item {
+    > .inview-marker {
+      @include anonymous('.advanced-animations') {
+        @include has-js {
+          top: 33.333vh;
+        }
+      }
+    }
+
+    > .paragraph {
+      &.basic-animation {
+        @include anonymous('.advanced-animations') {
+          @include has-js {
+            transition: opacity $basic-animation-time cubic-bezier(0.25, 0.1, 0.25, 1), transform $basic-animation-time cubic-bezier(0.25, 0.1, 0.25, 1);
+
+
+            > *:not(.paragraph__anchor) {
+              transition: opacity $basic-animation-time cubic-bezier(0.25, 0.1, 0.25, 1), transform $basic-animation-time cubic-bezier(0.25, 0.1, 0.25, 1);
+            }
+
+            &:not(.in) {
+              opacity: 0;
+              transform: translateY(25vh);
+
+              > *:not(.paragraph__anchor) {
+                opacity: 0;
+                transform: translateY(25vh);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

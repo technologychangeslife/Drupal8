@@ -1,0 +1,43 @@
+global:
+  css:
+    theme:
+      _/css/fonts.css: {preprocess: false}
+      _/source/styles/vendor/slick.css: {}
+      _/css/cubic.css: {}
+  js:
+    _/source/scripts/vendor/jquery.easing.min.js: {}
+    _/source/scripts/vendor/foundation.core.min.js: {}
+    _/source/scripts/vendor/foundation.util.keyboard.min.js: {}
+    _/source/scripts/vendor/foundation.util.mediaQuery.min.js: {}
+    _/source/scripts/vendor/foundation.util.timerAndImageLoader.min.js: {}
+    _/source/scripts/vendor/foundation.util.triggers.min.js: {}
+    _/source/scripts/vendor/foundation.util.motion.min.js: {}
+    _/source/scripts/vendor/foundation.accordion.min.js: {}
+    _/source/scripts/vendor/foundation.equalizer.min.js: {}
+    _/source/scripts/vendor/foundation.reveal.min.js: {}
+    _/source/scripts/vendor/foundation.tabs.min.js: {}
+    _/source/scripts/vendor/foundation.sticky.min.js: {}
+    _/source/scripts/vendor/ellipsis.min.js: {}
+    _/source/scripts/vendor/jarallax.min.js: {}
+    _/source/scripts/vendor/jquery.bxslider.min.js: {}
+    _/source/scripts/vendor/jquery.inview.min.js: {}
+    _/source/scripts/vendor/rellax.min.js: {}
+    _/source/scripts/vendor/slick.min.js: {}
+    _/js/cubic.js: {}
+  dependencies:
+    - core/jquery
+    - core/jquery.once
+    - core/drupal.debounce
+    - core/underscore
+
+jquery_replace:
+  js:
+    _/source/scripts/vendor/jquery.min.js: {minified: true, weight: -20}
+
+outdated-browser:
+  css:
+    theme:
+      _/source/styles/vendor/outdatedbrowser.min.css: {minified: true}
+  js:
+    _/source/scripts/vendor/outdatedbrowser.min.js: {minified: true}
+    _/js/outdatedbrowser.js: {}

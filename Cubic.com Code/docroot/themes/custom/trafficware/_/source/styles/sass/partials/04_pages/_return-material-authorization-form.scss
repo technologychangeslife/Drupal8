@@ -1,0 +1,19 @@
+.webform-submission-return-material-authorization-form {
+  fieldset {
+    &#edit-gatr-antenna-information {
+      > .fieldset-wrapper > .form-item {
+        @include breakpoint(large) {
+          flex: 0 0 50%;
+          max-width: 50%;
+        }
+      }
+    }
+  }
+
+  &.webform-submission-form  {
+    textarea {
+      border: 2px solid $background-color;
+      padding: 20px;
+    }
+  }
+}

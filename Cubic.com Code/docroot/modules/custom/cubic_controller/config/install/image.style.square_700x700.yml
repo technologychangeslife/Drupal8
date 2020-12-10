@@ -1,0 +1,14 @@
+langcode: en
+status: true
+dependencies: {  }
+name: square_700x700
+label: 'Square 700x700'
+effects:
+  0e8212e9-fb31-443f-896b-7fc3e3a3abab:
+    uuid: 0e8212e9-fb31-443f-896b-7fc3e3a3abab
+    id: image_scale_and_crop
+    weight: 1
+    data:
+      width: 700
+      height: 700
+      anchor: center-center

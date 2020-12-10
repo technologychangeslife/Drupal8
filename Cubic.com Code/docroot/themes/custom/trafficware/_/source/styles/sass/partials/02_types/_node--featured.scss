@@ -1,0 +1,15 @@
+.node--view-mode-featured {
+  .learn-more {
+    font-family: $font-main;
+
+    svg {
+      display: inline-block;
+      height: 0.625em;
+      margin-left: 0.6em;
+
+      * {
+        fill: $white;
+      }
+    }
+  }
+}

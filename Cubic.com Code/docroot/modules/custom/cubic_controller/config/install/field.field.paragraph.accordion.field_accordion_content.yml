@@ -1,0 +1,111 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_accordion_content
+    - paragraphs.paragraphs_type.50_50
+    - paragraphs.paragraphs_type.accordion
+    - paragraphs.paragraphs_type.basic_image
+    - paragraphs.paragraphs_type.basic_text
+    - paragraphs.paragraphs_type.image_and_text_slider
+  module:
+    - entity_reference_revisions
+id: paragraph.accordion.field_accordion_content
+field_name: field_accordion_content
+entity_type: paragraph
+bundle: accordion
+label: 'Accordion Content'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      '50_50': '50_50'
+      basic_image: basic_image
+      basic_text: basic_text
+      image_and_text_slider: image_and_text_slider
+    target_bundles_drag_drop:
+      '50_50':
+        enabled: true
+        weight: -53
+      accordion:
+        weight: -52
+        enabled: false
+      accordions:
+        weight: -51
+        enabled: false
+      basic_image:
+        enabled: true
+        weight: -50
+      basic_text:
+        enabled: true
+        weight: -49
+      callouts:
+        weight: -48
+        enabled: false
+      cross_link:
+        weight: -47
+        enabled: false
+      cross_links:
+        weight: -46
+        enabled: false
+      divider_bar:
+        weight: -45
+        enabled: false
+      grid_of_products:
+        weight: -44
+        enabled: false
+      grid_of_success_stories:
+        weight: -43
+        enabled: false
+      image_and_menu:
+        weight: -42
+        enabled: false
+      image_grid_slider:
+        weight: -41
+        enabled: false
+      image_and_text_slider:
+        enabled: true
+        weight: -40
+      image_text_slider_item:
+        weight: -39
+        enabled: false
+      people_grid:
+        weight: -38
+        enabled: false
+      people_grid_item:
+        weight: -37
+        enabled: false
+      people_grid_item_external:
+        weight: -36
+        enabled: false
+      annual_reports_slider:
+        weight: -35
+        enabled: false
+      schedule_tabs:
+        weight: -34
+        enabled: false
+      social_icon_link:
+        weight: -33
+        enabled: false
+      social_icon_links:
+        weight: -32
+        enabled: false
+      solutions_product:
+        weight: -31
+        enabled: false
+      tab:
+        weight: -30
+        enabled: false
+      tabs:
+        weight: -29
+        enabled: false
+      webform:
+        weight: -28
+        enabled: false
+field_type: entity_reference_revisions

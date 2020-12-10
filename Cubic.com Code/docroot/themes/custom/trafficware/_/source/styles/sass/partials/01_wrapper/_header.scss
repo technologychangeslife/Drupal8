@@ -1,0 +1,53 @@
+.region-top-bar {
+  @include section-color-bg;
+  @include grid-column-gutter;
+
+  display: none;
+  padding: 0.5rem 0;
+  position: relative;
+
+  @include breakpoint(medium) {
+    display: block;
+  }
+
+  @include breakpoint(large) {
+    padding-left: map-get($paragraph-padding, large);
+    padding-right: map-get($paragraph-padding, large);
+  }
+
+  .content {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .path-frontpage & {
+    padding: 0;
+  }
+}
+
+.breadcrumb {
+  color: $white;
+  font-size: rem-calc(14);
+  padding: 0;
+
+  li {
+    &:last-child {
+      font-family: $font-bold;
+    }
+
+    &::before {
+      content: $breadcrumb-separator;
+      padding: 0 1rem;
+      font-family: $font-main;
+    }
+  }
+
+  a {
+    color: $white;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}

@@ -1,0 +1,340 @@
+// sass-lint:disable force-element-nesting nesting-depth
+.paragraph--type--image-and-menu {
+  @include flex-grid-row(null, null, expand);
+  max-width: 100vw;
+
+  .field--name-field-image {
+    @include flex-grid-column(100%, 0);
+
+    background-size: cover;
+    background-position: center center;
+
+    @include breakpoint(small only) {
+      height: 0;
+      padding-bottom: percentage(3 / 4);
+    }
+  }
+
+  // Container.
+  .related-menu {
+    @include flex-grid-column(100%, 0);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2em;
+
+    @include breakpoint(large) {
+      padding: 5rem;
+    }
+
+    // All levels.
+    .menu {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      // All level items.
+      .menu-item {
+        margin: 0;
+        padding: 0;
+
+        &::before {
+          content: none;
+        }
+
+        a {
+          color: $text-color;
+          display: block;
+          font-family: $font-main;
+          line-height: 1.5em;
+
+          @include hovered {
+            color: $black;
+          }
+        }
+      }
+
+      // Second level +
+      .menu {
+        margin-top: 1.25em;
+
+        // Second level items +
+        .menu-item {
+          font-size: rem-calc(18);
+          font-weight: bold;
+        }
+
+        // Third level +
+        .menu {
+          // Third level items +
+          .menu-item {
+            font-size: rem-calc(14);
+            font-weight: normal;
+          }
+        }
+      }
+    }
+
+    // First level.
+    > .menu {
+      max-width: 100%;
+
+      // First level items.
+      > .menu-item {
+        font-size: rem-calc(24);
+
+        > a {
+          color: $cubic-blue;
+          font-family: $font-bold;
+          position: relative;
+          z-index: 3;
+
+          @include hovered {
+            color: $cubic-teal;
+          }
+        }
+
+        // Second level.
+        > .menu {
+          column-count: 2;
+          margin-left: -2rem;
+          margin-right: -2rem;
+          margin-top: rem-calc(-40);
+
+          @media screen and (max-width: 414px) {
+            column-count: 1;
+
+          }
+
+
+
+
+          &::after {
+            background-color: $white;
+            content: '';
+            display: block;
+            height: rem-calc(20);
+            left: 0;
+            pointer-events: none;
+            position: absolute;
+            top: rem-calc(20);
+            width: 100%;
+          }
+
+          // Second level items.
+          > .menu-item {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 2rem 2rem 0;
+            position: relative;
+            width: 100%;
+
+            @media screen and (max-width: 414px) {
+              width: 95%;
+            }
+
+            &::after {
+              background-color: $cubic-blue;
+              content: '';
+              display: block;
+              height: rem-calc(7);
+              position: absolute;
+              top: 0;
+              transform: translateY(-50%);
+              width: rem-calc(40);
+            }
+
+            // Third level.
+            > .menu {
+              @include clearfix;
+
+              // Third level items.
+              > .menu-item {
+                backface-visibility: hidden;
+                margin-bottom: 1.5em;
+                position: relative;
+
+                @media screen and (any-hover: $hover), (-ms-high-contrast: none), (-ms-high-contrast: active) {
+                  clear: both;
+                  float: left;
+                }
+
+                @media (any-hover: $hover) {
+                  clear: both;
+                  float: left;
+                }
+
+                // Fourth level +
+                .menu {
+                  backface-visibility: hidden;
+                  display: none;
+                }
+
+                > .menu {
+                  backface-visibility: hidden;
+                  display: none;
+                }
+
+                &.menu-item--expanded {
+                  > a {
+                    display: block;
+                    padding-right: rem-calc(15);
+                    position: relative;
+
+                    &::after {
+                      border: 1px solid $text-color;
+                      border-radius: rem-calc(2);
+                      box-sizing: content-box;
+                      content: '^';
+                      font-weight: bold;
+                      height: 1em;
+                      left: 100%;
+                      line-height: 1em;
+                      padding: rem-calc(5);
+                      position: absolute;
+                      text-align: center;
+                      top: 50%;
+                      transform: translateY(-57%) rotate(180deg);
+                      transition: border-color $transition-time;
+                      width: 1em;
+
+                      @media screen and (any-hover: $hover), (-ms-high-contrast: none), (-ms-high-contrast: active) {
+                        border: none;
+                        border-radius: initial;
+                        height: auto;
+                        padding: 0;
+                        width: auto;
+                      }
+
+                      @media (any-hover: $hover) {
+                        border: none;
+                        border-radius: initial;
+                        height: auto;
+                        padding: 0;
+                        width: auto;
+                      }
+                    }
+                  }
+
+                  // Fourth level.
+                  > .menu {
+                    background-color: $white;
+                    box-shadow: 0 4px 10px $drop-shadow;
+                    display: block;
+                    left: 0;
+                    margin: 0;
+                    opacity: 0;
+                    pointer-events: none;
+                    position: absolute;
+                    top: 100%;
+                    transform: translate3d(0, 0, 0);
+                    transition: opacity $transition-time;
+                    width: 150px;
+                    z-index: 1;
+
+                    @media screen and (max-width: 414px) {
+                      width: 100%;
+                    }
+
+                    @include breakpoint(1400px) {
+                      left: calc(100% - #{rem-calc(5)}) !important;
+                      right: auto !important;
+                      top: 0;
+                    }
+
+                    // Fourth level items.
+                    > .menu-item {
+                      margin: 0;
+                      padding: 0;
+
+                      > a {
+                        display: block;
+                        padding: rem-calc(7 10);
+                        transition: all $transition-time;
+
+                        @include hovered {
+                          background-color: $cubic-teal;
+                          color: $white;
+                        }
+
+                        &:hover {
+                          background-color: $cubic-teal;
+                          color: $white;
+                        }
+                      }
+                    }
+                  }
+                }
+
+                @include hovered {
+                  > a {
+                    color: $cubic-teal;
+
+                    &::after {
+                      border-color: $cubic-teal;
+                    }
+                  }
+
+                  // Fourth level.
+                  > .menu {
+                    opacity: 1;
+                    pointer-events: auto;
+                  }
+                }
+
+
+
+                > .menu.active {
+                  opacity: 1;
+                  pointer-events: auto;
+                }
+
+
+
+                @include breakpoint(large) {
+                  &:hover {
+                    > a {
+                      color: $cubic-teal;
+
+                      &::after {
+                        border-color: $cubic-teal;
+                      }
+                    }
+
+                    // Fourth level.
+                    > .menu {
+                      opacity: 1;
+                      pointer-events: auto;
+                    }
+                  }
+                }
+
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @include breakpoint(medium) {
+    .field--name-field-image {
+      @include flex-grid-size(50%);
+    }
+
+    .related-menu {
+      @include flex-grid-size(50%);
+    }
+
+    &.even {
+      .field--name-field-image {
+        @include grid-column-position(6);
+      }
+
+      .related-menu {
+        @include grid-column-position(-6);
+      }
+    }
+  }
+}

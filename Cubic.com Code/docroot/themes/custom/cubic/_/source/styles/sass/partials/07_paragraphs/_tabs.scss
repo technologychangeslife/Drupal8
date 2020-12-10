@@ -1,0 +1,204 @@
+.paragraph--type--tabs {
+  @include breakpoint(large) {
+    &.fixed {
+      .tabs-container {
+        padding-top: rem-calc(65);
+      }
+    }
+  }
+
+  .tabs-before {
+    background-color: $color-grid-background;
+    background-image: linear-gradient(to top, $color-shadow-inset 0%, transparent 20px);
+    color: $white;
+    padding: 2rem 1rem;
+    text-align: center;
+
+    .field--name-field-title {
+      font-size: $h1-font-size;
+      max-width: 780px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .field--name-field-body {
+      max-width: 780px;
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 0.4em;
+
+      p {
+        color: $white;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .tabs {
+    margin-bottom: 0;
+    transition: margin-top ($transition-time / 2);
+
+    @include breakpoint(large) {
+      &.fixed {
+        position: fixed;
+        z-index: 100;
+      }
+    }
+  }
+
+  .cubic-social-addthis {
+    position: absolute;
+    right: 0;
+    z-index: 2;
+  }
+
+  .tabs-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .tabs-title {
+    background: $white;
+    color: $black;
+    margin-right: 0;
+
+    a {
+      background: $white;
+      color: $black;
+      padding: 1em 2em;
+      font-family: $font-bold;
+      font-weight: normal;
+      font-size: 100%;
+
+      &:hover {
+        background-color: $color-section-default;
+        color: $white;
+      }
+    }
+
+    &.is-active {
+      position: relative;
+
+      a {
+        background-color: $color-section-default;
+        color: $white;
+        font-family: $font-bold;
+      }
+    }
+  }
+
+  .vertical {
+    .tabs-title {
+      display: block;
+      width: 100%;
+
+      &.is-active {
+        &::after {
+          content: '▾';
+          color: $white;
+          position: absolute;
+          right: 1em;
+          top: 50%;
+          transform: translateY(-50%) rotate(180deg);
+          font-size: rem-calc(16);
+        }
+      }
+    }
+
+    &.active-only {
+      .tabs-title {
+        display: none;
+
+        &.is-active {
+          display: block;
+
+          &::after {
+            transform: translateY(-50%);
+          }
+        }
+      }
+    }
+  }
+
+  .tabs-panel {
+    display: none;
+
+    &.is-active {
+      display: block;
+    }
+  }
+
+  .field--name-field-tab-content {
+    > .field__item {
+      > .paragraph {
+        padding: rem-calc(20) map-get($paragraph-padding, small);
+
+        @include breakpoint(medium) {
+          padding: rem-calc(40) map-get($paragraph-padding, medium);
+        }
+
+        @include breakpoint(large) {
+          padding-left: map-get($paragraph-padding, large);
+          padding-right: map-get($paragraph-padding, large);
+        }
+      }
+
+      &:nth-child(odd) {
+        > .paragraph {
+          background-color: $color-callout-bg;
+        }
+      }
+    }
+  }
+
+  @include breakpoint(medium) {
+    .tabs {
+      &.stretch {
+        display: flex;
+
+        .tabs-title {
+          flex-grow: 1;
+          text-align: center;
+        }
+      }
+    }
+
+    .tabs-title {
+      a {
+        font-size: rem-calc(20);
+      }
+    }
+
+    .vertical {
+      .tabs-title {
+        &.is-active {
+          &::after {
+            font-size: rem-calc(24);
+          }
+        }
+      }
+    }
+  }
+
+  @each $color in ($section-colors) {
+    .section-color-#{$color} & {
+      .tabs-title {
+        a {
+          &:hover {
+            @extend %section-#{$color}-bg;
+          }
+        }
+
+        &.is-active {
+          a {
+            @extend %section-#{$color}-bg;
+          }
+        }
+      }
+    }
+  }
+}
+

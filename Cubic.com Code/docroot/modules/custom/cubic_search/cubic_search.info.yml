@@ -1,0 +1,15 @@
+name: Search
+type: module
+description: 'Search Integration/helpers for Cubic'
+core: 8.x
+package: Cubic
+dependencies:
+  - block
+  - cubic_controller
+  - search_api
+  - search_api_autocomplete
+  - search_api_solr
+  - text
+  - user
+  - views
+version: 8.x-1.0

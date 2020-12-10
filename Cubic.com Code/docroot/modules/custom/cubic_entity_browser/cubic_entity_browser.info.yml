@@ -1,0 +1,23 @@
+name: 'Entity Browser'
+description: 'Custom entity browsers for file/image fields.'
+type: module
+core: 8.x
+dependencies:
+  - cubic_controller
+  - cubic_people
+  - cubic_product_accessories
+  - embed
+  - entity_browser
+  - entity_embed
+  - field
+  - file
+  - image
+  - link
+  - node
+  - paragraphs
+  - text
+  - user
+  - video_embed_field
+  - views
+version: 8.x-1.0
+package: Cubic

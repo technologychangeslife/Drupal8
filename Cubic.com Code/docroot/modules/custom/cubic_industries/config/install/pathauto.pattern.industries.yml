@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: industries
+label: Industries
+type: 'canonical_entities:node'
+pattern: 'about/industries/[node:title]'
+selection_criteria:
+  991b9bed-dc6e-4263-9006-1fc484650313:
+    id: node_type
+    bundles:
+      industry: industry
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 991b9bed-dc6e-4263-9006-1fc484650313
+selection_logic: and
+weight: -5
+relationships: {  }

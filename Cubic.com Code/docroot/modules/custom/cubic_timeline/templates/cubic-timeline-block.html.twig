@@ -1,0 +1,35 @@
+{#
+
+Markup for the cubic_nyse_ticker_block.
+
+#}
+
+
+{% verbatim %}
+
+<div id="timeline" class="timeline">
+    <div class="timeline-header">
+        <h2 class="timeline-title">Cubic Timeline: <span>{{activeDecadeTitle}}</span></h2>
+        <nav class="timeline-nav">
+            <ul>
+                <li v-for="decade in decades" :class="{'active-decade': decade.label == activeDecade}" ><a :href="'#'+decade.label" @click="jumpToDecade(decade.label)">{{decade.label}}</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="timeline-content">
+        <div class="timeline-decade" v-for="decade in decades" :id="'decade-' + decade.label">
+            <h2><span>{{decade.title}}></span></h2>
+            <div class="timeline-item" v-for="row in decade.rows">
+                <div class="timeline-year">
+                    <h3>{{row.year}}</h3>
+                </div>
+                <div class="timeline-content">
+                    <img :src="row.image" />
+                    <p v-html="row.description"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endverbatim %}

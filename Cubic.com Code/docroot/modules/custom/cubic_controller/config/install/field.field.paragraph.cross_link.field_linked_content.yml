@@ -1,0 +1,52 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_linked_content
+    - node.type.award
+    - node.type.business
+    - node.type.event
+    - node.type.expertise
+    - node.type.industry
+    - node.type.insight
+    - node.type.location
+    - node.type.page
+    - node.type.post
+    - node.type.press_release
+    - node.type.product
+    - node.type.solution
+    - node.type.success_story
+    - paragraphs.paragraphs_type.cross_link
+id: paragraph.cross_link.field_linked_content
+field_name: field_linked_content
+entity_type: paragraph
+bundle: cross_link
+label: 'Linked Content'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      award: award
+      business: business
+      event: event
+      expertise: expertise
+      industry: industry
+      insight: insight
+      location: location
+      page: page
+      post: post
+      press_release: press_release
+      product: product
+      solution: solution
+      success_story: success_story
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: page
+field_type: entity_reference

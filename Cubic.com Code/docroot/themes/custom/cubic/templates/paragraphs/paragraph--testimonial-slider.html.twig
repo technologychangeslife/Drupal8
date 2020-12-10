@@ -1,0 +1,10 @@
+{% extends 'paragraph.html.twig' %}
+{% block content %}
+  {{ content.field_title }}
+  {{ content.field_testimonial_slider_items }}
+  {% if content|without('field_testimonial_slider_items', 'field_title')|render|striptags|trim is not empty %}
+    <div class="body-container">
+      {{ content|without('field_testimonial_slider_items', 'field_one_column', 'field_title') }}
+    </div>
+  {% endif %}
+{% endblock %}

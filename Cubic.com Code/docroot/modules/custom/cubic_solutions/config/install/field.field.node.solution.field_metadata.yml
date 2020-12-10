@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_metadata
+    - node.type.solution
+  module:
+    - metatag
+id: node.solution.field_metadata
+field_name: field_metadata
+entity_type: node
+bundle: solution
+label: Metadata
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 'a:0:{}'
+default_value_callback: ''
+settings: {  }
+field_type: metatag

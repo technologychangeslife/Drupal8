@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_milestone_year
+    - paragraphs.paragraphs_type.milestone_50_50
+id: paragraph.milestone_50_50.field_milestone_year
+field_name: field_milestone_year
+entity_type: paragraph
+bundle: milestone_50_50
+label: 'Milestone Year'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

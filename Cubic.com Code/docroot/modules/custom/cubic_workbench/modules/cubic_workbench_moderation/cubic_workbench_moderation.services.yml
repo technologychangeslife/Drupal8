@@ -1,0 +1,6 @@
+services:
+  cubic_workbench_moderation.notify_admins_subscriber:
+      class: Drupal\cubic_workbench_moderation\EventSubscriber\CubicWorkbenchModerationEventSubscriber
+      arguments: []
+      tags:
+        - { name: event_subscriber }

@@ -1,0 +1,85 @@
+<?php
+
+/**
+ * @file
+ * Cubic people (un)install & update scripts.
+ */
+
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+use Drupal\node\Entity\Node;
+
+/**
+ * Transfer all people link text field values to new proper link fields.
+ */
+function cubic_people_update_8501(&$sandbox) {
+  // Initialize some variables during the first pass through.
+  if (!isset($sandbox['total'])) {
+    $nids = \Drupal::entityQuery('node')
+      ->condition('type', 'person')
+      ->sort('nid')
+      ->execute();
+    $sandbox['total'] = count($nids);
+    $sandbox['current'] = 0;
+  }
+
+  $fields_to_update = [
+    'field_facebook_url' => 'field_person_facebook_link',
+    'field_linkedin_url' => 'field_person_linkedin_link',
+    'field_twitter_url' => 'field_person_twitter_link',
+  ];
+  $nodes_per_batch = 10;
+
+  // Handle one pass through.
+  $nids = \Drupal::entityQuery('node')
+    ->condition('type', 'person')
+    ->sort('nid')
+    ->range($sandbox['current'], $sandbox['current'] + $nodes_per_batch)
+    ->execute();
+
+  $nodes = Node::loadMultiple($nids);
+
+  /* @var \Drupal\node\Entity\Node $node */
+  foreach ($nodes as $node) {
+    foreach ($fields_to_update as $old_field => $new_field) {
+      if ($node->hasField($old_field) && !$node->get($old_field)->isEmpty() && $node->hasField($new_field)) {
+        $node->set($new_field, [
+          'uri' => $node->get($old_field)->first()->getString(),
+          'title' => '',
+          'options' => [],
+        ]);
+      }
+    }
+    $node->save();
+    $sandbox['current']++;
+  }
+
+  drupal_set_message($sandbox['current'] . ' nodes processed.');
+
+  $sandbox['#finished'] = ($sandbox['current'] / $sandbox['total']);
+}
+
+/**
+ * Delete old people URL fields.
+ */
+function cubic_people_update_8502() {
+  $fields = [
+    'field_facebook_url',
+    'field_linkedin_url',
+    'field_twitter_url',
+  ];
+
+  foreach ($fields as $field_name) {
+    $field = FieldConfig::loadByName('node', 'person', $field_name);
+    if (!empty($field)) {
+      $field->delete();
+    }
+  }
+
+  foreach ($fields as $field_name) {
+    $field_storage = FieldStorageConfig::loadByName('node', $field_name);
+    if (!empty($field_storage)) {
+      $field_storage->delete();
+    }
+  }
+}

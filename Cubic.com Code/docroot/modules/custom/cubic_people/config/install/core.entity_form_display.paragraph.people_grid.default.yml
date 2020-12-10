@@ -1,0 +1,54 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.people_grid.field_people_grid_content
+    - field.field.paragraph.people_grid.field_salesforce_embed_code
+    - field.field.paragraph.people_grid.field_title
+    - paragraphs.paragraphs_type.people_grid
+  module:
+    - paragraphs
+id: paragraph.people_grid.default
+targetEntityType: paragraph
+bundle: people_grid
+mode: default
+content:
+  field_people_grid_content:
+    type: paragraphs
+    weight: 2
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: closed
+      closed_mode: summary
+      autocollapse: none
+      closed_mode_threshold: 0
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: people_grid_item
+      features:
+        duplicate: duplicate
+        collapse_edit_all: collapse_edit_all
+        add_above: '0'
+    third_party_settings: {  }
+    region: content
+  field_salesforce_embed_code:
+    weight: 1
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_title:
+    weight: 0
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+hidden:
+  created: true
+  status: true
+  uid: true

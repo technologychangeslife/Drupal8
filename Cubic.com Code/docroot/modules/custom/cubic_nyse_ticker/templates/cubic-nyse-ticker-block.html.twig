@@ -1,0 +1,14 @@
+{#
+
+Markup for the cubic_nyse_ticker_block.
+
+#}
+
+
+{% trans %}
+<div{{ attributes }}>
+  <span class="nyse-ticker-label">{{ exchange_name }} <strong>{{ symbol }}</strong></span>
+  <span class="amount"><span class="currency">$</span><strong>{{ amount }}</strong></span>
+</div>
+{% endtrans %}
+

@@ -1,0 +1,10 @@
+name: Cubic NYSE Ticker
+type: module
+description: Custom module pulling data from the NYSE to create a ticker block.
+core: 8.x
+package: Cubic
+
+dependencies:
+  - drupal:block
+
+

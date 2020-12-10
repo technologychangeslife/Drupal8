@@ -1,0 +1,49 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.event_recap.field_body
+    - field.field.paragraph.event_recap.field_event_recap_slider_content
+    - field.field.paragraph.event_recap.field_social_embed_code
+    - field.field.paragraph.event_recap.field_title
+    - paragraphs.paragraphs_type.event_recap
+  module:
+    - entity_reference_revisions
+    - text
+id: paragraph.event_recap.default
+targetEntityType: paragraph
+bundle: event_recap
+mode: default
+content:
+  field_body:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_event_recap_slider_content:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_social_embed_code:
+    weight: 3
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden: {  }

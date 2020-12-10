@@ -1,0 +1,55 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_aside_paragraphs
+    - node.type.expertise
+    - paragraphs.paragraphs_type.basic_image
+    - paragraphs.paragraphs_type.basic_text
+  module:
+    - entity_reference_revisions
+id: node.expertise.field_aside_paragraphs
+field_name: field_aside_paragraphs
+entity_type: node
+bundle: expertise
+label: 'Aside Paragraphs'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      basic_image: basic_image
+      basic_text: basic_text
+    target_bundles_drag_drop:
+      basic_image:
+        enabled: true
+        weight: 10
+      basic_text:
+        enabled: true
+        weight: 11
+      callouts:
+        weight: 12
+        enabled: false
+      cross_link:
+        weight: 13
+        enabled: false
+      cross_links:
+        weight: 14
+        enabled: false
+      divider_bar:
+        weight: 15
+        enabled: false
+      grid_of_products:
+        weight: 16
+        enabled: false
+      grid_of_success_stories:
+        weight: 17
+        enabled: false
+      solutions_product:
+        weight: 18
+        enabled: false
+field_type: entity_reference_revisions

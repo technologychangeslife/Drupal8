@@ -1,0 +1,7 @@
+langcode: en
+status: true
+dependencies: {  }
+name: Brands
+vid: brands
+description: 'Use brands to group content by Cubic brands.'
+weight: 0

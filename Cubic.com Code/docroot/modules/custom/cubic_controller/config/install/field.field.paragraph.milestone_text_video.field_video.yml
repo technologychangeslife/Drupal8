@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_video
+    - paragraphs.paragraphs_type.milestone_text_video
+  module:
+    - video_embed_field
+id: paragraph.milestone_text_video.field_video
+field_name: field_video
+entity_type: paragraph
+bundle: milestone_text_video
+label: Video
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_providers:
+    vimeo: vimeo
+    youtube: youtube
+    youtube_playlist: '0'
+    wistia: '0'
+field_type: video_embed_field

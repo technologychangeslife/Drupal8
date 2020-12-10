@@ -1,0 +1,152 @@
+.paragraph--type--cross-links {
+  text-align: center;
+
+  .grid {
+    @include clear-floats;
+    @include grid-layout(1, '> .field');
+
+    .cross-link-anchor {
+      font-family: $font-main;
+
+      .color {
+        height: 1em;
+        width: 100%;
+        background: none;
+        position: relative;
+        top: -1em;
+        float: left;
+      }
+
+      .copy {
+        float: left;
+        padding: 0 2em;
+        margin: 2em 0;
+        border-right: solid 1px $color-border; // Again, this will need to be revisited after the global scale/crop rules are finalized; otherwise the border will vary in size according to the text height - maybe a max char account with a min, max or set height will do the trick?
+        display: block;
+        width: 100%;
+
+        .paragraph--type--cross-link {
+          @include clear-floats;
+        }
+
+        .field--name-field-title {
+          @extend h3;
+
+          color: $black;
+          font-family: $font-main;
+          margin-bottom: rem-calc(10);
+        }
+
+        .learn-more {
+          height: 1em;
+
+          @include breakpoint(medium) {
+            .text-toggle {
+              display: none;
+            }
+          }
+
+          svg {
+            display: inline-block;
+            height: 0.75em;
+            fill: $cubic-teal;
+            margin-left: 0.6em;
+            vertical-align: middle;
+            width: 14px;
+          }
+        }
+      }
+
+      .copy-last {
+        border: none;
+      }
+
+      .field--name-field-image {
+        margin: 0;
+        padding: 0;
+        display: block;
+        max-width: 700px;
+        max-height: 700px;
+        width: auto;
+        height: auto;
+        float: left;
+        overflow: hidden;
+
+        .field__label {
+          display: none;
+        }
+
+        img {
+          display: block;
+          height: 100%;
+          transition: all $transition-time;
+          vertical-align: middle;
+          width: 100%;
+        }
+      }
+
+      &:hover,
+      &:focus {
+        .section-color-teal {
+          .color {
+            background-color: $cubic-teal;
+          }
+        }
+
+        .section-color-red {
+          .color {
+            background-color: $color-section-red;
+          }
+        }
+
+        .section-color-brown {
+          .color {
+            background-color: $color-section-brown;
+          }
+        }
+
+        .section-color-yellow {
+          .color {
+            background-color: $color-section-yellow;
+          }
+        }
+
+        .field--name-field-image {
+          img {
+            @extend %transform-scale;
+          }
+        }
+
+        .field--name-field-title {
+          color: $black;
+        }
+
+        .learn-more {
+          .text-toggle {
+            display: inline;
+          }
+        }
+      }
+    }
+  }
+
+  @include breakpoint(medium) {
+    &.contains-2 {
+      .grid {
+        @include grid-layout(2, 'a.cross-link-anchor');
+      }
+    }
+
+    &.contains-3 {
+      .grid {
+        @include grid-layout(3, 'a.cross-link-anchor');
+      }
+    }
+
+    &.contains-4 {
+      .grid {
+        @include grid-layout(4, 'a.cross-link-anchor');
+      }
+    }
+  }
+}

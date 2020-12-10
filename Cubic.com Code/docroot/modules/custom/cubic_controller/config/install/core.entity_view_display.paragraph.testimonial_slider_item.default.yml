@@ -1,0 +1,72 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.testimonial_slider_item.field_image
+    - field.field.paragraph.testimonial_slider_item.field_logo
+    - field.field.paragraph.testimonial_slider_item.field_quote
+    - field.field.paragraph.testimonial_slider_item.field_quotee
+    - field.field.paragraph.testimonial_slider_item.field_quotee_title
+    - field.field.paragraph.testimonial_slider_item.field_video
+    - paragraphs.paragraphs_type.testimonial_slider_item
+  module:
+    - image
+    - text
+    - video_embed_field
+id: paragraph.testimonial_slider_item.default
+targetEntityType: paragraph
+bundle: testimonial_slider_item
+mode: default
+content:
+  field_image:
+    weight: 1
+    label: hidden
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+  field_logo:
+    weight: 4
+    label: hidden
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+  field_quote:
+    weight: 5
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_quotee:
+    weight: 6
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_quotee_title:
+    weight: 7
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_video:
+    weight: 2
+    label: hidden
+    settings:
+      responsive: true
+      width: 854
+      height: 480
+      autoplay: true
+    third_party_settings: {  }
+    type: video_embed_field_video
+    region: content
+hidden: {  }

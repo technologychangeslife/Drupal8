@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.callouts.field_callout
+    - field.field.paragraph.callouts.field_title
+    - paragraphs.paragraphs_type.callouts
+  module:
+    - text
+id: paragraph.callouts.default
+targetEntityType: paragraph
+bundle: callouts
+mode: default
+content:
+  field_callout:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_title:
+    type: string
+    weight: 0
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+hidden: {  }

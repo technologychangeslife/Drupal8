@@ -1,0 +1,92 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_tab_content
+    - paragraphs.paragraphs_type.50_50
+    - paragraphs.paragraphs_type.accordions
+    - paragraphs.paragraphs_type.annual_reports_slider
+    - paragraphs.paragraphs_type.basic_text
+    - paragraphs.paragraphs_type.callouts
+    - paragraphs.paragraphs_type.cross_links
+    - paragraphs.paragraphs_type.divider_bar
+    - paragraphs.paragraphs_type.grid_of_success_stories
+    - paragraphs.paragraphs_type.tab
+  module:
+    - entity_reference_revisions
+id: paragraph.tab.field_tab_content
+field_name: field_tab_content
+entity_type: paragraph
+bundle: tab
+label: 'Tab Content'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      '50_50': '50_50'
+      accordions: accordions
+      basic_text: basic_text
+      callouts: callouts
+      cross_links: cross_links
+      divider_bar: divider_bar
+      grid_of_success_stories: grid_of_success_stories
+      annual_reports_slider: annual_reports_slider
+    target_bundles_drag_drop:
+      '50_50':
+        enabled: true
+        weight: -35
+      accordion:
+        weight: -34
+        enabled: false
+      accordions:
+        enabled: true
+        weight: -33
+      basic_image:
+        weight: -32
+        enabled: false
+      basic_text:
+        enabled: true
+        weight: -31
+      callouts:
+        enabled: true
+        weight: -30
+      cross_link:
+        weight: -29
+        enabled: false
+      cross_links:
+        enabled: true
+        weight: -28
+      divider_bar:
+        enabled: true
+        weight: -27
+      image_grid_slider:
+        weight: -26
+        enabled: false
+      image_and_menu:
+        weight: -25
+        enabled: false
+      grid_of_products:
+        weight: -24
+        enabled: false
+      grid_of_success_stories:
+        enabled: true
+        weight: -23
+      annual_reports_slider:
+        enabled: true
+        weight: -22
+      solutions_product:
+        weight: -21
+        enabled: false
+      tab:
+        weight: -20
+        enabled: false
+      tabs:
+        weight: -19
+        enabled: false
+field_type: entity_reference_revisions

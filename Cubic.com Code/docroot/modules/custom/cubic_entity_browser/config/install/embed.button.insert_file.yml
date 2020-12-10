@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - entity_embed
+    - file
+label: 'Insert File'
+id: insert_file
+type_id: entity
+type_settings:
+  entity_type: file
+  bundles: {  }
+  display_plugins:
+    - 'file:file_default'
+  entity_browser: file_embed_browser
+  entity_browser_settings:
+    display_review: false
+icon_uuid: null

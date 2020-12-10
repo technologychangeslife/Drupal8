@@ -1,0 +1,189 @@
+.paragraph--type--people-grid {
+  padding: 3rem map-get($paragraph-padding, small);
+  position: relative;
+
+  @include breakpoint(medium) {
+    padding-left: map-get($paragraph-padding, medium);
+    padding-right: map-get($paragraph-padding, medium);
+  }
+
+  @include breakpoint(large) {
+    padding-left: map-get($paragraph-padding, large);
+    padding-right: map-get($paragraph-padding, large);
+  }
+
+  > .field--name-field-title {
+    font-size: $h1-font-size;
+    margin-bottom: rem-calc(15);
+
+    @include breakpoint(medium) {
+      margin-bottom: rem-calc(60);
+    }
+  }
+
+  > .request-link {
+    @extend %link-w-icon;
+    display: inline-flex;
+    margin-bottom: rem-calc(15);
+    top: 3rem;
+
+    @include breakpoint(medium) {
+      margin-bottom: 0;
+      position: absolute;
+      right: map-get($paragraph-padding, medium);
+      transition: all $transition-time, opacity $transition-time ease 0.5s;
+      z-index: 1;
+
+      &.active {
+        opacity: 0;
+      }
+    }
+
+    @include breakpoint(large) {
+      right: map-get($paragraph-padding, large);
+    }
+  }
+
+  .meeting-form {
+    background-color: $cubic-blue;
+    color: $white;
+    height: 0;
+    margin-bottom: rem-calc(30);
+    margin-left: rem-calc(-16);
+    margin-right: rem-calc(-16);
+    max-width: 100vw;
+    overflow: hidden;
+    position: relative;
+
+    @include breakpoint(medium) {
+      border-radius: rem-calc(3);
+      box-shadow: 0 3px 19px transparentize($black, 0.8);
+      margin-bottom: 0;
+      position: absolute;
+      right: map-get($paragraph-padding, medium);
+      top: 3rem;
+      width: 60vw;
+      z-index: 1;
+    }
+
+    @include breakpoint(large) {
+      right: map-get($paragraph-padding, large);
+    }
+
+    &__wrapper {
+      padding: rem-calc(30) rem-calc(31);
+
+      @include breakpoint(medium) {
+        padding: rem-calc(30);
+      }
+    }
+
+    &__title {
+      margin-bottom: rem-calc(30);
+    }
+
+    .icon--close {
+      cursor: pointer;
+      fill: $white;
+      height: rem-calc(15);
+      position: absolute;
+      right: rem-calc(15);
+      top: rem-calc(15);
+      width: rem-calc(15);
+    }
+  }
+
+  > .field--name-field-people-grid-content {
+    $people-gutters: (
+      small: rem-calc(30),
+      medium: rem-calc(40),
+    );
+
+    @include flex-grid-row($behavior: nest, $gutters: $people-gutters);
+    justify-content: center;
+
+    > .field__item {
+      @include flex-grid-column($columns: 100%, $gutters: $people-gutters);
+      margin-top: map-get($people-gutters, small);
+
+      &:first-child {
+        margin-top: 0;
+      }
+
+      @include breakpoint(420px) {
+        @include flex-grid-size(50%);
+
+        &:nth-child(-n + 2) {
+          margin-top: 0;
+        }
+      }
+
+      @include breakpoint(medium) {
+        @include flex-grid-size(4 of 12);
+        margin-top: map-get($people-gutters, medium);
+
+        &:nth-child(-n + 3) {
+          margin-top: 0;
+        }
+      }
+
+      @include breakpoint(xlarge) {
+        @include flex-grid-size(3 of 12);
+
+        &:nth-child(-n + 4) {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}
+
+
+// People Grid in Governance page
+
+//.paragraph--type--people-grid
+
+.alias-investor-relations-governance {
+  .paragraph--type--people-grid > .field--name-field-people-grid-content {
+    $people-gutters: (
+      small: rem-calc(30),
+      medium: rem-calc(40),
+    );
+
+    @include flex-grid-row($behavior: nest, $gutters: $people-gutters);
+    justify-content: center;
+
+
+    > .field__item {
+      @include flex-grid-column($columns: 100%, $gutters: $people-gutters);
+      margin-top: map-get($people-gutters, small);
+
+      @include breakpoint(medium) {
+        @include flex-grid-size(4 of 12);
+        margin-top: map-get($people-gutters, medium);
+
+        &:nth-child(-n + 3) {
+          margin-top: 0;
+        }
+      }
+
+      @include breakpoint(large) {
+        @include flex-grid-size(4 of 12);
+        margin-top: map-get($people-gutters, medium);
+
+        &:nth-child(-n + 3) {
+          margin-top: 0;
+        }
+      }
+
+      @include breakpoint(xlarge) {
+        @include flex-grid-size(4 of 12);
+        margin-top: map-get($people-gutters, medium);
+
+        &:nth-child(-n + 3) {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+}

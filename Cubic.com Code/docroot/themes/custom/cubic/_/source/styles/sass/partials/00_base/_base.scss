@@ -1,0 +1,22 @@
+@import 'variables';
+@import 'mixins';
+
+@import 'foundation';
+
+@include foundation-global-styles;
+@include foundation-flex-grid;
+@include foundation-button;
+@include foundation-typography-base;
+@include foundation-typography-helpers;
+@include foundation-visibility-classes;
+@include foundation-float-classes;
+@include foundation-flex-classes;
+@include foundation-reveal;
+@include foundation-sticky;
+
+// move BrowserSync's notification out of the way
+#__bs_notify__ {
+  top: 95% !important;
+  right: 10px !important;
+  height: 60px !important;
+}

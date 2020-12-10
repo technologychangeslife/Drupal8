@@ -1,0 +1,29 @@
+name: Businesses
+description: 'Code and configuration for the Business content type.'
+type: module
+core: 8.x
+dependencies:
+  - cubic_annual_reports
+  - cubic_controller
+  - cubic_entity_browser
+  - cubic_industries
+  - cubic_insights
+  - cubic_solutions
+  - cubic_success_stories
+  - datetime_range
+  - entity_browser
+  - entity_reference_revisions
+  - field
+  - image
+  - menu_ui
+  - metatag
+  - node
+  - paragraphs
+  - path
+  - scheduler
+  - smart_trim
+  - text
+  - user
+  - workbench_moderation
+package: Cubic
+version: 8.x-1.0

@@ -1,0 +1,4 @@
+services:
+  router.solution_context:
+    class: Drupal\cubic_solutions\Routing\SolutionContext
+    arguments: ['@current_route_match']

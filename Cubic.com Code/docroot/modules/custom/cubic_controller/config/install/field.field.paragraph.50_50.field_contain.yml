@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_contain
+    - paragraphs.paragraphs_type.50_50
+id: paragraph.50_50.field_contain
+field_name: field_contain
+entity_type: paragraph
+bundle: '50_50'
+label: Contain
+description: 'Should the images be fully visible within their container? Without this option the images will act as background images that fully cover the space, which may result in the images being cropped at certain browser sizes.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

@@ -1,0 +1,101 @@
+.paragraph--type--salesforce-form {
+  background-color: $color-salseforce-form-bg;
+  color: $white;
+  padding: 3rem map-get($paragraph-padding, small);
+
+  > .field--name-field-title {
+    font-size: $h1-font-size;
+    margin-bottom: rem-calc(15);
+    text-align: center;
+
+    @include breakpoint(medium) {
+      margin-bottom: rem-calc(30);
+    }
+  }
+
+  > .field--name-field-body {
+    margin: 0 auto rem-calc(15);
+    max-width: rem-calc(760);
+    text-align: center;
+
+    @include breakpoint(medium) {
+      margin-bottom: rem-calc(30);
+    }
+
+    p {
+      color: $white;
+    }
+  }
+
+  > .field--name-field-salesforce-embed-code {
+    margin: 0 auto;
+    max-width: rem-calc(640);
+  }
+}
+
+.field--name-field-salesforce-embed-code {
+  form {
+    font-size: rem-calc(14);
+
+    br {
+      display: none;
+    }
+
+    label {
+      display: block;
+      margin-bottom: rem-calc(3);
+    }
+
+    input,
+    select,
+    textarea {
+      appearance: none;
+      background-color: transparent;
+      border: 0 solid $white;
+      border-bottom-width: 1px;
+      display: block;
+      margin-bottom: rem-calc(20);
+      padding: rem-calc(3) 0;
+      width: 100%;
+
+      @include breakpoint(medium) {
+        margin-bottom: rem-calc(30);
+      }
+
+      @include placeholder {
+        color: $white;
+      }
+    }
+
+    select {
+      background: transparent url('../img/icon_arrow-dropdown-white.svg') no-repeat right center;
+      background-size: 12px;
+
+      option {
+        color: $black;
+      }
+    }
+
+    textarea {
+      border: 1px solid transparentize($white, 0.9);
+      border-bottom-color: $white;
+      resize: none;
+    }
+
+    [type='submit'] {
+      background-color: $white;
+      border: none;
+      border-radius: rem-calc(3);
+      color: $cubic-blue;
+      padding: rem-calc(15) rem-calc(20);
+
+      @include breakpoint(medium) {
+        width: auto;
+      }
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

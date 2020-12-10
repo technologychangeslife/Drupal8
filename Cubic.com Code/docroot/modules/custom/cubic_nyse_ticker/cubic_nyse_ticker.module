@@ -1,0 +1,132 @@
+<?php
+
+/**
+ * @file
+ * Contains cubic_nyse_ticker.module..
+ */
+
+use \Drupal\Core\Routing\RouteMatchInterface;
+use \Drupal\Core\Site\Settings;
+use \GuzzleHttp\Exception\RequestException;
+
+define('CUBIC_NYSE_TICKER_EXCHANGE_NAME', 'NYSE');
+define('CUBIC_NYSE_TICKER_SYMBOL', 'CUB');
+
+/**
+ * Implements hook_help().
+ */
+function cubic_nyse_ticker_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the cubic_nyse_ticker module.
+    case 'help.page.cubic_nyse_ticker':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Custom module pulling data from the NYSE to create a ticker block.') . '</p>';
+
+      return $output;
+  }
+
+  return '';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cubic_nyse_ticker_theme($existing, $type, $theme, $path) {
+  return [
+    // Themes NYSE Ticker information.
+    'cubic_nyse_ticker_block' => [
+      'variables' => [
+        'attributes' => [],
+        'exchange_name' => NULL,
+        'symbol' => NULL,
+        'amount' => NULL,
+        'change' => NULL,
+        'change_direction' => NULL,
+      ],
+    ],
+  ];
+
+}
+
+/**
+ * Helper function to get the remote JSON content.
+ */
+function _cubic_nyse_ticker_json_content() {
+  $symbol = Settings::get('cubic_nyse_ticker.symbol', 'CUB');
+  $api_key = Settings::get('cubic_nyse_ticker.apiKey', '9f_2_rYjR13uTBnX_kKaQ7JUnCkHl4I9pyZG_j');
+
+  $client = \Drupal::httpClient();
+
+  try {
+    $request = $client->request('get', "https://api.polygon.io/v1/last/stocks/$symbol?apiKey=$api_key", ['timeout' => 10]);
+    $current_data = json_decode($request->getBody());
+  }
+  catch (RequestException $e) {
+    watchdog_exception('cubic_nyse_ticker', $e, $e->getMessage());
+  }
+
+  /*
+  try {
+    $yesterday = date('n-d-Y', strtotime('yesterday'));
+    $today_minus_three = date('n-d-Y', strtotime('-3 days'));
+    $historical = $client->request('get', "https://api.polygon.io/v1/historic/agg/day/$symbol?from=$today_minus_three&to=$yesterday&apiKey=$api_key", ['timeout' => 100]);
+    $historical_data = json_decode($historical->getBody());
+  }
+  catch (RequestException $e) {
+    watchdog_exception('cubic_nyse_ticker', $e, $e->getMessage());
+  }
+  */
+
+  // Do not do anything if there is no JSON content.
+  if ((!isset($current_data) || $current_data === NULL)) {
+    return FALSE;
+  }
+
+  // Do not do anything if the following required values are not set.
+  if (!isset($current_data->{'last'}->{'price'})) {
+    return FALSE;
+  }
+
+  $json_content = new \stdClass();
+  $current_price = $current_data->last->price;
+
+  //$last_close = array_pop($historical_data->ticks)->c;
+
+  /*
+  $price_change = $current_price - $last_close;
+  if ($price_change < 0) {
+    // We have a decrease in price.
+    $json_content->change_direction = 'down';
+  }
+  else {
+    // We have an increase in price.
+    $json_content->change_direction = 'up';
+  }
+  */
+
+  //$json_content->latestUpdate = $current_data->last->timestamp;
+  //$json_content->change = number_format((float) $price_change, 2);
+  // Format the number into currency.
+  $json_content->formatted_amount = number_format((float) $current_price, 2);
+  // Add more values.
+  $json_content->exchange_name = CUBIC_NYSE_TICKER_EXCHANGE_NAME;
+  $json_content->symbol = CUBIC_NYSE_TICKER_SYMBOL;
+
+  return $json_content;
+}
+
+/**
+ * Helper function to return default json_content object.
+ */
+function _cubic_nyse_ticker_json_content_defaults() {
+  $json_content = new \stdClass();
+  $json_content->change = '';
+  $json_content->change_direction = '';
+  $json_content->formatted_amount = '';
+  $json_content->latestUpdate = 0;
+  $json_content->exchange_name = CUBIC_NYSE_TICKER_EXCHANGE_NAME;
+  $json_content->symbol = CUBIC_NYSE_TICKER_SYMBOL;
+
+  return $json_content;
+}

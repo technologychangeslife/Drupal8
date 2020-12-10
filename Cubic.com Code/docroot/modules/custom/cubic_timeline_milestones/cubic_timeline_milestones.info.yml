@@ -1,0 +1,19 @@
+name: Timeline
+description: 'Provides Timeline content type and related configuration. '
+type: module
+core: 8.x
+dependencies:
+  - cubic_controller
+  - cubic_entity_browser
+  - cubic_milestone_decade
+  - entity_browser
+  - field
+  - image
+  - menu_ui
+  - node
+  - path
+  - scheduler
+  - text
+  - user
+  - workbench_moderation
+package: Cubic

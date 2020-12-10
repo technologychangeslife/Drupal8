@@ -1,0 +1,16 @@
+{#
+
+Markup for the cubic_social_buttons_block.
+
+#}
+
+<ul class="cubic-social-buttons">
+    {% for item in items %}
+        <li class="cubic-social-button cubic-social-button-{{ item.text }} {% if loop.last %} last {% endif %}">
+            <a href="{{ item.url }}" target="_social">
+              {% include directory ~ '/_/img/icon_' ~ item.text ~ '.svg' %}
+            </a>
+        </li>
+    {% endfor %}
+
+</ul>

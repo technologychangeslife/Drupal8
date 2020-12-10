@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.statistic_slider.field_statistic_slider_items
+    - field.field.paragraph.statistic_slider.field_title
+    - paragraphs.paragraphs_type.statistic_slider
+  module:
+    - entity_reference_revisions
+id: paragraph.statistic_slider.default
+targetEntityType: paragraph
+bundle: statistic_slider
+mode: default
+content:
+  field_statistic_slider_items:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_title:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  search_api_excerpt: true

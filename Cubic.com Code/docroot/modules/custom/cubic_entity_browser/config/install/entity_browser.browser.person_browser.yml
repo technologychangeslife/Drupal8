@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.person_browser
+  module:
+    - views
+name: person_browser
+label: 'Person Browser'
+display: modal
+display_configuration:
+  width: '1070'
+  height: '840'
+  link_text: 'Select Person'
+  auto_open: false
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  c955ec1c-980b-4130-bfb5-9f6698cb4160:
+    settings:
+      view: person_browser
+      view_display: entity_browser_1
+      submit_text: 'Select Person'
+      auto_select: false
+    uuid: c955ec1c-980b-4130-bfb5-9f6698cb4160
+    weight: 1
+    label: Select
+    id: view

@@ -1,0 +1,171 @@
+.paragraph--type--grid-of-success-stories {
+  text-align: center;
+  padding: 2em;
+
+  .field-title {
+    font-size: $h1-font-size;
+    margin-bottom: 1em;
+
+    .field__item {
+      text-align: center;
+    }
+  }
+
+  p {
+    font-size: rem-calc(14);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .grid {
+    @include clear-floats;
+    @include grid-layout(1, '> .field');
+  }
+
+  .success-story {
+    margin-bottom: 1em;
+
+    .node--view-mode-teaser {
+      height: 100%;
+
+      .node__content {
+        @include clear-floats;
+        @extend %shadow-box;
+
+        align-items: stretch;
+        background-color: $white;
+        display: flex;
+        height: 100%;
+      }
+
+      .field--name-field-hero-image {
+        display: none;
+
+        @include breakpoint(large) {
+          display: block;
+          float: left;
+          min-height: 260px;
+          overflow: hidden;
+          position: relative;
+          text-align: left;
+          width: 33%;
+
+          img {
+            display: block;
+            height: 100%;
+            left: 50%;
+            max-width: none;
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: auto;
+          }
+
+          + .text {
+            float: left;
+            width: calc(100% - 35%);
+            margin-left: 2%;
+          }
+        }
+      }
+
+      .text {
+        text-align: left;
+        padding: 7% rem-calc(30);
+
+        .body {
+          margin: 0;
+        }
+      }
+    }
+
+    .field--name-field-business,
+    .field--name-field-industry {
+      text-transform: uppercase;
+      font-size: rem-calc(12);
+      font-family: $font-bold;
+    }
+
+    .title {
+      font-family: $font-main;
+      font-weight: normal;
+      margin: 0 0 1em;
+
+      a {
+        font-family: inherit;
+      }
+    }
+  }
+
+  @each $color in ($section-colors) {
+    .section-color-#{$color} & {
+      .success-story {
+        .node--view-mode-teaser {
+          .node__content {
+            @extend %section-#{$color}-border-top;
+          }
+        }
+      }
+    }
+  }
+
+  &.has-body {
+    .success-story {
+      // this is the body field
+      &:last-child {
+        text-align: left;
+      }
+    }
+
+    .field-title {
+      .field__item {
+        text-align: center;
+      }
+    }
+  }
+
+  @include breakpoint(medium) {
+    .grid {
+      align-items: center;
+      display: flex;
+
+      .field--name-field-success-stories {
+        align-self: stretch;
+      }
+    }
+
+    &.contains-1 {
+      .grid {
+        text-align: center;
+
+        .success-story {
+          max-width: rem-calc(550);
+          float: none;
+          display: inline-block;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+    }
+
+    &.contains-2 {
+      .grid {
+        @include grid-layout(2, '.field__item', $grid-column-gutter);
+      }
+    }
+
+    &.contains-3 {
+      .grid {
+        @include grid-layout(3, '.field__item', $grid-column-gutter);
+      }
+    }
+
+    &.contains-4 {
+      .grid {
+        @include grid-layout(4, '.field__item', $grid-column-gutter);
+      }
+    }
+  }
+}

@@ -1,0 +1,4 @@
+bundle: cubic
+excluded:
+  - core.base_field_override.node.timeline.promote
+required: true

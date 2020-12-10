@@ -1,0 +1,10 @@
+name: Cubic Social
+type: module
+description: Custom module that provides support for social media buttons
+core: 8.x
+package: Cubic
+
+dependencies:
+  - drupal:block
+
+

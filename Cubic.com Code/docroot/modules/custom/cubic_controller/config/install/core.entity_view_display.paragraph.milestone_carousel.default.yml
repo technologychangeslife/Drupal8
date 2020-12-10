@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.milestone_carousel.field_body
+    - field.field.paragraph.milestone_carousel.field_milestone_carousel_item
+    - field.field.paragraph.milestone_carousel.field_milestone_year
+    - paragraphs.paragraphs_type.milestone_carousel
+  module:
+    - entity_reference_revisions
+    - text
+id: paragraph.milestone_carousel.default
+targetEntityType: paragraph
+bundle: milestone_carousel
+mode: default
+content:
+  field_body:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_milestone_carousel_item:
+    type: entity_reference_revisions_entity_view
+    weight: 0
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_milestone_year:
+    weight: 1
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+hidden:
+  search_api_excerpt: true

@@ -1,0 +1,93 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_social_icon_links_content
+    - paragraphs.paragraphs_type.social_icon_link
+    - paragraphs.paragraphs_type.social_icon_links
+  module:
+    - entity_reference_revisions
+id: paragraph.social_icon_links.field_social_icon_links_content
+field_name: field_social_icon_links_content
+entity_type: paragraph
+bundle: social_icon_links
+label: 'Social Icon Links'
+description: ''
+required: true
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      social_icon_link: social_icon_link
+    target_bundles_drag_drop:
+      '50_50':
+        weight: 22
+        enabled: false
+      accordion:
+        weight: 23
+        enabled: false
+      accordions:
+        weight: 24
+        enabled: false
+      annual_reports_slider:
+        weight: 25
+        enabled: false
+      basic_image:
+        weight: 26
+        enabled: false
+      basic_text:
+        weight: 27
+        enabled: false
+      callouts:
+        weight: 28
+        enabled: false
+      cross_link:
+        weight: 29
+        enabled: false
+      cross_links:
+        weight: 30
+        enabled: false
+      divider_bar:
+        weight: 31
+        enabled: false
+      grid_of_products:
+        weight: 32
+        enabled: false
+      grid_of_success_stories:
+        weight: 33
+        enabled: false
+      image_and_menu:
+        weight: 34
+        enabled: false
+      image_and_text_slider:
+        weight: 35
+        enabled: false
+      image_grid_slider:
+        weight: 36
+        enabled: false
+      image_text_slider_item:
+        weight: 37
+        enabled: false
+      social_icon_link:
+        enabled: true
+        weight: 38
+      social_icon_links:
+        weight: 39
+        enabled: false
+      solutions_product:
+        weight: 40
+        enabled: false
+      tab:
+        weight: 41
+        enabled: false
+      tabs:
+        weight: 42
+        enabled: false
+      webform:
+        weight: 44
+        enabled: false
+field_type: entity_reference_revisions

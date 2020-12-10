@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.term_condition.field_pdf
+    - field.field.node.term_condition.field_supplier_reference
+    - node.type.term_condition
+  module:
+    - file
+    - user
+id: node.term_condition.default
+targetEntityType: node
+bundle: term_condition
+mode: default
+content:
+  field_pdf:
+    weight: 102
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  field_supplier_reference:
+    weight: 103
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  links:
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

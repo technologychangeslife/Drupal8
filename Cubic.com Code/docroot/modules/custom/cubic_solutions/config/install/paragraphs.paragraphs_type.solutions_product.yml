@@ -1,0 +1,6 @@
+langcode: en
+status: true
+dependencies: {  }
+id: solutions_product
+label: 'Solutions Product'
+behavior_plugins: {  }

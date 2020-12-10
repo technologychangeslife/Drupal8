@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * Theme override to display a node teaser in the Lists view.
+ */
+#}
+{%
+  set classes = [
+    'node',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  ]
+%}
+{{ attach_library('classy/node') }}
+<article{{ attributes.addClass(classes) }}>
+  <div{{ content_attributes.addClass('node__content') }}>
+    <a href="{{ report_url }}" target="_blank" class="report-cover-link">
+      {{ content.field_report_cover }}
+    </a>
+
+    {{ title_prefix }}
+    <h3{{ title_attributes.addClass('title') }}>{{ label }}</h3>
+    {{ title_suffix }}
+
+    {{ content|without('field_report_cover', 'field_report_download') }}
+
+    <a class="download-report" href="{{ report_url }}" target="_blank">{{ 'Download'|t }}
+      <span class="icon icon--arrow"><svg><use xlink:href="#icon-arrow"></use></svg></span>
+    </a>
+  </div>
+</article>

@@ -1,0 +1,35 @@
+name: 'Success Stories'
+description: 'Code and configuration for the Success Story content type.'
+type: module
+core: 8.x
+dependencies:
+  - block
+  - cubic_annual_reports
+  - cubic_awards
+  - cubic_businesses
+  - cubic_controller
+  - cubic_entity_browser
+  - cubic_events
+  - cubic_industries
+  - cubic_insights
+  - cubic_posts
+  - cubic_press_releases
+  - entity_browser
+  - entity_reference_revisions
+  - field
+  - image
+  - menu_ui
+  - metatag
+  - node
+  - paragraphs
+  - path
+  - pathauto
+  - scheduler
+  - smart_trim
+  - system
+  - text
+  - user
+  - views
+  - workbench_moderation
+package: Cubic
+version: 8.x-1.0

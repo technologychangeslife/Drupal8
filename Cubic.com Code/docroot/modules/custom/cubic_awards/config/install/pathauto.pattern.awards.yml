@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: awards
+label: Awards
+type: 'canonical_entities:node'
+pattern: 'news-events/awards/[node:title]'
+selection_criteria:
+  0e60c17d-28db-4fb2-ae74-f8b27e07083f:
+    id: node_type
+    bundles:
+      award: award
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 0e60c17d-28db-4fb2-ae74-f8b27e07083f
+selection_logic: and
+weight: -5
+relationships: {  }

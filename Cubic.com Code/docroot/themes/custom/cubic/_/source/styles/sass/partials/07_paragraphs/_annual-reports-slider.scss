@@ -1,0 +1,59 @@
+// sass-lint:disable force-pseudo-nesting
+.paragraph--type--annual-reports-slider {
+  @include flex-grid-row;
+  @include slick-slider;
+  padding: 2rem 0;
+
+  @include breakpoint(medium) {
+    padding-bottom: map-get($paragraph-padding, medium);
+    padding-top: map-get($paragraph-padding, medium);
+  }
+
+  @include breakpoint(large) {
+    padding-bottom: map-get($paragraph-padding, large);
+    padding-top: map-get($paragraph-padding, large);
+  }
+
+  .node--type-annual-report {
+    outline: none;
+  }
+
+  .field--name-field-title {
+    @include flex-grid-column(100%);
+    font-size: $h1-font-size;
+    margin-bottom: rem-calc(15);
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .field--name-field-body {
+    @include flex-grid-column(100%);
+    margin-bottom: rem-calc(15);
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+
+    @include breakpoint(medium) {
+      @include flex-grid-size(9);
+    }
+    @include breakpoint(large) {
+      @include flex-grid-size(6);
+    }
+  }
+
+  .annual-reports {
+    @include flex-grid-column(12);
+    position: relative;
+  }
+
+  .annual-reports-slider:not(.slick-slider) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    .node--type-annual-report {
+      padding: 0 rem-calc(15);
+    }
+  }
+}

@@ -1,0 +1,295 @@
+// sass-lint:disable force-pseudo-nesting
+// sass-lint:disable nesting-depth
+// sass-lint:disable force-element-nesting
+// sass-lint:disable force-attribute-nesting
+// sass-lint:disable no-qualifying-elements
+
+div {
+  &.node--type-milestone-decade {
+    &.has-background {
+      background: $white;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+
+      > img {
+        height: 100%;
+        left: 0;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 0;
+      }
+    }
+
+    .node__content.parallax-processed {
+      div#jarallax-container-0 {
+        img {
+          display: block;
+          height: auto;
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.node--type-milestone-decade,
+.page-node-type-milestone-decade {
+
+  div {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  &.user-logged-in {
+    img.image-style-hero-compressed {
+      height: 100%;
+      left: 0;
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      width: 100%;
+      z-index: 0;
+      }
+    }
+
+  img.image-style-hero-compressed {
+    display: none;
+  }
+
+  &.has-background > img {
+    height: 100%;
+    left: 0;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 0;
+  }
+
+  .region.region-header {
+    display: none;
+  }
+
+  .decade__wrapper {
+    padding: 1.875rem 1rem;
+    margin: 0 auto;
+    max-width: 930px;
+
+    .field--name-field-background-image {
+      display: none;
+    }
+
+    .decade-icon {
+
+      max-width: 180px;
+      margin: 30px auto 20px;
+      position: relative;
+
+      span {
+
+        background-image: url('../source/svg/cubic-box.svg');
+        height: 40px;
+        width: 40px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: relative;
+        display: block;
+        margin: auto;
+      }
+
+      &:before,
+      &:after {
+        content: '';
+        display: block;
+        background: $black;
+        width: 50px;
+        height: 2px;
+        position: absolute;
+        top: 20px;
+      }
+
+      &:before {
+        left: 0;
+      }
+
+      &:after {
+        right: 0;
+      }
+    }
+
+    h2 {
+      font-weight: 900;
+      font-size: 120px;
+      text-align: center;
+    }
+
+    .field--name-body {
+      max-width: 500px;
+      text-align: center;
+      margin: auto;
+
+      p {
+        color: $black;
+      }
+    }
+
+
+    > .field {
+      > .field__item {
+        margin: 40px 0;
+
+        .paragraph--type--milestone-group {
+          .field--name-field-milestone-group {
+            box-shadow: 0 0 10px $color-grey-box-showdow;
+          }
+        }
+
+        .slick-arrow {
+          display: none !important;
+
+          &.slick-disabled {
+            opacity: 0.5;
+          }
+
+          &.slider-prev {
+
+            background-image: url('../source/svg/left-arrow.svg');
+
+            display: block;
+            position: absolute;
+            height: 40px;
+            width: 30px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            right: 35px !important;
+            left: unset;
+            background-position: center;
+            top: calc(100% - 18px);
+          }
+
+          &.slider-next {
+
+            background-image: url('../source/svg/right-arrow.svg');
+
+            display: block;
+            position: absolute;
+            height: 40px;
+            width: 30px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            right: 0 !important;
+            left: unset;
+            background-position: center;
+            top: calc(100% - 18px);
+          }
+        }
+      }
+    }
+
+    .paragraph--type--milestone-50-50 {
+      background: $white;
+
+      .field--body--wrapper {
+        padding: 1rem;
+        padding-top: 67px;
+      }
+    }
+
+    .paragraph--type--milestone-slider {
+      padding: 0;
+
+      ul.slick-dots {
+        display: none !important;
+      }
+
+      .slick-list {
+        margin: 0;
+      }
+
+      .slick-arrow {
+        display: block !important;
+      }
+    }
+
+    .paragraph--type--milestone-carousel {
+      background-color: $white;
+      padding: 0;
+
+      .slick-list {
+        margin: 0;
+      }
+    }
+
+    @include breakpoint(medium) {
+      padding: 2.5rem 1rem;
+
+      > .field {
+        > .field__item {
+
+          .slick-arrow {
+            display: block !important;
+
+          }
+
+        }
+      }
+
+      .paragraph--type--milestone-50-50 {
+        .field--body--wrapper {
+          padding: 1rem;
+        }
+      }
+
+      .paragraph--type--milestone-slider {
+        padding: 0;
+
+      }
+
+      .paragraph--type--milestone-carousel {
+        background-color: $white;
+        padding: 0;
+
+        .field--name-field-body {
+          margin: 0 3.125rem;
+        }
+      }
+    }
+
+    @include breakpoint(medium) {
+      .paragraph--type--milestone-slider {
+        padding: 0;
+      }
+    }
+  }
+
+  //milestone group
+  .paragraph--type--milestone-group {
+    .field--name-field-milestone-group {
+      > .field__label {
+        display: none;
+      }
+
+      .field__items {
+        > .field__item {
+
+          @include breakpoint(medium) {
+            &:nth-child(even) {
+              .field--body--wrapper {
+                order: 2;
+              }
+            }
+
+            > .paragraph {
+              position: relative;
+            }
+          }
+        }
+      }
+    }
+  }
+}

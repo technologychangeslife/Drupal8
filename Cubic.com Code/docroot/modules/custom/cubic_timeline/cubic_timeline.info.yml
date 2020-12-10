@@ -1,0 +1,5 @@
+name: Cubic Timeline
+type: module
+description: Custom module that provides a custom block to display an interactive timeline.
+core: 8.x
+package: Cubic

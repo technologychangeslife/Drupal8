@@ -1,0 +1,118 @@
+@import 'util/unit';
+
+// Colors.
+$cubic-blue: #00548b;
+$white: #fff;
+$black: #000;
+$cubic-teal: #00adbb;
+$cubic-green: #00ff66;
+$cubic-red: #9c0012;
+$cubic-yellow: #f7a700;
+$cubic-brown: #c36d16;
+$cubic-grey: #f4f5f7;
+$black-15: rgba(0, 0, 0, 0.15);
+$black-25: rgba(0, 0, 0, .25);
+$black-1: rgba($black, .1);
+
+$fb-blue: rgb(59, 89, 152);
+$timeline-decade-blue: #01548b;
+$timeline-milestone-blue: #00a3b3;
+$timeline-milestone-year-blue: #3a79a2;
+$timeline-decade-blue-active: #397aa4;
+
+$communications-color: $cubic-red;
+$transportation-color: $cubic-yellow;
+$training-color: $cubic-brown;
+
+$background-color: #bbbdc0;
+$text-color: #808285;
+
+$color-blockquote-border: #7ba9c3;
+$color-border: #bbbdc0;
+$color-bullets: $text-color;
+$color-callout-bg: $cubic-grey;
+$color-case-study-row-bg: $cubic-grey;
+$color-event-recap-bg: $cubic-grey;
+$color-footer-bg: $cubic-grey;
+$color-grid-background: #818286;
+$color-menu-link: #4a4b4c;
+
+$color-grey-box-showdow: rgba($color-grid-background, .5);
+
+$color-page-title-bg: $cubic-grey;
+$color-salseforce-form-bg: $cubic-blue;
+$color-schedule-bg: $cubic-grey;
+$color-social-hover: #c7c8cb;
+$color-tab-bg: $communications-color;
+$color-table-alt-bg: $cubic-grey;
+
+$color-menu-active-bg: #eaebec;
+$color-menu-active-alt-bg: #f7f7f9;
+
+$section-colors: 'brown', 'red', 'yellow';
+$color-section-red: $communications-color;
+$color-section-brown: $training-color;
+$color-section-yellow: $transportation-color;
+$color-section-teal: $cubic-teal;
+$color-section-default: $color-section-teal;
+
+$color-shadow-inset: rgba(0, 0, 0, .1);
+
+$drop-shadow: transparentize($black, 0.75);
+
+$color-video-overlay: transparentize($black, 0.6);
+
+// Fonts.
+$font-main: 'Helvetica LT W01 Roman', sans-serif;
+$font-light: 'Helvetica LT W01 Light', sans-serif;
+$font-oblique: 'Helvetica LT W01 Obliqu1489444', sans-serif;
+$font-bold: 'Helvetica LT W01 Bold', sans-serif;
+
+// Vars.
+$transition-time: 0.25s;
+$menu-size: (
+  small: rem-calc(50),
+  medium: rem-calc(50),
+  large: rem-calc(66),
+);
+$sidebar-menus-size: rem-calc(270);
+$sidebar-menus-padding: rem-calc(20);
+$sidebar-submenus-size: rem-calc(270);
+$component-spacing: (
+  small: rem-calc(40),
+  medium: rem-calc(60),
+);
+$paragraph-padding: (
+  small: rem-calc(16),
+  medium: rem-calc(38),
+  large: rem-calc(60),
+);
+$background-scale: 1.025;
+$breadcrumb-separator: ' | ';
+$hover: hover;
+
+// Foundation Overrides.
+$max-row-width: 1400;
+$global-width: rem-calc($max-row-width);
+
+$body-font-family: $font-main;
+$header-font-family: $font-main;
+
+$button-radius: 3px;
+$button-padding: 0.5em 1.5em;
+$button-background: $cubic-teal;
+$button-background-hover: $white;
+
+$reveal-padding: 0;
+$reveal-background: transparent;
+$reveal-border: none;
+
+$closebutton-offset-horizontal: (
+  small: 10px,
+  medium: 0,
+);
+
+$closebutton-offset-vertical: (
+  small: 0,
+  medium: 0,
+);

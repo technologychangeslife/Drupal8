@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_report_category
+    - paragraphs.paragraphs_type.annual_reports_slider
+    - taxonomy.vocabulary.report_categories
+id: paragraph.annual_reports_slider.field_report_category
+field_name: field_report_category
+entity_type: paragraph
+bundle: annual_reports_slider
+label: Category
+description: 'Select a category of reports to show in the slider. If none is selected all reports will be shown.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      report_categories: report_categories
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

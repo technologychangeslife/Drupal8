@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: events
+label: Events
+type: 'canonical_entities:node'
+pattern: 'news-events/events/[node:title]'
+selection_criteria:
+  adba28c8-9627-46f1-aa00-fa6ca774c5f1:
+    id: node_type
+    bundles:
+      event: event
+    negate: false
+    context_mapping:
+      node: node
+    uuid: adba28c8-9627-46f1-aa00-fa6ca774c5f1
+selection_logic: and
+weight: -5
+relationships: {  }

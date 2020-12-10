@@ -1,0 +1,15 @@
+.path-frontpage {
+  // restricting this to the home page for now - to beat the video overlay
+  #main-wrapper {
+    position: relative;
+    z-index: 3;
+  }
+
+  #above-footer {
+    background-color: $white;
+
+    .region-above-footer {
+      padding: 2em 0;
+    }
+  }
+}

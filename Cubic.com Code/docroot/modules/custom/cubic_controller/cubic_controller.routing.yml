@@ -1,0 +1,19 @@
+cubic_controller.delete_files:
+  path: '/admin/config/cubic-controller/delete-files'
+  defaults:
+    _form: '\Drupal\cubic_controller\Form\DeleteFilesForm'
+    _title: 'Delete Files'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE
+
+cubic_controller.delete_node_revisions:
+  path: '/admin/config/cubic-controller/delete-node-revisions'
+  defaults:
+    _form: '\Drupal\cubic_controller\Form\DeleteNodeRevisionsForm'
+    _title: 'Delete Node Revisions'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE

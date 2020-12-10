@@ -1,0 +1,88 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.milestone_50_50.field_body
+    - field.field.paragraph.milestone_50_50.field_image_gallery
+    - field.field.paragraph.milestone_50_50.field_image_link
+    - field.field.paragraph.milestone_50_50.field_image_video
+    - field.field.paragraph.milestone_50_50.field_milestone_year
+    - field.field.paragraph.milestone_50_50.field_title
+    - field.field.paragraph.milestone_50_50.field_video
+    - paragraphs.paragraphs_type.milestone_50_50
+  module:
+    - image
+    - link
+    - text
+    - video_embed_field
+id: paragraph.milestone_50_50.default
+targetEntityType: paragraph
+bundle: milestone_50_50
+mode: default
+content:
+  field_body:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
+  field_image_gallery:
+    weight: 2
+    label: hidden
+    settings:
+      image_style: hero
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+  field_image_link:
+    weight: 3
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+  field_image_video:
+    weight: 4
+    label: hidden
+    settings:
+      image_style: ''
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+  field_milestone_year:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_title:
+    weight: 5
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_video:
+    weight: 6
+    label: hidden
+    settings:
+      responsive: true
+      width: 854
+      height: 480
+      autoplay: true
+    third_party_settings: {  }
+    type: video_embed_field_video
+    region: content
+hidden:
+  search_api_excerpt: true

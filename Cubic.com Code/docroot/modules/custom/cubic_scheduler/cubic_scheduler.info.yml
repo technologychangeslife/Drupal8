@@ -1,0 +1,7 @@
+name: Cubic Scheduler
+type: module
+description: Wrapper module for intergration with Scheduler
+core: 8.x
+package: Cubic
+dependencies:
+  - scheduler

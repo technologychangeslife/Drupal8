@@ -1,0 +1,12 @@
+# Ignore paths that contain user-generated content.
+docroot/files
+docroot/sites/*/files
+docroot/sites/*/private
+
+docroot/sites/*/settings.local.php
+
+docroot/modules/dev
+
+# Ignore developer files
+.idea
+exclude-list.txt

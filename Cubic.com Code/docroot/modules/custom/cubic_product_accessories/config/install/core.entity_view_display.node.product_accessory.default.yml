@@ -1,0 +1,51 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.product_accessory.body
+    - field.field.node.product_accessory.field_contain_header_image
+    - field.field.node.product_accessory.field_hero_image
+    - field.field.node.product_accessory.field_metadata
+    - field.field.node.product_accessory.field_paragraphs
+    - field.field.node.product_accessory.field_photo
+    - node.type.product_accessory
+  module:
+    - entity_reference_revisions
+    - metatag
+    - user
+id: node.product_accessory.default
+targetEntityType: node
+bundle: product_accessory
+mode: default
+content:
+  field_metadata:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: metatag_empty_formatter
+    region: content
+  field_paragraphs:
+    weight: 2
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
+    region: content
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  workbench_moderation_control:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  body: true
+  field_contain_header_image: true
+  field_hero_image: true
+  field_photo: true

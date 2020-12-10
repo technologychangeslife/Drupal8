@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_menu_item
+    - paragraphs.paragraphs_type.image_and_menu
+id: paragraph.image_and_menu.field_menu_item
+field_name: field_menu_item
+entity_type: paragraph
+bundle: image_and_menu
+label: 'Menu Item'
+description: 'Choose the menu item the image should link to, and whose children should be displayed next to the image.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:menu_link_content'
+  handler_settings:
+    target_bundles:
+      menu_link_content: menu_link_content
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

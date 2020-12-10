@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.milestone_carousel_item.field_image
+    - image.style.milestone_carousel_item
+    - paragraphs.paragraphs_type.milestone_carousel_item
+  module:
+    - image
+id: paragraph.milestone_carousel_item.default
+targetEntityType: paragraph
+bundle: milestone_carousel_item
+mode: default
+content:
+  field_image:
+    weight: 0
+    label: hidden
+    settings:
+      image_style: milestone_carousel_item
+      image_link: ''
+    third_party_settings: {  }
+    type: image
+    region: content
+hidden:
+  search_api_excerpt: true

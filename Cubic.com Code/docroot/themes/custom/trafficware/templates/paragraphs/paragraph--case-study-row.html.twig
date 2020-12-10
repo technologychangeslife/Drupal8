@@ -1,0 +1,14 @@
+{% extends 'paragraph.html.twig' %}
+{#
+/**
+ * @file
+ * Default theme implementation to display a paragraph.
+ */
+#}
+{% block content %}
+  {{ content.background_image }}
+  {{ content.field_title }}
+  <aside>
+    {{ content|without('background_image', 'field_title') }}
+  </aside>
+{% endblock %}

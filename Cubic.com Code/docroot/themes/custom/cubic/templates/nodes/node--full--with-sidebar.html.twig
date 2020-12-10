@@ -1,0 +1,52 @@
+{#
+/**
+ * @file
+ * Theme override to display a node.
+ */
+#}
+{%
+  set classes = [
+    'node',
+    'node--full--with-sidebar',
+    'node--type-' ~ node.bundle|clean_class,
+    node.isPromoted() ? 'node--promoted',
+    node.isSticky() ? 'node--sticky',
+    not node.isPublished() ? 'node--unpublished',
+    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  ]
+%}
+{{ attach_library('classy/node') }}
+<article{{ attributes.addClass(classes) }}>
+
+  {{ title_prefix }}
+  {{ title_suffix }}
+
+  {% if display_submitted %}
+    <footer class="node__meta">
+      {{ author_picture }}
+      <div{{ author_attributes.addClass('node__submitted') }}>
+        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+        {{ metadata }}
+      </div>
+    </footer>
+  {% endif %}
+
+  <div{{ content_attributes.addClass('node__content') }}>
+    {{ content|without('field_main_column', 'field_contained_paragraphs', 'field_aside_paragraphs', 'field_lower_paragraphs') }}
+
+    {% if content.field_main_column|render|striptags|trim is not empty or content.field_contained_paragraphs|render|striptags|trim is not empty %}
+      <div class="main-columns">
+        {{ content.field_aside_paragraphs }}
+        {% if content.field_main_column or content.field_contained_paragraphs %}
+          <div class="main-column">
+            {{ content.field_main_column }}
+            {{ content.field_contained_paragraphs }}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {{ content.field_lower_paragraphs }}
+  </div>
+
+</article>

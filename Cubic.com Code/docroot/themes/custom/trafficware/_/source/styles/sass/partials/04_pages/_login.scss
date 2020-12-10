@@ -1,0 +1,47 @@
+.alias-user-login,
+.alias-user-password {
+  #block-cubic-content {
+    @include flex-grid-row;
+    margin-bottom: rem-calc(30);
+    margin-top: rem-calc(30);
+
+    .user-login-form,
+    .user-pass {
+      @include flex-grid-column;
+
+      .form-item,
+      .simplesamlphp-auth-login-link {
+        display: block;
+        margin-bottom: rem-calc(20);
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+
+      label {
+        &.form-required {
+          &::after {
+            color: $cubic-red;
+            content: '*';
+          }
+        }
+      }
+
+      input {
+        &[type='text'],
+        &[type='password'] {
+          border: 1px solid $color-border;
+          border-radius: rem-calc(4);
+          display: block;
+          padding: rem-calc(10);
+        }
+      }
+
+      .description {
+        color: $text-color;
+        font-size: 0.75em;
+      }
+    }
+  }
+}

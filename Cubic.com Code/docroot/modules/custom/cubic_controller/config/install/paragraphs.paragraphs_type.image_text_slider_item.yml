@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: image_text_slider_item
+label: 'Image + Text Slider Item'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

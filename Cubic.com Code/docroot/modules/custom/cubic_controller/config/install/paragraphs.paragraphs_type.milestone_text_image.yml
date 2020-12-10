@@ -1,0 +1,8 @@
+langcode: en
+status: true
+dependencies: {  }
+id: milestone_text_image
+label: 'Milestone Text Image'
+icon_uuid: null
+description: ''
+behavior_plugins: {  }

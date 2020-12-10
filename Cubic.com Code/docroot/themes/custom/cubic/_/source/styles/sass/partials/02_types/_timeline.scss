@@ -1,0 +1,53 @@
+// sass-lint:disable force-pseudo-nesting
+// sass-lint:disable nesting-depth
+// sass-lint:disable force-element-nesting
+// sass-lint:disable force-attribute-nesting
+
+.page-node-type-timeline {
+  #block-cubic-page-title {
+    .page-title-content {
+      flex-direction: column;
+      background: $timeline-decade-blue-active;
+
+      .page-title {
+        color: $white;
+        margin-top: auto;
+        max-width: 100%;
+        width: 100%;
+
+        @include breakpoint(medium) {
+          .field--name-body.field--type-text-with-summary {
+            max-width: 60%;
+          }
+        }
+      }
+
+      .intro {
+        color: $white;
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+  }
+
+  @include breakpoint(medium) {
+    #block-cubic-page-title {
+
+      .page-title-content {
+        background: none;
+        align-items: flex-start;
+
+        .page-title {
+          max-width: 60%;
+          width: 100%;
+        }
+
+        .intro {
+          color: $white;
+          max-width: 60%;
+          width: 100%;
+        }
+      }
+    }
+  }
+}

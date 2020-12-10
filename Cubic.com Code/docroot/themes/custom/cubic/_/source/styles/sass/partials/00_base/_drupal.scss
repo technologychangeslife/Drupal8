@@ -1,0 +1,17 @@
+.node-preview-container {
+  background-color: $white;
+  border-radius: 4px;
+  bottom: 10px;
+  box-shadow: 0 5px 15px transparentize($black, 0.5);
+  left: 10px;
+  width: auto;
+
+  .form-item-view-mode,
+  .form-submit {
+    display: none;
+  }
+}
+
+.search-api-autocomplete-search {
+  z-index: 1000;
+}

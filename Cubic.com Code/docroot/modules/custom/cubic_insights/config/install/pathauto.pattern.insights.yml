@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: insights
+label: Insights
+type: 'canonical_entities:node'
+pattern: 'innovation/insights/[node:title]'
+selection_criteria:
+  c419958a-e908-4a45-93d2-baf115b21217:
+    id: node_type
+    bundles:
+      insight: insight
+    negate: false
+    context_mapping:
+      node: node
+    uuid: c419958a-e908-4a45-93d2-baf115b21217
+selection_logic: and
+weight: -5
+relationships: {  }

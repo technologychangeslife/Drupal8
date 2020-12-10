@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_contain_header_image
+    - node.type.product
+id: node.product.field_contain_header_image
+field_name: field_contain_header_image
+entity_type: node
+bundle: product
+label: 'Contain Header Image'
+description: 'Should the header image be fully visible within its container? Without this option the header image will act as a background image that fully covers the space, which may result in the image being cropped at certain browser sizes.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

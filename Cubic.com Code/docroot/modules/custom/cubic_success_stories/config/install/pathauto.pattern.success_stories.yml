@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: success_stories
+label: 'Success Stories'
+type: 'canonical_entities:node'
+pattern: 'innovation/success-stories/[node:title]'
+selection_criteria:
+  d37f93f7-0ba6-4d91-a624-e44f2e2309dc:
+    id: node_type
+    bundles:
+      success_story: success_story
+    negate: false
+    context_mapping:
+      node: node
+    uuid: d37f93f7-0ba6-4d91-a624-e44f2e2309dc
+selection_logic: and
+weight: -5
+relationships: {  }

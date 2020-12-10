@@ -1,0 +1,122 @@
+.paragraph--type--image-and-text-slider {
+  @include slick-slider;
+  padding: 2rem 0;
+
+  @include breakpoint(medium) {
+    padding-bottom: map-get($paragraph-padding, medium);
+    padding-top: map-get($paragraph-padding, medium);
+  }
+
+  @include breakpoint(large) {
+    padding-bottom: map-get($paragraph-padding, large);
+    padding-top: map-get($paragraph-padding, large);
+  }
+
+  > .field {
+    .field__item {
+      outline: none;
+    }
+  }
+
+  .field--name-field-title {
+    font-size: rem-calc(34);
+    font-weight: normal;
+    line-height: 1.1em;
+    margin-bottom: rem-calc(30);
+    text-align: center;
+
+    @include breakpoint(medium) {
+      margin-bottom: rem-calc(60);
+    }
+  }
+
+  .field--name-field-body {
+    > * {
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .slick-list {
+    margin: 0 rem-calc(50);
+  }
+
+  .main-column & {
+    padding: 0;
+
+    .field--name-field-title {
+      margin-bottom: rem-calc(30);
+    }
+
+    .slick-list {
+      margin: 0 rem-calc(40);
+    }
+
+    .slick-dots {
+      margin-top: rem-calc(15);
+    }
+  }
+}
+
+// sass-lint:disable force-attribute-nesting
+// For paragraphs that are immediate children of the outer paragraphs field.
+.field--type-entity-reference-revisions[class*='field--name-field-paragraphs'] {
+  > .field__item {
+    > .paragraph--type--image-and-text-slider {
+      padding-left: 1rem;
+      padding-right: 1rem;
+
+      @include breakpoint(medium) {
+        padding-left: map-get($paragraph-padding, medium);
+        padding-right: map-get($paragraph-padding, medium);
+      }
+
+      @include breakpoint(large) {
+        padding-left: map-get($paragraph-padding, large);
+        padding-right: map-get($paragraph-padding, large);
+      }
+    }
+  }
+}
+// sass-lint:enable force-attribute-nesting
+
+.paragraph--type--image-text-slider-item {
+  @include flex-grid-row($behavior: nest, $size: expand);
+  align-items: center;
+
+  > .field {
+    @include flex-grid-column(100%);
+
+    @include breakpoint(medium) {
+      @include flex-grid-size(50%);
+    }
+  }
+
+  .field--name-field-image {
+    @include breakpoint(medium down) {
+      margin-bottom: rem-calc(20);
+    }
+
+    img {
+      margin: 0 auto;
+      max-height: rem-calc(600);
+      width: auto;
+    }
+  }
+
+  .main-column & {
+    @include breakpoint(medium down) {
+      flex-direction: column;
+    }
+
+    > .field {
+      @include breakpoint(medium) {
+        @include flex-grid-size(100%);
+      }
+      @include breakpoint(large) {
+        @include flex-grid-size(50%);
+      }
+    }
+  }
+}

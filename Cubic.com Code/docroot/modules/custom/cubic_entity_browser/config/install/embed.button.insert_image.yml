@@ -1,0 +1,19 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - entity_embed
+    - file
+    - image
+label: 'Insert Image'
+id: insert_image
+type_id: entity
+type_settings:
+  entity_type: file
+  bundles: {  }
+  display_plugins:
+    - 'image:image'
+  entity_browser: image_embed_browser
+  entity_browser_settings:
+    display_review: false
+icon_uuid: null

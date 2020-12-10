@@ -1,0 +1,62 @@
+.site-footer {
+
+  &__top {
+    @include grid-row;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 30px;
+
+    #mc_embed_signup {
+      text-align: left;
+
+      h2 {
+        font-size: 100%;
+        color: $cubic-blue;
+        font-family: $font-bold;
+      }
+
+      p {
+        color: $text-color;
+      }
+
+      .mc-field-group {
+        margin-bottom: 2em;
+        margin-top: 1em;
+
+        label {
+          display: none;
+        }
+
+        input {
+          width: 100%;
+          border: none;
+          border-bottom: 1px solid $black;
+          padding: 0.3em 0;
+          background: transparent;
+          color: $black;
+
+          &::placeholder {
+            color: $black;
+          }
+
+        }
+
+      }
+
+      .button {
+        border-color: $cubic-blue;
+        background-color: $cubic-blue;
+
+        &:hover,
+        &:focus {
+          color: $cubic-blue;
+          background-color: $white;
+        }
+      }
+
+    }
+
+  }
+
+}

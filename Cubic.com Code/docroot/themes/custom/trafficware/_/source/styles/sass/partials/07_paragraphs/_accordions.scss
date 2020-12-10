@@ -1,0 +1,167 @@
+.paragraph--type--accordions {
+  padding-bottom: rem-calc(40);
+  padding-top: rem-calc(40);
+
+  > .field--name-field-title {
+    font-size: $h2-font-size;
+    margin-bottom: rem-calc(15);
+  }
+
+  .accordion-item {
+    margin-bottom: rem-calc(3);
+
+    .accordion-title {
+      display: block;
+      background-color: $color-section-default;
+      color: $white;
+      padding: 1em rem-calc(50) 1em 1em;
+      position: relative;
+      font-family: $font-bold;
+
+      &:hover {
+        color: $white;
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        background: url('../img/icon_arrow-dropdown-white.svg') no-repeat;
+        background-position: center;
+        background-size: contain;
+        width: 14px;
+        height: 14px;
+        transform: translateY(-50%);
+        transition: transform $transition-time;
+      }
+
+      > span {
+        font-family: $font-main;
+
+        &::before {
+          content: '|';
+          padding: 0 rem-calc(15);
+        }
+      }
+    }
+
+    .accordion-content {
+      background-color: $white;
+
+      > .accordion-content__inner > .field--name-field-accordion-content > .paragraph,
+      > .field--name-field-accordion-content > .paragraph {
+        padding: 1rem;
+
+        @include breakpoint(large) {
+          padding-bottom: 2rem;
+          padding-top: 2rem;
+        }
+      }
+
+      &__header {
+        display: flex;
+        flex-direction: column;
+        padding: 1em;
+
+        @include breakpoint(large) {
+          flex-direction: row;
+        }
+
+        > .field--name-field-body {
+          flex-grow: 1;
+          order: 1;
+
+          p {
+            &:last-child {
+              margin-bottom: 0;
+            }
+          }
+
+          + .field--name-field-downloads {
+            @include breakpoint(large) {
+              margin-left: rem-calc(30);
+            }
+          }
+        }
+
+        > .field--name-field-downloads {
+          display: flex;
+          flex-shrink: 0;
+          margin-bottom: rem-calc(30);
+          order: 0;
+
+          @include breakpoint(large) {
+            flex-wrap: wrap;
+            margin-bottom: 0;
+            margin-left: auto;
+            max-width: 33.333%;
+            order: 1;
+          }
+
+          > .field__item {
+            flex: 0 1 auto;
+            margin-right: rem-calc(15);
+
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+
+          a {
+            @extend %link-w-icon;
+          }
+        }
+      }
+    }
+
+    &.is-active {
+      .accordion-title {
+        &::after {
+          transform: translateY(-50%) rotate(180deg);
+        }
+      }
+    }
+  }
+
+  @each $color in ($section-colors) {
+    .section-color-#{$color} & {
+      .accordion-item {
+        .accordion-title {
+          @extend %section-#{$color}-bg;
+        }
+      }
+    }
+  }
+
+  // Accordion is a direct child of main Paragraphs field.
+  > .field__item & {
+    .field--name-field-paragraphs & {
+      padding-left: map-get($paragraph-padding, small);
+      padding-right: map-get($paragraph-padding, small);
+
+      @include breakpoint(medium) {
+        padding-left: map-get($paragraph-padding, medium);
+        padding-right: map-get($paragraph-padding, medium);
+      }
+
+      @include breakpoint(large) {
+        padding-left: map-get($paragraph-padding, large);
+        padding-right: map-get($paragraph-padding, large);
+      }
+
+      > .field--name-field-title {
+        font-size: $h1-font-size;
+      }
+    }
+  }
+
+  // Initially hide accordion content when JS is loaded.
+  .has-js & {
+    .accordion-item {
+      .accordion-content {
+        display: none;
+      }
+    }
+  }
+}

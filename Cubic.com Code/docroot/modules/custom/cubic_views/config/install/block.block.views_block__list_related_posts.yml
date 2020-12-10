@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.list
+  module:
+    - ctools
+    - views
+  theme:
+    - cubic
+id: views_block__list_related_posts
+theme: cubic
+region: above_footer
+weight: -17
+provider: null
+plugin: 'views_block:list-related_posts'
+settings:
+  id: 'views_block:list-related_posts'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      post: post
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

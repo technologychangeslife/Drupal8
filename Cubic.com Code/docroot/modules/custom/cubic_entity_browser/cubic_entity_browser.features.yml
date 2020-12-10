@@ -1,0 +1,4 @@
+bundle: cubic
+excluded:
+  - core.entity_form_display.paragraph.testimonial_slider_item.default
+required: true

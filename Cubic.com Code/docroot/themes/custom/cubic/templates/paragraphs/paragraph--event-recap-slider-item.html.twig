@@ -1,0 +1,17 @@
+{% extends 'paragraph.html.twig' %}
+{% block content %}
+  {{ content.field_image }}
+  <a href="javascript:void(0)" data-open="video-modal-{{ paragraph.id() }}" class="{{ has_video }}">
+    {{ content.field_title }}
+  </a>
+  <div class="reveal large" id="video-modal-{{ paragraph.id() }}" data-reveal data-reset-on-close="true">
+    <button class="close-button" data-close aria-label="Close video" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {% if has_video %}
+      {{ content.field_video }}
+    {% else %}
+      {{ full_image }}
+    {% endif %}
+  </div>
+{% endblock %}

@@ -1,0 +1,103 @@
+.view-news {
+  .views-row {
+    .node {
+      h2 {
+        font-size: $h3-font-size;
+
+        a {
+          font-family: $font-main;
+          font-weight: normal;
+        }
+      }
+
+      .field {
+        clear: left;
+
+        &__label {
+          font-weight: normal;
+        }
+      }
+
+      .field--name-field-hero-image {
+        display: none;
+      }
+
+      .field--name-field-industry,
+      .field--name-field-region,
+      .field--name-field-date,
+      .field--name-field-business {
+        color: $text-color;
+        font-size: 85%;
+        font-family: $font-main;
+        font-weight: normal;
+      }
+
+      .field--name-body {
+        padding-top: 0.75em;
+
+        p {
+          color: $black;
+        }
+      }
+
+      &__links {
+        .links {
+          margin-left: 0;
+          padding-left: 0;
+
+          li {
+            padding: 0;
+          }
+        }
+      }
+
+      &.node--type-collection-point {
+        &:before {
+          @extend %content-type-before;
+          content: 'Collection Point';
+        }
+      }
+
+      &.node--type-event {
+        &:before {
+          @extend %content-type-before;
+          content: 'Event';
+        }
+      }
+
+      &.node--type-insight {
+        &:before {
+          @extend %content-type-before;
+          content: 'Insight';
+        }
+      }
+
+      &.node--type-post {
+        &:before {
+          @extend %content-type-before;
+          content: 'Blog Post';
+        }
+      }
+
+      &.node--type-press-release {
+        &:before {
+          @extend %content-type-before;
+          content: 'Press Release';
+        }
+      }
+
+      &.node--type-success-story {
+        &:before {
+          @extend %content-type-before;
+          content: 'Success Story';
+        }
+      }
+    }
+  }
+
+  .attachment-before {
+    @include clear-floats;
+    background-color: $color-callout-bg;
+    padding: 2em 1em;
+  }
+}
