@@ -1,0 +1,262 @@
+===============================================================================================
+Add Field To Entity Programatically
+===============================================================================================
+
+\Drupal\field\Entity\FieldStorageConfig::create(array(
+   'cardinality' => -1,
+   'field_name' => 'field_category',
+   'entity_type' => 'node',
+   'type' => 'entity_reference'
+   'settings' => array(
+     'target_type' => 'taxonomy_term',
+   ),
+   'translatable' => true,
+   'custom_storage' => false,
+))->save();
+
+\Drupal\field\Entity\FieldConfig::create([
+  'field_name' => 'field_category',
+  'entity_type' => 'node',
+  'bundle' => 'article',
+  'label' => 'Article Category',
+  required => true,
+  translatable => true,
+  "settings" => [
+      "handler" => "default:taxonomy_term",
+      "handler_settings" => [
+         "target_bundles" => [
+            "article_category" => "article_category"
+         ],
+         "auto_create" => true
+      ]
+   ],
+   "field_type" => "entity_reference"
+])->save();
+
+
+===============================================================================================
+Altering Existing Field
+===============================================================================================
+
+$field = \Drupal\field\Entity\FieldConfig::loadByName('node', 'article', 'field_category');
+$new_field = $field->toArray();
+$new_field['label'] = 'Article Category1';
+$new_field['required'] = true;
+
+$new_field = \Drupal\field\Entity\FieldConfig::create($new_field);
+$new_field->original = $field;
+$new_field->enforceIsNew(FALSE);
+$new_field->save();
+
+If your module is already installed and you need to write a hook_update_N to update the field definitions you can do something like:
+
+/**
+ * Add in highlight field to all nodes.
+ */
+function MYMODULE_update_8000(&$sandbox) {
+  $entity_type = \Drupal::service('entity_type.manager')->getDefinition('node');
+  \Drupal::service('entity.definition_update_manager')->updateEntityType($entity_type);
+}
+
+===============================================================================================
+Load an entity field
+===============================================================================================
+$entity = \Drupal::entityTypeManager()->getStorage('contact')->load(1);
+//$entity instanceof EntityInterface;
+print_r($entity->get('field_phone_numbers')->offsetGet(0)->value);
+
+
+===============================================================================================
+Add block in a region.
+===============================================================================================
+
+$block = \Drupal\block\Entity\Block::load('YOUR_BLOCK_ID');
+$block_content = \Drupal::entityManager()
+  ->getViewBuilder('block')
+  ->view($block);
+$variables['page']['YOUR REGION'][] = $block_content;
+
+
+===============================================================================================
+Entity Aggregate Query
+===============================================================================================
+
+$query = Drupal::entityQueryAggregate('node');
+
+$result = $query
+  ->groupBy('type')
+  ->aggregate('nid', 'COUNT')
+  ->execute()
+
+===============================================================================================
+Entity View
+===============================================================================================
+$view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+$storage = \Drupal::entityTypeManager()->getStorage('node');
+$node = $storage->load(1);
+$build = $view_builder->view($node, 'teaser', $langcode);
+$output = render($build);
+
+
+===============================================================================================
+Manage Entity Display Modes
+===============================================================================================
+
+\Drupal::entityTypeManager()
+    ->getStorage('entity_view_display')//config entity
+    ->load($entity_type . '.' . $bundle . '.' . $view_mode);
+    ->setComponent('body', array(
+      'type' => 'text_summary_or_trimmed',
+      'settings' => array('trim_length' => '200')
+      'weight' => 1,
+    ))
+    ->removeComponent('field_image')
+    ->save();
+
+Create a new entity display:
+
+  $values = array(
+      'targetEntityType' => $entity_type,
+      'bundle' => $bundle,
+      'mode' => $view_mode,
+      'status' => TRUE,
+    );
+  \Drupal::entityTypeManager()
+    ->getStorage('entity_view_display')
+    ->create($values);
+
+===============================================================================================
+Manage Entity Form Modes
+===============================================================================================
+
+ \Drupal::entityTypeManager()
+    ->getStorage('entity_form_display')
+    ->load($entity_type . '.' . $bundle . '.' . $form_mode);
+    ->setComponent('body', array(
+      'type' => 'text_textarea_with_summary',
+      'weight' => 1,
+    ))
+    ->setComponent('field_image', array(
+      'type' => 'hidden',
+    ))
+    ->save();
+
+Create a new form display:
+
+  $values = array(
+    'targetEntityType' => $entity_type,
+    'bundle' => $bundle,
+    'mode' => $form_mode,
+    'status' => TRUE,
+  );
+
+  \Drupal::entityTypeManager()
+    ->getStorage('entity_form_display')
+    ->create($values);
+
+===============================================================================================
+Entity Form View
+===============================================================================================
+
+$form = \Drupal::service('entity.form_builder')->getForm($entity);
+$form = \Drupal::service('entity.form_builder')->getForm($entity, 'form_display_mode');
+
+or 
+
+$form = \Drupal::entityTypeManager()
+  ->getFormObject('node', 'default')
+  ->setEntity($node);
+
+return \Drupal::formBuilder()->getForm($form);
+
+or
+
+/**
+ * @ContentEntityType(
+ *   id = "property",
+ *   handlers = {
+ *     "form" = {
+ *       "default" = "Drupal\mymodule\Form\MyEntityForm",
+ *       "new_form_mode" = "Drupal\mymodule\Form\MyEntityForm",
+
+ route_key:
+  path: 'route_path'
+  defaults:
+    _entity_form: 'entity:form_mode'
+    _title: 'Title'
+
+===============================================================================================
+Validate an Entity
+===============================================================================================
+
+$definition = DataDefinition::create('integer')
+      ->addConstraint('Range', ['min' => 5]);
+$typed_data = \Drupal::typedDataManager()->create($definition, 10);
+$violations = $typed_data->validate();
+
+===============================================================================================
+Entity Field Definition:
+===============================================================================================
+
+$fields['address'] = Drupal\Core\Field\BaseFieldDefinition::create('string')
+  ->setLabel(t('Address'))
+  ->setDescription(t('Enter address.'))
+  ->setRevisionable(TRUE)
+  ->setPropertyConstraints('value', ['Length' => ['max' => 200]])
+  ->setDisplayOptions('view', ['label' => 'inline','type' => 'string'])
+  ->setDisplayOptions('form', ['type' => 'string_textfield'])
+  ->setDisplayConfigurable('form', TRUE)
+  ->setDisplayConfigurable('view', TRUE);
+
+===============================================================================================
+Load Field Configurations:
+===============================================================================================
+
+\Drupal::entityManager()->getStorage('field_config')->loadByProperties(array('field_name' => $field_name)))
+\Drupal::entityManager()->getStorage('field_storage_config')->loadByProperties(array('type' => 'taxonomy_term_reference')))
+
+===============================================================================================
+Parsing YML and create a Field
+===============================================================================================
+
+$module_path = drupal_get_path('module', 'my_module');
+
+$yml = Yaml::parse(file_get_contents($module_path . '/config/install/field.storage.paragraph.field_link.yml'));
+if (!FieldStorageConfig::loadByName($yml['entity_type'], $yml['field_name'])) {
+  FieldStorageConfig::create($yml)->save();
+}
+$yml = Yaml::parse(file_get_contents($module_path . '/config/install/field.field.paragraph.image.field_link.yml'));
+if (!FieldConfig::loadByName($yml['entity_type'], $yml['bundle'], $yml['field_name'])) {
+  FieldConfig::create($yml)->save();
+}
+
+
+===============================================================================================
+Enable Theme
+===============================================================================================
+
+// Use the classy theme.
+$this->container->get('theme_installer')->install(['classy']);
+$this->container->get('config.factory')
+  ->getEditable('system.theme')
+  ->set('default', 'classy')
+  ->save();
+// Clear the theme registry.
+$this->container->set('theme.registry', NULL);
+
+
+
+============================================================================================================================================
+Render a View
+============================================================================================================================================
+$view = Drupal\views\Views::getView('who_s_online');
+
+if (is_object($view)) {
+  $view->setDisplay('who_s_online_block');
+  $view->preExecute();
+  $view->execute();
+  //$content = $view->buildRenderable('who_s_online_block');
+  //$content = $view->buildRenderable('block', $args);
+  $content = $view->buildRenderable();
+  $output[] = $content;
+}
