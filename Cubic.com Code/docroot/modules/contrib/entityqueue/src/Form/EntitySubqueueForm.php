@@ -6,13 +6,13 @@ use Drupal\Component\Datetime\TimeInterface;
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Entity\ContentEntityForm;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityRepositoryInterface;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\Core\Field\WidgetBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\ElementInfoManagerInterface;
+use Drupal\entity_browser\Plugin\Field\FieldWidget\EntityReferenceBrowserWidget;
 use Drupal\inline_entity_form\Plugin\Field\FieldWidget\InlineEntityFormBase;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -35,58 +35,39 @@ class EntitySubqueueForm extends ContentEntityForm {
   protected $elementInfo;
 
   /**
-   * A logger instance.
-   *
-   * @var \Psr\Log\LoggerInterface
-   */
-  protected $logger;
-
-  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('entity.manager'),
+      $container->get('entity.repository'),
       $container->get('entity_type.bundle.info'),
       $container->get('datetime.time'),
-      $container->get('element_info'),
-      $container->get('logger.factory')->get('entityqueue')
+      $container->get('element_info')
     );
   }
 
   /**
    * Constructs a EntitySubqueueForm.
    *
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
-   *   The entity manager.
+   * @param \Drupal\Core\Entity\EntityRepositoryInterface $entity_repository
+   *   The entity repository service.
    * @param \Drupal\Core\Entity\EntityTypeBundleInfoInterface $entity_type_bundle_info
    *   The entity type bundle service.
    * @param \Drupal\Component\Datetime\TimeInterface $time
    *   The time service.
    * @param \Drupal\Core\Render\ElementInfoManagerInterface $element_info
    *   The element info manager.
-   * @param \Psr\Log\LoggerInterface $logger
-   *   A logger instance.
    */
-  public function __construct(EntityManagerInterface $entity_manager, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, ElementInfoManagerInterface $element_info, LoggerInterface $logger) {
-    parent::__construct($entity_manager, $entity_type_bundle_info, $time);
+  public function __construct(EntityRepositoryInterface $entity_repository, EntityTypeBundleInfoInterface $entity_type_bundle_info, TimeInterface $time, ElementInfoManagerInterface $element_info) {
+    parent::__construct($entity_repository, $entity_type_bundle_info, $time);
 
     $this->elementInfo = $element_info;
-    $this->logger = $logger;
   }
 
   /**
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-    // Reverse the items in the admin form if the queue uses the 'Reverse order
-    // in admin view' option.
-    if ($this->entity->getQueue()->getReverseInAdmin()) {
-      $subqueue_items = $this->entity->get('items');
-      $items_values = $subqueue_items->getValue();
-      $subqueue_items->setValue(array_reverse($items_values));
-    }
-
     $form = parent::form($form, $form_state);
 
     $form['#title'] = $this->t('Edit subqueue %label', ['%label' => $this->entity->label()]);
@@ -214,11 +195,6 @@ class EntitySubqueueForm extends ContentEntityForm {
       $items_widget->extractFormValues($subqueue_items, $form, $form_state);
       $items_values = $subqueue_items->getValue();
 
-      // Revert the effect of the 'Reverse order in admin view' option.
-      if ($entity->getQueue()->getReverseInAdmin()) {
-        $items_values = array_reverse($items_values);
-      }
-
       switch ($op) {
         case 'reverse':
           $subqueue_items->setValue(array_reverse($items_values));
@@ -230,6 +206,11 @@ class EntitySubqueueForm extends ContentEntityForm {
           break;
 
         case 'clear':
+          // Set the items count to zero.
+          $parents = NestedArray::getValue($form, $path)['widget']['#field_parents'];
+          $field_state = WidgetBase::getWidgetState($parents, 'items', $form_state);
+          $field_state['items_count'] = 0;
+          WidgetBase::setWidgetState($parents, 'items', $form_state, $field_state);
           $subqueue_items->setValue(NULL);
           break;
       }
@@ -261,10 +242,18 @@ class EntitySubqueueForm extends ContentEntityForm {
           }
 
           foreach ($entities as $delta => $item) {
-            $item['_weight'] = $delta;
+            $item['weight'] = $delta;
             $form_state->set(['inline_entity_form', $ief_id, 'entities', $delta], $item);
           }
         }
+      }
+
+      // Handle 'entity_browser' widgets separately because they have a custom
+      // form state storage for the current state of the referenced entities.
+      if (\Drupal::moduleHandler()->moduleExists('entity_browser') && $items_widget instanceof EntityReferenceBrowserWidget) {
+        $ids = array_column($subqueue_items->getValue(), 'target_id');
+        $widget_id = $subqueue_items->getEntity()->uuid() . ':' . $subqueue_items->getFieldDefinition()->getName();
+        $form_state->set(['entity_browser_widget', $widget_id], $ids);
       }
 
       $form_state->getFormObject()->setEntity($entity);
@@ -285,24 +274,16 @@ class EntitySubqueueForm extends ContentEntityForm {
    */
   public function save(array $form, FormStateInterface $form_state) {
     $subqueue = $this->entity;
-
-    // Revert the effect of the 'Reverse order in admin view' option.
-    if ($subqueue->getQueue()->getReverseInAdmin()) {
-      $subqueue_items = $subqueue->get('items');
-      $items_values = $subqueue_items->getValue();
-      $subqueue_items->setValue(array_reverse($items_values));
-    }
-
     $status = $subqueue->save();
 
     $edit_link = $subqueue->toLink($this->t('Edit'), 'edit-form')->toString();
     if ($status == SAVED_UPDATED) {
-      drupal_set_message($this->t('The entity subqueue %label has been updated.', ['%label' => $subqueue->label()]));
-      $this->logger->notice('The entity subqueue %label has been updated.', ['%label' => $subqueue->label(), 'link' => $edit_link]);
+      $this->messenger()->addMessage($this->t('The entity subqueue %label has been updated.', ['%label' => $subqueue->label()]));
+      $this->logger('entityqueue')->notice('The entity subqueue %label has been updated.', ['%label' => $subqueue->label(), 'link' => $edit_link]);
     }
     else {
-      drupal_set_message($this->t('The entity subqueue %label has been added.', ['%label' => $subqueue->label()]));
-      $this->logger->notice('The entity subqueue %label has been added.', ['%label' => $subqueue->label(), 'link' => $edit_link]);
+      $this->messenger()->addMessage($this->t('The entity subqueue %label has been added.', ['%label' => $subqueue->label()]));
+      $this->logger('entityqueue')->notice('The entity subqueue %label has been added.', ['%label' => $subqueue->label(), 'link' => $edit_link]);
     }
 
     $queue = $subqueue->getQueue();

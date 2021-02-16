@@ -1,0 +1,3 @@
+https://www.youtube.com/watch?v=EynAnD8nDfc - Context API
+https://www.youtube.com/watch?v=kSIm78jmqhE - useContext 
+https://www.youtube.com/watch?v=ZbUcN0LBqwY&t=41s - useEffect

@@ -7,7 +7,6 @@ use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Session\AccountInterface;
 use Drupal\entityqueue\Entity\EntitySubqueue;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -92,6 +91,7 @@ class EntityQueueListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
+    assert($entity instanceof EntityQueueInterface);
     $row = [
       'data' => [
         'label' => $entity->label(),
@@ -142,7 +142,7 @@ class EntityQueueListBuilder extends ConfigEntityListBuilder {
       }
     }
     // @todo Use a placeholder for the entity label if this is abstracted to
-    // other entity types.
+    //   other entity types.
     $build['enabled']['table']['#empty'] = $this->t('There are no enabled queues.');
     $build['disabled']['table']['#empty'] = $this->t('There are no disabled queues.');
 
@@ -153,6 +153,7 @@ class EntityQueueListBuilder extends ConfigEntityListBuilder {
    * {@inheritdoc}
    */
   public function getDefaultOperations(EntityInterface $entity) {
+    assert($entity instanceof EntityQueueInterface);
     $operations = parent::getDefaultOperations($entity);
 
     if (isset($operations['edit'])) {
@@ -193,12 +194,12 @@ class EntityQueueListBuilder extends ConfigEntityListBuilder {
         ->count()
         ->execute();
 
-      $items = $this->t('@count subqueues', ['@count' => $subqueues_count]);
+      $items = $this->formatPlural($subqueues_count, '@count subqueue', '@count subqueues');
     }
     else {
       $subqueue = EntitySubqueue::load($queue->id());
 
-      $items = $this->t('@count items', ['@count' => count($subqueue->items)]);
+      $items = $this->formatPlural(count($subqueue->items), '@count item', '@count items');
     }
 
     return $items;

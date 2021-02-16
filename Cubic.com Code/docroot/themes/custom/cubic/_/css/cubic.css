@@ -3933,10 +3933,14 @@ body {
 .region-content ul,
 .region-content ol,
 .region-content .embedded-entity {
-    color: #808285;
+    color: #313438;
     font-size: 1rem;
     line-height: 1.6em;
     margin-bottom: 1.6rem;
+}
+
+.worklife-balance .card .card-body ul {
+    margin-bottom: 0rem !important;
 }
 
 .region-content .text-formatted>img {
@@ -3995,7 +3999,7 @@ body {
 
 .region-content table {
     table-layout: fixed;
-    width: 100%;
+    width: 100% !important;
 }
 
 .region-content table tr:nth-child(even) {
@@ -4034,6 +4038,7 @@ screen and (min-width: 40em) {
     }
     .region-content .embedded-entity.entity--image {
         max-width: 50%;
+        margin: 0 auto;
     }
     .region-content .embedded-entity.align-center {
         text-align: center;
@@ -4066,9 +4071,9 @@ screen and (min-width: 40em) {
 }
 
 h2 {
-    font-size: 2.125rem;
+    font-size: 2.125rem !important;
     font-weight: normal;
-    line-height: 1.1em;
+    line-height: 1.1em !important;
 }
 
 h3,
@@ -4270,6 +4275,7 @@ screen and (min-width: 40em) {
     font-size: 100%;
     color: #00548b;
     font-family: "Helvetica LT W01 Bold", sans-serif !important;
+    font-size: 1rem !important;
 }
 
 .site-footer__top .navigation .menu {
@@ -6338,6 +6344,7 @@ screen and (min-width: 40em) {
     display: inline-block;
     height: 0.625em;
     margin-left: 0.6em;
+    width: 15px !important;
 }
 
 .node--view-mode-featured .learn-more svg * {
@@ -6982,7 +6989,7 @@ screen and (min-width: 40em) {
 }
 
 .page-node-type-post .node--full--post-with-sidebar hr {
-    padding-top: 4.5rem;
+    padding-top: 1.5rem;
 }
 
 .page-node-type-post .node--full--post-with-sidebar .paragraph--type--basic-text.bio-wrapper {
@@ -7661,7 +7668,7 @@ screen and (min-width: 40em) {
 
 .view-homepage-slider .node--type-slider h2 {
     color: #000;
-    font-family: "Helvetica LT W01 Light", sans-serif;
+    font-family: "Helvetica LT W01 Light", sans-serif !important;
     font-size: 2.5rem;
     line-height: 0.8863636364em;
     padding: 1.875rem 1.25rem 1rem;
@@ -7680,7 +7687,7 @@ screen and (min-width: 40em) {
 @media print,
 screen and (min-width: 64em) {
     .view-homepage-slider .node--type-slider h2 {
-        font-size: 5.625rem;
+        font-size: 5.625rem !important;
     }
 }
 
@@ -7966,7 +7973,7 @@ screen and (min-width: 40em) {
     .view-id-list .view-filters .form-select,
     .view-id-news.view-display-id-page_1 .view-filters .form-select,
     .view-id-people_teaser_list .view-filters .form-select {
-        width: 13.75rem;
+        width: 13.15rem;
     }
 }
 
@@ -8764,6 +8771,7 @@ screen and (min-width: 40em) {
     top: 0.0625em;
     transition: all 0.5s;
     fill: #fff;
+    width: 15px !important;
 }
 
 .block-cubic-globe-block .cubic-globe-block .grid .cubic-globe-block-text .more-info-about-cubic a:hover svg {
@@ -9058,7 +9066,7 @@ screen and (min-width: 64em) {
 .context-simple-grey-header .block-page-title-block .page-title-content .page-title,
 .context-tall-header .block-page-title-block .page-title-content .page-title,
 .page-node-type-solution .block-page-title-block .page-title-content .page-title {
-    font-family: "Helvetica LT W01 Light", sans-serif;
+    font-family: "Helvetica LT W01 Light", sans-serif !important;
     font-size: 2.5rem;
     font-weight: normal;
     letter-spacing: -0.025em;
@@ -9071,7 +9079,7 @@ screen and (min-width: 40em) {
     .context-simple-grey-header .block-page-title-block .page-title-content .page-title,
     .context-tall-header .block-page-title-block .page-title-content .page-title,
     .page-node-type-solution .block-page-title-block .page-title-content .page-title {
-        font-size: 3.125rem;
+        font-size: 3.125rem !important;
     }
 }
 
@@ -9081,7 +9089,7 @@ screen and (min-width: 64em) {
     .context-simple-grey-header .block-page-title-block .page-title-content .page-title,
     .context-tall-header .block-page-title-block .page-title-content .page-title,
     .page-node-type-solution .block-page-title-block .page-title-content .page-title {
-        font-size: 4rem;
+        font-size: 4rem !important;
     }
 }
 
@@ -9090,7 +9098,7 @@ screen and (min-width: 64em) {
     .context-simple-grey-header .block-page-title-block .page-title-content .page-title,
     .context-tall-header .block-page-title-block .page-title-content .page-title,
     .page-node-type-solution .block-page-title-block .page-title-content .page-title {
-        font-size: 5rem;
+        font-size: 5rem !important;
     }
 }
 
@@ -9136,7 +9144,7 @@ screen and (min-width: 40em) {
         -ms-flex: 1 0 50%;
         flex: 1 0 50%;
         height: auto;
-        min-height: 31.25rem;
+        min-height: 36.25rem;
         -webkit-order: 1;
         -ms-flex-order: 1;
         order: 1;
@@ -9221,7 +9229,7 @@ screen and (min-width: 64em) {
     color: #000;
     display: inline-block;
     font-family: "Helvetica LT W01 Bold", sans-serif;
-    margin-top: 2.5em;
+    /* margin-top: 2.5em; */
 }
 
 .page-node-type-solution .block-page-title-block {
@@ -10793,6 +10801,12 @@ screen and (min-width: 64em) {
 .paragraph--type--milestone-50-50.subtype--product .video-embed-5050 .field--name-field-image-video img,
 .paragraph--type--_0-50.subtype--product .video-embed-5050 .field--name-field-image-video img {
     max-height: 37.5rem;
+    width: auto;
+}
+
+.ie .paragraph--type--milestone-50-50.subtype--product .video-embed-5050 .field--name-field-image-video img,
+.ie .paragraph--type--_0-50.subtype--product .video-embed-5050 .field--name-field-image-video img {
+    max-height: 22rem !important;
     width: auto;
 }
 
@@ -16479,7 +16493,7 @@ screen and (min-width: 64em) {
 }
 
 .paragraph--type--tabs .tabs-before .field--name-field-body p {
-    color: #fff;
+    color: #fff !important;
 }
 
 .paragraph--type--tabs .tabs-before .field--name-field-body p:last-child {
@@ -17973,6 +17987,10 @@ a.animated-button.thar-three:before {
     border-radius: 0 !important;
 }
 
+.career-features .card-body {
+    min-height: 235px !important;
+}
+
 .career-features .card-body:hover,
 .career-features .card-body:hover p {
     color: #ffffff !important;
@@ -17986,6 +18004,14 @@ a.animated-button.thar-three:before {
 .career-features .card-body a {
     color: #00548b !important;
     font-weight: 600;
+}
+
+.career-features img.card-img-top {
+    max-height: 205px !important;
+}
+
+.career-compensation img.card-img-top {
+    max-height: 170px !important;
 }
 
 .pb-10 {
@@ -18075,6 +18101,11 @@ a.animated-button.thar-three:before {
     width: 100% !important;
 }
 
+.career-map .map-wrapper b {
+    font-size: 0.93rem !important;
+    font-weight: normal;
+}
+
 .section-padding {
     padding: 50px 10px;
 }
@@ -18147,9 +18178,9 @@ a.animated-button.thar-three:before {
     height: 6%;
     width: 3%;
     position: absolute;
-    left: 15.45%;
-    top: 37.3%;
-    background: rgb(23 121 186 / 0.17);
+    left: 14.35%;
+    top: 40.3%;
+    /* background: rgb(23 121 186 / 0.17); */
     border-radius: 50%;
 }
 
@@ -18159,7 +18190,7 @@ a.animated-button.thar-three:before {
     position: absolute;
     left: 19.8%;
     top: 41%;
-    background: rgb(23 121 186 / 0.17);
+    /* background: rgb(23 121 186 / 0.17); */
     border-radius: 50%;
 }
 
@@ -18169,7 +18200,7 @@ a.animated-button.thar-three:before {
     position: absolute;
     left: 21.3%;
     top: 37.5%;
-    background: rgb(23 121 186 / 0.17);
+    /* background: rgb(23 121 186 / 0.17); */
     border-radius: 50%;
 }
 
@@ -18179,7 +18210,7 @@ a.animated-button.thar-three:before {
     position: absolute;
     left: 23.2%;
     top: 38.25%;
-    background: rgb(23 121 186 / 0.17);
+    /* background: rgb(23 121 186 / 0.17); */
     border-radius: 50%;
 }
 
@@ -18189,7 +18220,7 @@ a.animated-button.thar-three:before {
     position: absolute;
     left: 25.2%;
     top: 35.5%;
-    background: rgb(23 121 186 / 0.17);
+    /* background: rgb(23 121 186 / 0.17); */
     border-radius: 50%;
 }
 
@@ -18199,7 +18230,7 @@ a.animated-button.thar-three:before {
     position: absolute;
     left: 27.5%;
     top: 31%;
-    background: rgb(23 121 186 / 0.17);
+    /* background: rgb(23 121 186 / 0.17); */
     border-radius: 50%;
 }
 
@@ -18209,7 +18240,7 @@ a.animated-button.thar-three:before {
     position: absolute;
     left: 23.5%;
     top: 43.6%;
-    background: rgb(23 121 186 / 0.17);
+    /* background: rgb(23 121 186 / 0.17); */
     border-radius: 50%;
 }
 
@@ -18219,7 +18250,7 @@ a.animated-button.thar-three:before {
     position: absolute;
     left: 45.1%;
     top: 26%;
-    background: rgb(23 121 186 / 0.17);
+    /* background: rgb(23 121 186 / 0.17); */
     border-radius: 50%;
 }
 
@@ -18229,7 +18260,7 @@ a.animated-button.thar-three:before {
     position: absolute;
     left: 48.4%;
     top: 26.5%;
-    background: rgb(23 121 186 / 0.17);
+    /* background: rgb(23 121 186 / 0.17); */
     border-radius: 50%;
 }
 
@@ -18239,7 +18270,7 @@ a.animated-button.thar-three:before {
     position: absolute;
     left: 66.75%;
     top: 51%;
-    background: rgb(23 121 186 / 0.17);
+    /* background: rgb(23 121 186 / 0.17); */
     border-radius: 50%;
 }
 
@@ -18249,7 +18280,7 @@ a.animated-button.thar-three:before {
     position: absolute;
     left: 84.4%;
     top: 72.5%;
-    background: rgb(23 121 186 / 0.17);
+    /* background: rgb(23 121 186 / 0.17); */
     border-radius: 50%;
 }
 
@@ -18259,7 +18290,7 @@ a.animated-button.thar-three:before {
     position: absolute;
     left: 85.4%;
     top: 78.5%;
-    background: rgb(23 121 186 / 0.17);
+    /* background: rgb(23 121 186 / 0.17); */
     border-radius: 50%;
 }
 
@@ -18299,6 +18330,59 @@ a.animated-button.thar-three:before {
     font-size: 12px;
     text-decoration: none;
     border-radius: 0px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .25) !important;
+}
+
+@media (max-width:575.98px) {
+    #cubic8:hover .cubic-address8,
+    #cubic9:hover .cubic-address9 {
+        right: -100px !important;
+        position: absolute;
+        z-index: 999;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .25) !important;
+    }
+    #cubic10:hover .cubic-address10 {
+        right: -50px !important;
+        position: absolute;
+        z-index: 999;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .25) !important;
+    }
+    #cubic11:hover .cubic-address11,
+    #cubic12:hover .cubic-address12 {
+        right: 0px !important;
+        position: absolute;
+        z-index: 999;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, .25) !important;
+    }
+    .career-features .card-body {
+        min-height: auto !important;
+    }
+    .bootstrap-full-banner .full-banner-text {
+        position: absolute !important;
+        top: 30% !important;
+        left: 15% !important;
+        width: 60% !important;
+    }
+    .bootstrap-full-banner,
+    .bootstrap-full-height-banner {
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-size: cover !important;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+    .section-padding {
+        padding: 50px 0px !important;
+    }
+}
+
+@media (min-width:576px) {
+    .bootstrap-full-banner,
+    .bootstrap-full-height-banner {
+        background-size: 100% 100% !important;
+    }
 }
 
 
@@ -18515,6 +18599,10 @@ section.career-explorejobs .header-title {
     color: #ffffff !important;
 }
 
+section.career-explorejobs p {
+    color: #fff !important;
+}
+
 .header-title {
     font-size: 2rem !important;
     font-weight: 500;
@@ -18546,6 +18634,10 @@ section.career-explorejobs .header-title {
 .location-benifits img {
     border: 4px solid rgb(223 223 223);
     border-radius: 0;
+}
+
+section.location-benifits a p {
+    text-align: center !important;
 }
 
 .section-padding {
@@ -18676,7 +18768,7 @@ section.career-explorejobs .header-title {
 
 .hover-effect p,
 .hover-effect p:hover {
-    text-align: center;
+    /* text-align: left !important; */
     color: #000000 !important;
     text-decoration: none !important;
 }
@@ -18815,7 +18907,7 @@ section.career-explorejobs .header-title {
 .india-modal .career-benefits .card,
 .ireland-modal .career-benefits .card,
 .usa-modal .career-benefits .card {
-    min-height: 150px;
+    min-height: 155px;
     border-left: 5px solid #00548b;
 }
 
@@ -18894,37 +18986,6 @@ button a:hover {
 ***/
 
 
-/***********  Banner Text  ***********/
-
-.banner-content {
-    position: relative;
-}
-
-.banner-text {
-    position: absolute;
-    top: 35%;
-    left: 20%;
-    color: #FFFFFF !important;
-    font-size: 4rem !important;
-    font-weight: 400;
-}
-
-.banner-text p {
-    font-size: 16px;
-    font-weight: 500;
-}
-
-.banner-text a {
-    font-size: 16px;
-    font-weight: 700;
-    color: #FFFFFF !important;
-}
-
-.banner-content .page-title-content {
-    display: none !important;
-}
-
-
 /***********  WD - Embedded Tabs  ***********/
 
 .career-compensation .nav-tabs {
@@ -18942,9 +19003,10 @@ button a:hover {
     background-color: #eeeeee !important;
     border-color: transparent !important;
     padding: 25px;
-    font-size: 22px;
-    font-weight: 500;
+    font-size: 20px;
+    /* font-weight: 500; */
     border-radius: 0 !important;
+    font-family: "Helvetica LT W01 Roman", sans-serif;
 }
 
 .career-compensation ul#myTab {
@@ -18957,9 +19019,10 @@ button a:hover {
     background-color: #00adbb !important;
     border-color: transparent !important;
     padding: 25px;
-    font-size: 22px;
-    font-weight: 500;
+    font-size: 20px;
+    /* font-weight: 500; */
     border-radius: 0 !important;
+    font-family: "Helvetica LT W01 Roman", sans-serif;
 }
 
 .opportunities {
@@ -18970,31 +19033,346 @@ button a:hover {
     padding-bottom: 0px !important;
 }
 
+section.career-compensation ul:not(.links):not(.tabs) li::before {
+    width: 0px !important;
+}
+
+section.career-compensation ul:not(.links):not(.tabs) li {
+    padding-left: 0px !important;
+}
+
+
+/***********  Banner Text  ***********/
+
+.bootstrap-full-banner {
+    position: relative;
+}
+
+.bootstrap-half-banner {
+    position: relative;
+    background-color: #f4f5f7;
+}
+
+.full-banner-text {
+    position: absolute;
+    top: 30%;
+    left: 30%;
+    width: 40% !important;
+    color: #FFFFFF !important;
+    font-size: 2.75rem !important;
+    font-family: "Helvetica LT W01 Light", sans-serif !important;
+    font-weight: 600 !important;
+}
+
+.full-banner-text p {
+    font-size: 16px;
+    font-family: "Helvetica LT W01 Roman", sans-serif !important;
+    font-weight: lighter;
+}
+
+.full-banner-text a {
+    font-size: 16px;
+    font-family: "Helvetica LT W01 Bold", sans-serif !important;
+    color: #FFFFFF !important;
+}
+
+.half-banner-text {
+    position: absolute;
+    top: 30%;
+    left: 10%;
+    color: #000 !important;
+    font-size: 2.75rem !important;
+    font-family: "Helvetica LT W01 Light", sans-serif !important;
+}
+
+.half-banner-text p {
+    font-size: 16px;
+    font-family: "Helvetica LT W01 Roman", sans-serif !important;
+}
+
+.half-banner-text a {
+    font-size: 16px;
+    font-family: "Helvetica LT W01 Bold", sans-serif !important;
+    color: #000 !important;
+}
+
+.banner-content .page-title-content {
+    display: none !important;
+}
+
 
 /**** Banner Learmore Arrow  *****/
 
+.bootstrap-banner {
+    position: relative;
+}
+
 .banner-learnmore .arrow {
     border: solid #ffffff;
-    border-width: 0 2px 2px 0;
+    border-width: 0 2.75px 2.75px 0;
     display: inline-block;
     padding: 3px;
 }
 
 .banner-learnmore .right {
-    transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
-    margin-left: 5px;
-}
-
-.banner-learnmore a:hover .right {
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg);
     margin-left: 5px;
+    margin-bottom: 3px;
 }
+
+
+/* .banner-learnmore a:hover .right {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    margin-left: 5px;
+} */
+
+.banner-learnmore1 .arrow {
+    border: solid #000000;
+    border-width: 0 2.75px 2.75px 0;
+    display: inline-block;
+    padding: 3px;
+}
+
+.banner-learnmore1 .right {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    margin-left: 5px;
+    margin-bottom: 3px;
+}
+
+
+/* .banner-learnmore1 a:hover .right {
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    margin-left: 5px;
+} */
 
 .container-fluid .row {
     margin-right: auto !important;
     margin-left: auto !important;
     display: flex !important;
     flex-wrap: wrap !important;
+}
+
+
+/**** Banner Learmore theme Arrow  *****/
+
+.bootstrap-full-banner .full-banner-text a {
+    text-decoration: none !important;
+}
+
+.bootstrap-full-banner .full-banner-text a:hover,
+.bootstrap-full-banner .full-banner-text a:focus {
+    text-decoration: none !important;
+}
+
+.bootstrap-full-banner .full-banner-text a[href^='#'] {
+    background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="40.5419" height="24.0293" viewBox="0 0 40.5419 24.0293"><polygon points="33.996 0 20.271 12.285 6.546 0 0 5.88 20.271 24.029 40.542 5.88 33.996 0"/></svg>') no-repeat right center;
+    background-size: 12px auto;
+    color: #000;
+    padding-right: 1em;
+    position: relative;
+    transition: all 0.25s;
+}
+
+.bootstrap-full-banner .full-banner-text a[href^='#']::before {
+    background-color: #000;
+    border-radius: 1px 1px 0 0;
+    content: '';
+    display: block;
+    height: 0;
+    position: absolute;
+    right: 3px;
+    top: 10px;
+    -webkit-transform: translate(-50%, -100%);
+    -ms-transform: translate(-50%, -100%);
+    transform: translate(-50%, -100%);
+    transition: all 0.25s;
+    width: 3px;
+    display: flex !important;
+}
+
+.bootstrap-full-banner .full-banner-text a[href^='#']:hover {
+    background-position: right calc(50% + 3px);
+    color: #000;
+    text-decoration: underline;
+}
+
+.bootstrap-full-banner .full-banner-text a[href^='#']:hover::before {
+    height: 8px;
+    top: 13px;
+}
+
+@media (min-width:768px) {
+    .bootstrap-full-banner .full-banner-text a[href^='#']::before {
+        left: 96.25px !important;
+    }
+}
+
+@media (min-width:992px) {
+    .bootstrap-full-banner .full-banner-text a[href^='#']::before {
+        left: 96.25px !important;
+    }
+}
+
+
+/*
+@media (min-width:1200px) {
+    .bootstrap-full-banner .full-banner-text a[href^='#']::before {
+        left: 95.75px !important;
+    }
+}
+
+
+@media (max-width: 1400px) and (min-width: 1365px) {
+    .bootstrap-full-banner .full-banner-text a[href^='#']::before {
+        left: 96.25px !important;
+    }
+} */
+
+
+/* .bootstrap-full-banner .banner-learnmore a[href^='#'] {
+    background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="40.5419" height="24.0293" viewBox="0 0 40.5419 24.0293"><polygon points="33.996 0 20.271 12.285 6.546 0 0 5.88 20.271 24.029 40.542 5.88 33.996 0"/></svg>') no-repeat right center;
+    background-size: 12px auto;
+    color: #000;
+    padding-right: 1em;
+    position: relative;
+    transition: all 0.25s;
+}
+
+.bootstrap-full-banner .banner-learnmore a[href^='#']::before {
+    background-color: #000;
+    border-radius: 1px 1px 0 0;
+    content: '';
+    display: block;
+    height: 0;
+    position: absolute;
+    right: 3px;
+    top: 13px;
+    -webkit-transform: translate(-50%, -100%);
+    -ms-transform: translate(-50%, -100%);
+    transform: translate(-50%, -100%);
+    transition: all 0.25s;
+    width: 3px;
+}
+*/
+
+.bootstrap-full-banner .banner-learnmore a {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4LjY5MDkgMTQuNTU0MiI+PHBvbHlnb24gcG9pbnRzPSIxLjQxNCAxNC41NTQgMCAxMy4xNCA1Ljg2MyA3LjI3NyAwIDEuNDE0IDEuNDE0IDAgOC42OTEgNy4yNzcgMS40MTQgMTQuNTU0Ii8+PC9zdmc+");
+    background-position: right 4px;
+    background-repeat: no-repeat;
+    background-size: 7px 12px;
+    color: #000;
+    font-family: "Helvetica LT W01 Roman", sans-serif;
+    padding-right: 1em;
+    position: relative;
+    transition: all 0.25s;
+}
+
+.bootstrap-full-banner .banner-learnmore a[href^='#'] {
+    background-image: url("../img/icon_arrow-dropdown-white.svg");
+}
+
+.bootstrap-full-banner .banner-learnmore a[href^='#']::before {
+    background-color: #fff;
+}
+
+.bootstrap-half-banner .banner-learnmore1 a[href^='#'] {
+    background: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="40.5419" height="24.0293" viewBox="0 0 40.5419 24.0293"><polygon points="33.996 0 20.271 12.285 6.546 0 0 5.88 20.271 24.029 40.542 5.88 33.996 0"/></svg>') no-repeat right center;
+    background-size: 12px auto;
+    color: #000;
+    padding-right: 1em;
+    position: relative;
+    transition: all 0.25s;
+}
+
+.bootstrap-half-banner .banner-learnmore1 a[href^='#']::before {
+    background-color: #000;
+    border-radius: 1px 1px 0 0;
+    content: '';
+    display: block;
+    height: 0;
+    position: absolute;
+    right: 3px;
+    top: 10px;
+    -webkit-transform: translate(-50%, -100%);
+    -ms-transform: translate(-50%, -100%);
+    transform: translate(-50%, -100%);
+    transition: all 0.25s;
+    width: 3px;
+}
+
+.bootstrap-half-banner .banner-learnmore1 a[href^='#']:hover {
+    background-position: right calc(50%+3px);
+    color: #000;
+    text-decoration: underline;
+}
+
+.bootstrap-half-banner .banner-learnmore1 a[href^='#']:hover::before {
+    height: 8px;
+    top: 13px;
+}
+
+.bootstrap-half-banner .banner-learnmore1 a {
+    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4LjY5MDkgMTQuNTU0MiI+PHBvbHlnb24gcG9pbnRzPSIxLjQxNCAxNC41NTQgMCAxMy4xNCA1Ljg2MyA3LjI3NyAwIDEuNDE0IDEuNDE0IDAgOC42OTEgNy4yNzcgMS40MTQgMTQuNTU0Ii8+PC9zdmc+");
+    background-position: right 4px;
+    background-repeat: no-repeat;
+    background-size: 7px 12px;
+    color: #000;
+    font-family: "Helvetica LT W01 Roman", sans-serif;
+    padding-right: 1em;
+    position: relative;
+    transition: all 0.25s;
+}
+
+.bootstrap-full-banner {
+    height: 500px !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    /* background-size: 100% 100% !important; */
+}
+
+.bootstrap-full-banner .banner-text {
+    top: 25%;
+}
+
+.bootstrap-full-height-banner {
+    height: 600px !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    /* background-size: 100% 100% !important; */
+}
+
+
+/* .bootstrap-full-height-banner .card-img-top {
+    min-height: 600px !important;
+} */
+
+
+/***** IE Specific CSS ******/
+
+.ie .paragraph--type--milestone-50-50.subtype--product .video-embed-5050 .field--name-field-image-video img,
+.ie .paragraph--type--_0-50.subtype--product .video-embed-5050 .field--name-field-image-video img {
+    max-height: 37.5rem !important;
+    height: auto;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.ie .paragraph--type--milestone-50-50.subtype--product .image-gallery.not-slider .image-slider img,
+.ie .paragraph--type--_0-50.subtype--product .image-gallery.not-slider .image-slider img {
+    max-height: 37.5rem;
+    height: auto;
+    visibility: visible;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.ie .view-id-acquia_search .view-filters .form-select,
+.ie .view-id-list .view-filters .form-select,
+.ie .view-id-news.view-display-id-page_1 .view-filters .form-select,
+.ie .view-id-people_teaser_list .view-filters .form-select {
+    background: transparent !important;
 }

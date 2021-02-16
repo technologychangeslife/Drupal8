@@ -1,0 +1,8 @@
+https://www.youtube.com/watch?v=4GLkujT3xFU&t=2692s
+https://www.youtube.com/watch?v=j1v2gAV7R_A Website Performance with Varnish, Redis, and New Relic
+https://www.youtube.com/watch?v=ruX3o8K3-3M Decoupling Drupal is Easier Than You Think
+https://www.youtube.com/watch?v=5Tj-3o6aGws ReactJS + Headless Drupal: Step by Step
+
+https://bitbucket.org/spinspire/d8-react-v2/src/master/ Headless Drupal git repository.
+
+

@@ -1,0 +1,11 @@
+name: Browser Class
+description: Adds a browser class to the body tag.
+
+type: module
+core: 8.x
+core_version_requirement: ^8 || ^9
+
+# Information added by Drupal.org packaging script on 2020-05-25
+version: '8.x-1.0-alpha3'
+project: 'browserclass'
+datestamp: 1590396861

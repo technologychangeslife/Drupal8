@@ -1,0 +1,73 @@
+{#
+  /**
+  * @file
+  * Default theme implementation to display a paragraph.
+  *
+  * Available variables:
+  * - paragraph: Full paragraph entity.
+  *   Only method names starting with "get", "has", or "is" and a few common
+  *   methods such as "id", "label", and "bundle" are available. For example:
+  *   - paragraph.getCreatedTime() will return the paragraph creation timestamp.
+  *   - paragraph.id(): The paragraph ID.
+  *   - paragraph.bundle(): The type of the paragraph, for example, "image" or "text".
+  *   - paragraph.getOwnerId(): The user ID of the paragraph author.
+  *   See Drupal\paragraphs\Entity\Paragraph for a full list of public properties
+  *   and methods for the paragraph object.
+  * - content: All paragraph items. Use {{ content }} to print them all,
+  *   or print a subset such as {{ content.field_example }}. Use
+  *   {{ content|without('field_example') }} to temporarily suppress the printing
+  *   of a given child element.
+  * - attributes: HTML attributes for the containing element.
+  *   The attributes.class element may contain one or more of the following
+  *   classes:
+  *   - paragraphs: The current template type (also known as a "theming hook").
+  *   - paragraphs--type-[type]: The current paragraphs type. For example, if the paragraph is an
+  *     "Image" it would result in "paragraphs--type--image". Note that the machine
+  *     name will often be in a short form of the human readable label.
+  *   - paragraphs--view-mode--[view_mode]: The View Mode of the paragraph; for example, a
+  *     preview would result in: "paragraphs--view-mode--preview", and
+  *     default: "paragraphs--view-mode--default".
+  * - view_mode: View mode; for example, "preview" or "full".
+  * - logged_in: Flag for authenticated user status. Will be true when the
+  *   current user is a logged-in member.
+  * - is_admin: Flag for admin user status. Will be true when the current user
+  *   is an administrator.
+  *
+  * @see template_preprocess_paragraph()
+  *
+  * @ingroup themeable
+  */
+#}
+<section class="career-compensation mb-4" id="jobs-wd">
+  <ul class="nav nav-tabs" id="myTab" role="tablist">
+    {% for item in paragraph.field_block_link %}
+      <li class="nav-item">
+        {% if loop.index == 1 %}
+          <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">{{ item.title}}</a>
+        {% else %}
+          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">{{ item.title}}</a>
+        {% endif %}
+      </li>   
+    {% endfor %}
+  </ul>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="tab-content" id="myTabContent">
+					{% for item in paragraph.field_block_link %}
+					  <div
+						  {% if loop.index == 1 %}
+						    class="tab-pane fade show active p-3" id="home" role="tabpanel" aria-labelledby="home-tab"
+						  {% else %}
+						    class="tab-pane fade p-3" id="profile" role="tabpanel" aria-labelledby="profile-tab"
+						  {% endif %}
+						>
+						  <iframe id="inlineFrameCubic" src="{{ item.uri}}?iframe=true&nofocus=y" style="width:100%;height:100vw;border:none" title="Cubic Jobs">
+						  </iframe>
+            </div>
+					{% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>  

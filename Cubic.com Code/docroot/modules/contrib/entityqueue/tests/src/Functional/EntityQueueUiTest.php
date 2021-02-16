@@ -28,6 +28,11 @@ class EntityQueueUiTest extends BrowserTestBase {
   /**
    * {@inheritdoc}
    */
+  protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
 
@@ -40,7 +45,7 @@ class EntityQueueUiTest extends BrowserTestBase {
    */
   public function testListPage() {
     $this->drupalGet('/admin/structure/entityqueue');
-    $this->assertText('There are no disabled queues');
+    $this->assertSession()->pageTextContains('There are no disabled queues');
   }
 
 }

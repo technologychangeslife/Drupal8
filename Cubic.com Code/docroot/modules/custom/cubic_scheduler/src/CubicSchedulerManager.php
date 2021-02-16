@@ -154,7 +154,7 @@ class CubicSchedulerManager extends SchedulerManager {
         $this->logger->notice('@type: scheduled publishing of %title.', $logger_variables);
 
         // Use the actions system to publish the node.
-        $this->entityManager->getStorage('action')->load('node_publish_action')->getPlugin()->execute($node);
+        //$this->entityManager->getStorage('action')->load('node_publish_action')->getPlugin()->execute($node);
 
         // Invoke the event to tell Rules that Scheduler has published the node.
         if ($this->moduleHandler->moduleExists('scheduler_rules_integration')) {

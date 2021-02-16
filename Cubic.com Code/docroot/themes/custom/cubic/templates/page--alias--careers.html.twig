@@ -1,0 +1,118 @@
+{#
+/**
+ * @file
+ * Custom page template.
+ */
+#}
+{#
+{{ dump(field_country) }}
+{% for node in field_country %}
+{{ node.flag }}
+{{ node.name }}
+{{ node.work_life_balance_heading }}
+{{ node.work_life_balance_content }}
+{{ node.compensation_recog_heading }}
+{{ node.compensation_recog_content }}
+{% endfor %}
+HEALTH AND WELLNESS BENEFITS = {{ dump(health_wellness_benefits_content_array) }}
+{% for node in health_wellness_benefits_content_array %}
+{{ node.node_id }}
+{{ node.country }}
+{{ node.title }}
+{{ node.intro }}
+{% endfor %}
+Career Benefits = {{ dump(career_benefits_content_array) }}
+{% for node in career_benefits_content_array %}
+{{ node.node_id }}
+{{ node.country }}
+{{ node.title }}
+{{ node.intro }}
+{% endfor %}
+#}
+<div id="page-wrapper" class="page-wrapper">
+  {% if page.menus %}
+    <div id="menus" class="page-wrapper__menus">
+      {{ page.menus }}
+    </div>
+  {% endif %}
+  <div id="page" class="page-wrapper__page">
+    {% if page.top_bar or page.header %}
+    	<header id="header" class="fullscreen-banner site-header clearfix">
+        {{ page.top_bar }}
+        <div class="container-fluid container-fluid bootstrap-full-banner px-0" style="background: url({{ file_url(node.field_hero_image.entity.fileuri) }});">
+          <div class="full-banner-text">
+            <span> {{ node.label }} </span>
+              <p class="banner-learnmore"> {% autoescape false %}{{ node.body.value | striptags }} {% endautoescape %}<br /><br />
+              <a href="#main-content"> Learn More </a>
+            </p>
+          </div>
+        </div>
+			</header>
+    {% endif %}
+    <div id="main-wrapper" class="main-wrapper clearfix">
+      <main id="content" class="main-wrapper__content">
+        <section class="clearfix">
+          <a id="main-content" tabindex="-1"></a>
+    			{{ page.content }}
+    			<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+				</section>
+			</main>
+    </div>
+    {% if page.above_footer %}
+      <div id="above-footer" class="page-wrapper__above-footer">
+        {{ page.above_footer }}
+      </div>
+    {% endif %}
+    <footer class="site-footer">
+      <div class="site-footer__logo">
+        {% include directory ~ '/_/img/logo-full.svg' %}
+      </div>
+      {% if page.footer_first or page.footer_second or page.footer_third or page.footer_fourth %}
+        <div class="site-footer__top clearfix">
+          {{ page.footer_first }}
+          {{ page.footer_second }}
+          {{ page.footer_third }}
+          {{ page.footer_fourth }}
+        </div>
+      {% endif %}
+      {% if page.footer_bottom %}
+        <div class="site-footer__bottom clearfix">
+          {{ page.footer_bottom }}
+        </div>
+      {% endif %}
+    </footer>
+  </div>
+</div>
+<script>
+	$(document).ready(function() {
+		$("#myTabContent").hide();
+		var topOfOthDiv = $("#meet-your-colleagues").offset().top;
+		$(window).scroll(function() {
+			if ($(window).scrollTop() > topOfOthDiv) {
+				$("#myTabContent").show();
+			}
+		});
+  	$('.customer-logos').slick({
+			slidesToShow: 3,
+			slidesToScroll: 1,
+			autoplay: true,
+			autoplaySpeed: 1500,
+			arrows: false,
+			dots: false,
+			pauseOnHover: true,
+			responsive: [{
+				breakpoint: 768,
+					settings: {
+						slidesToShow: 4
+					}
+				}, {
+					breakpoint: 520,
+					settings: {
+						slidesToShow: 2
+					}
+			}]
+		});
+  });
+</script>

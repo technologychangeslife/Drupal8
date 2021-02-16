@@ -2,10 +2,12 @@
 
 namespace Drupal\entityqueue\Controller;
 
+use Drupal\Core\Ajax\AjaxHelperTrait;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Routing\RouteMatch;
 use Drupal\entityqueue\EntityQueueInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
@@ -13,11 +15,41 @@ use Drupal\entityqueue\EntitySubqueueInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Access\AccessResult;
+use Drupal\entityqueue\EntityQueueRepositoryInterface;
 
 /**
  * Returns responses for Entityqueue UI routes.
  */
 class EntityQueueUIController extends ControllerBase {
+
+  use AjaxHelperTrait;
+
+  /**
+   * The Entityqueue repository service.
+   *
+   * @var EntityQueueRepositoryInterface
+   */
+  protected $entityQueueRepository;
+
+  /**
+   * Constructs a EntityQueueUIController object
+   *
+   * @param EntityQueueRepositoryInterface $entityqueue_respository
+   *   The Entityqueue repository service.
+   */
+  public function __construct(EntityQueueRepositoryInterface $entityqueue_respository) {
+    $this->entityQueueRepository = $entityqueue_respository;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entityqueue.repository')
+    );
+  }
+
 
   /**
    * Provides a list of all the subqueues of an entity queue.
@@ -53,7 +85,7 @@ class EntityQueueUIController extends ControllerBase {
       $entity = $route_match->getParameter($entity_type_id);
     }
 
-    $queues = $this->getAvailableQueuesForEntity($entity);
+    $queues = $this->entityQueueRepository->getAvailableQueuesForEntity($entity);
     $subqueues = $this->entityTypeManager()->getStorage('entity_subqueue')->loadByProperties(['queue' => array_keys($queues)]);
     $list_builder = $this->entityTypeManager()->getListBuilder('entity_subqueue');
 
@@ -73,7 +105,7 @@ class EntityQueueUIController extends ControllerBase {
     foreach ($subqueues as $subqueue_id => $subqueue) {
       $row = $list_builder->buildRow($subqueue);
 
-      // Check if entity is in queue
+      // Check if entity is in queue.
       $subqueue_items = $subqueue->get('items')->getValue();
       if (in_array($entity->id(), array_column($subqueue_items, 'target_id'), TRUE)) {
         $row['operations']['data']['#links'] = [
@@ -179,14 +211,40 @@ class EntityQueueUIController extends ControllerBase {
     $entity = $this->entityTypeManager()->getStorage($entity_subqueue->getQueue()->getTargetEntityTypeId())->load($entity_id);
 
     // Perform the operation.
-    $entity_subqueue->$op($entity)->save();
+    $entity_subqueue->$op($entity);
+
+    // Run validation.
+    $violations = $entity_subqueue->validate();
+
+    // Save subqueue.
+    if (count($violations) === 0) {
+      $entity_subqueue->save();
+    }
 
     // If the request is via AJAX, return the rendered list as JSON.
-    if ($request->request->get('js')) {
+    if ($this->isAjax()) {
       $route_match = RouteMatch::createFromRequest($request);
-      $list = $this->subqueueListForEntity($route_match, $entity->getEntityTypeId(), $entity);
+      $content = $this->subqueueListForEntity($route_match, $entity->getEntityTypeId(), $entity);
+
+      // Also display the validation errors if there are any.
+      if (count($violations)) {
+        $content['errors'] = [
+          '#theme' => 'status_messages',
+          '#message_list' => [
+            'error' => [$this->t('The operation could not be performed for the following reasons:')]
+          ],
+          '#status_headings' => [
+            'error' => $this->t('Error message'),
+          ],
+          '#weight' => -10,
+        ];
+        foreach ($violations as $violation) {
+          $content['errors']['#message_list']['error'][] = $violation->getMessage();
+        }
+      }
+
       $response = new AjaxResponse();
-      $response->addCommand(new ReplaceCommand('#entity-subqueue-list', $list));
+      $response->addCommand(new ReplaceCommand('#entity-subqueue-list', $content));
       return $response;
     }
 
@@ -209,39 +267,10 @@ class EntityQueueUIController extends ControllerBase {
     /** @var \Drupal\Core\Entity\EntityInterface $entity */
     $entity = $route_match->getParameter($entity_type_id);
 
-    if ($this->getAvailableQueuesForEntity($entity)) {
+    if ($entity && $this->entityQueueRepository->getAvailableQueuesForEntity($entity)) {
       return AccessResult::allowed();
     }
 
     return AccessResult::forbidden();
   }
-
-  /**
-   * Gets a list of queues which can hold this entity.
-   *
-   * @param \Drupal\Core\Entity\EntityInterface $entity
-   *   An entity object.
-   *
-   * @return \Drupal\entityqueue\EntityQueueInterface[]
-   *   An array of entity queues which can hold this entity.
-   */
-  protected function getAvailableQueuesForEntity(EntityInterface $entity) {
-    $storage = $this->entityTypeManager()->getStorage('entity_queue');
-
-    $queue_ids = $storage->getQuery()
-      ->condition('entity_settings.target_type', $entity->getEntityTypeId(), '=')
-      ->condition('status', TRUE)
-      ->execute();
-
-    $queues = $storage->loadMultiple($queue_ids);
-    $queues = array_filter($queues, function ($queue) use ($entity) {
-      /** @var \Drupal\entityqueue\EntityQueueInterface $queue */
-      $queue_settings = $queue->getEntitySettings();
-      $target_bundles = &$queue_settings['handler_settings']['target_bundles'];
-      return ($target_bundles === NULL || in_array($entity->bundle(), $target_bundles, TRUE));
-    });
-
-    return $queues;
-  }
-
 }

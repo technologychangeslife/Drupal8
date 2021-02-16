@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInite0aca722a3d53b63d5bfdf34d305fcfc
+class ComposerStaticInit083b7a2d0cf0674aa60232717533e854
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -57,6 +57,7 @@ class ComposerStaticInite0aca722a3d53b63d5bfdf34d305fcfc
         ),
         'W' => 
         array (
+            'WhiteHat101\\Crypt\\' => 18,
             'Webmozart\\PathUtil\\' => 19,
             'Webmozart\\Assert\\' => 17,
         ),
@@ -180,6 +181,7 @@ class ComposerStaticInite0aca722a3d53b63d5bfdf34d305fcfc
         ),
         'D' => 
         array (
+            'Drupal\\sophron\\' => 15,
             'Drupal\\Driver\\' => 14,
             'Drupal\\Core\\' => 12,
             'Drupal\\Console\\Core\\' => 20,
@@ -224,6 +226,10 @@ class ComposerStaticInite0aca722a3d53b63d5bfdf34d305fcfc
         'XdgBaseDir\\' => 
         array (
             0 => __DIR__ . '/..' . '/dnoegel/php-xdg-base-dir/src',
+        ),
+        'WhiteHat101\\Crypt\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/whitehat101/apr1-md5/src',
         ),
         'Webmozart\\PathUtil\\' => 
         array (
@@ -574,6 +580,10 @@ class ComposerStaticInite0aca722a3d53b63d5bfdf34d305fcfc
         array (
             0 => __DIR__ . '/..' . '/egulias/email-validator/EmailValidator',
         ),
+        'Drupal\\sophron\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/docroot/modules/contrib/sophron/src',
+        ),
         'Drupal\\Driver\\' => 
         array (
             0 => __DIR__ . '/../..' . '/docroot/drivers/lib/Drupal/Driver',
@@ -759,11 +769,11 @@ class ComposerStaticInite0aca722a3d53b63d5bfdf34d305fcfc
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInite0aca722a3d53b63d5bfdf34d305fcfc::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInite0aca722a3d53b63d5bfdf34d305fcfc::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInite0aca722a3d53b63d5bfdf34d305fcfc::$prefixesPsr0;
-            $loader->fallbackDirsPsr0 = ComposerStaticInite0aca722a3d53b63d5bfdf34d305fcfc::$fallbackDirsPsr0;
-            $loader->classMap = ComposerStaticInite0aca722a3d53b63d5bfdf34d305fcfc::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit083b7a2d0cf0674aa60232717533e854::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit083b7a2d0cf0674aa60232717533e854::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit083b7a2d0cf0674aa60232717533e854::$prefixesPsr0;
+            $loader->fallbackDirsPsr0 = ComposerStaticInit083b7a2d0cf0674aa60232717533e854::$fallbackDirsPsr0;
+            $loader->classMap = ComposerStaticInit083b7a2d0cf0674aa60232717533e854::$classMap;
 
         }, null, ClassLoader::class);
     }

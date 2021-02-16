@@ -1,0 +1,824 @@
+{#
+/**
+ * @file
+ * Custom page template.
+ */
+#}
+{#
+{{ dump(field_country) }}
+{% for node in field_country %}
+{{ node.flag }}
+{{ node.name }}
+{{ node.work_life_balance_heading }}
+{{ node.work_life_balance_content }}
+{{ node.compensation_recog_heading }}
+{{ node.compensation_recog_content }}
+{% endfor %}
+HEALTH AND WELLNESS BENEFITS = {{ dump(health_wellness_benefits_content_array) }}
+{% for node in health_wellness_benefits_content_array %}
+{{ node.node_id }}
+{{ node.country }}
+{{ node.title }}
+{{ node.intro }}
+{% endfor %}
+Career Benefits = {{ dump(career_benefits_content_array) }}
+{% for node in career_benefits_content_array %}
+{{ node.node_id }}
+{{ node.country }}
+{{ node.title }}
+{{ node.intro }}
+{% endfor %}
+#}
+<div id="page-wrapper" class="page-wrapper">
+  {% if page.menus %}
+    <div id="menus" class="page-wrapper__menus">
+      {{ page.menus }}
+    </div>
+  {% endif %}
+  <div id="page" class="page-wrapper__page">
+    {% if page.top_bar or page.header %}
+      <header id="header" class="fullscreen-banner site-header clearfix">
+        {{ page.top_bar }}
+        {# page.header #}
+        <!--<div class="banner-text">
+            <span> Benefits </span>
+            <p class="banner-learnmore"> At Cubic, the entrepreneurial spirit of our employees drive market-leading<br /> innovative technologies of the future.<br /><br />
+                <a href="#main-content"> Learn More  <i class="arrow right"></i></a>
+            </p>
+        </div>-->
+		
+		<div class="region region-header">
+    
+
+		<!-- THEME DEBUG -->
+		<!-- THEME HOOK: 'block' -->
+		<!-- FILE NAME SUGGESTIONS:
+		* block--page--page-title-block.html.twig
+		* block--cubic-page-title.html.twig
+		x block--page-title-block.html.twig
+		* block--core.html.twig
+		* block.html.twig
+		-->
+		<!-- BEGIN OUTPUT from 'themes/custom/cubic/templates/blocks/block--page-title-block.html.twig' -->
+		<div id="block-cubic-page-title" class="block block-core block-page-title-block">
+		<div class="page-header-background" style="background-image: url(&quot;{{ benefits_hero_image_url }}?itok=KbMOCKpH&quot;)">
+
+
+		<!-- THEME DEBUG -->
+		<!-- THEME HOOK: 'image_style' -->
+		<!-- BEGIN OUTPUT from 'core/themes/classy/templates/field/image-style.html.twig' -->
+
+
+		<!-- THEME DEBUG -->
+		<!-- THEME HOOK: 'image' -->
+		<!-- BEGIN OUTPUT from 'core/themes/classy/templates/field/image.html.twig' -->
+		<img src="/sites/default/files/styles/hero_compressed/public/2018-08/adult-beautiful-business-864994.jpg?itok=KbMOCKpH" width="1600" height="1067" alt="Careers" typeof="foaf:Image" class="image-style-hero-compressed">
+
+		<!-- END OUTPUT from 'core/themes/classy/templates/field/image.html.twig' -->
+
+
+
+		<!-- END OUTPUT from 'core/themes/classy/templates/field/image-style.html.twig' -->
+
+
+		</div>
+		<div class="page-title-content">
+
+
+
+
+
+		<!-- THEME DEBUG -->
+		<!-- THEME HOOK: 'page_title' -->
+		<!-- BEGIN OUTPUT from 'core/themes/classy/templates/content/page-title.html.twig' -->
+
+		<h1 class="page-title">
+
+		<!-- THEME DEBUG -->
+		<!-- THEME HOOK: 'field' -->
+		<!-- FILE NAME SUGGESTIONS:
+		* field--extra-wrappers--node--title--page.html.twig
+		* field--extra-wrappers--node--title.html.twig
+		* field--extra-wrappers--node--page.html.twig
+		* field--extra-wrappers--title.html.twig
+		* field--extra-wrappers--string.html.twig
+		* field--node--title--page.html.twig
+		x field--node--title.html.twig
+		* field--node--page.html.twig
+		* field--title.html.twig
+		* field--string.html.twig
+		* field.html.twig
+		-->
+		<!-- BEGIN OUTPUT from 'core/themes/classy/templates/field/field--node--title.html.twig' -->
+		<span property="schema:name" class="field field--name-title field--type-string field--label-hidden">
+		{% autoescape false %}
+		{{ benefits_title }}
+		{% endautoescape %}
+		</span>
+
+		<!-- END OUTPUT from 'core/themes/classy/templates/field/field--node--title.html.twig' -->
+
+		</h1>
+
+
+		<!-- END OUTPUT from 'core/themes/classy/templates/content/page-title.html.twig' -->
+
+
+		<div class="intro">
+
+
+		<!-- THEME DEBUG -->
+		<!-- THEME HOOK: 'field' -->
+		<!-- FILE NAME SUGGESTIONS:
+		* field--extra-wrappers--node--body--page.html.twig
+		* field--extra-wrappers--node--body.html.twig
+		* field--extra-wrappers--node--page.html.twig
+		* field--extra-wrappers--body.html.twig
+		* field--extra-wrappers--text-with-summary.html.twig
+		* field--node--body--page.html.twig
+		* field--node--body.html.twig
+		* field--node--page.html.twig
+		* field--body.html.twig
+		x field--text-with-summary.html.twig
+		* field.html.twig
+		-->
+		<!-- BEGIN OUTPUT from 'core/themes/classy/templates/field/field--text-with-summary.html.twig' -->
+
+		<div class="clearfix text-formatted field field--name-body field--type-text-with-summary field--label-hidden field__item">
+		<p>
+		{% autoescape false %}
+		{{ benefits_intro }}
+		{% endautoescape %}
+		</p>
+
+		<p><a href="#main-content">Learn More</a></p>
+		</div>
+
+		<!-- END OUTPUT from 'core/themes/classy/templates/field/field--text-with-summary.html.twig' -->
+
+
+		</div>
+		</div>
+		</div>
+
+		<!-- END OUTPUT from 'themes/custom/cubic/templates/blocks/block--page-title-block.html.twig' -->
+
+
+		</div>
+		
+      </header>
+    {% endif %}
+    <div id="main-wrapper" class="main-wrapper clearfix">
+      <main id="content" class="main-wrapper__content">
+        <section class="clearfix">
+          <a id="main-content" tabindex="-1"></a>
+          
+		 {# Benefits section #}
+		 <section class="career-Health section-padding">
+        <div class="container">
+            <div class="header-title text-center pb-30"> <span>{{ field_health_and_well_heading }}</span></div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="text-right h-100 d-flex justify-content-center flex-column">
+                        <div class="sub-header-title"> {{ field_top_heading_left }} </div>
+                        <p> {% autoescape false %} {{ field_top_description_left }} {% endautoescape %} </p>
+                        <div class="sub-header-title mt-4"> {{ field_bottom_heading_left }} </div>
+                        <p> {% autoescape false %} {{ field_bottom_description_left }} {% endautoescape %} </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <img class="card-img-top" src="{{ field_health_and_wellness_image_url }}" alt="">
+                </div>
+                <div class="col-md-4">
+                    <div class="h-100 d-flex justify-content-center flex-column">
+                        <div class="sub-header-title"> {{ field_top_heading_right }} </div>
+                        <p> {% autoescape false %} {{ field_top_description_right }} {% endautoescape %}</p>
+                        <div class="sub-header-title mt-4"> {{ field_bottom_heading_right }} </div>
+                        <p> {% autoescape false %} {{ field_bottom_description_right }} {% endautoescape %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Benefits - Section -->
+    <section class="location-benifits section-padding">
+        <div class="container">
+            <div class="header-title text-center pb-30"> <span>Location Benefits</span></div>
+            <div class="row justify-content-center">
+                <div class="col-md-9">
+            <div class="row hover-effect justify-content-center">
+                <div class="col-md-2">
+                    <a href="#uk" class="" data-toggle="modal"> <img class="card-img-top" src="https://stage.cubic.com/sites/default/files/2020-10/uk.png" alt="">
+                        <p> UK </p>
+                    </a>
+                </div>
+                <!--<div class="col-md-2">
+                   <a href="#germany" class="" data-toggle="modal"> <img class="card-img-top" src="https://stage.cubic.com/sites/default/files/2020-10/germany.png" alt="">
+                        <p> Germany </p>
+                    </a>
+                </div>-->
+                <div class="col-md-2">
+                    <a href="#aus" class="" data-toggle="modal"> <img class="card-img-top" src="https://stage.cubic.com/sites/default/files/2020-10/aus.png" alt="">
+                        <p> Australia </p>
+                    </a>
+                </div>
+                <div class="col-md-2">
+                    <a href="#india" class="" data-toggle="modal"> <img class="card-img-top" src="https://stage.cubic.com/sites/default/files/2020-11/india.png" alt="">
+                        <p> India </p>
+                    </a>
+                </div>
+                 <div class="col-md-2">
+                    <a href="#ireland" class="" data-toggle="modal"> <img class="card-img-top" src="https://stage.cubic.com/sites/default/files/2020-11/ireland.jpg" alt="">
+                        <p> Ireland </p>
+                    </a>
+                </div>
+            </div>
+             </div>
+            </div>
+        </div>
+    </section>
+
+<!------ Modal popup for the location flags -------->
+
+      <!-- USA Benefits -->
+    <div id="usa" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    USA Benefits
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                </div>
+                <div class="modal-body">
+                    <div class="content h-100 d-flex justify-content-center flex-column" style="min-height: 300px;">
+                        <div class="text-center">
+                            <p> Sample Text here </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- USA Benefits End -->
+    <!-- Germany Benefits -->
+    <div id="germany" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Germany Benefits
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                </div>
+                <div class="modal-body">
+                    <div class="content h-100 d-flex justify-content-center flex-column" style="min-height: 300px;">
+                        <div class="text-center">
+                            <p> Sample Text here </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Germany Benefits End-->
+    <!-- UK Benefits -->
+    <div id="uk" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    UK Benefits
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> x </button>
+                </div>
+                <div class="modal-body px-4 benefits-modal uk-modal">
+                    <div class="sub-header-title text-left"> <span>Your Career  </span></div>
+                    <div class="row box-shadow mb-4 career-benefits">
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title"> Digital Learning Library </h5>
+                                    <p class="card-text">You’ll have access to over 1,000 on demand e-learning courses to assist you with skill sets you can develop to enhance your career.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Higher Education Support</h5>
+                                    <p class="card-text">Cubic provides a tuition reimbursement program.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Mentoring</h5>
+                                    <p class="card-text"> Want a mentor or looking to mentor others? Look no further as Cubic offers opportunities for both.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Individual Development Plans </h5>
+                                    <p class="card-text">An IDP at Cubic will help you track your personal career goals and share them with your manager to help you keep ahead of your career.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header-title text-left"> <span>Health and Well Being Benefits </span></div>
+                    <div class="row mb-4 box-shadow health-wellness">
+                        <div class="col-lg-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title"> Group Insurance </h5>
+                                    <p class="card-text">We regularly host events to raise money for a variety of charities.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Medical Cash plan</h5>
+                                    <p class="card-text">We have flexible work arrangements to help you manage all your commitments.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Health Assured EAP</h5>
+                                    <p class="card-text"> We host virtual global events to learn about each others’ cultural heritages.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header-title text-left"> <span>Working Here</span></div>
+                    <div class="row box-shadow mb-4 worklife-balance-benefits">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <ul class="mb-0">
+                                        <li>Paid and Flexible Time Off. </li>
+                                        <li><b>Flexible Work Schedule:</b> Several of Cubic’s divisions have flexible work patterns.</li>
+                                        <li><b>Group Income Protection Insurance:</b> Provides income in the event of long-term sickness.</li>
+                                        <li><b>Corporate Social Responsibility:</b> Cubic aims to provide a sustainable environment and always is ahead to support community services.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header-title text-left"> <span>Rewards</span></div>
+                    <div class="row box-shadow mb-4 compensation">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p> <b>Recognition:</b><br /> We have a comprehensive recognition program to reward you for going the extra mile.</p>
+                                    <p class="mb-0"> <b>Pension:</b><br /> Employees joining the pension scheme will receive contributions from the company.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- UK Benefits End -->
+    <!-- Australia Benefits -->
+    <div id="aus" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Australia Benefits
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> x </button>
+                </div>
+                <div class="modal-body px-4  benefits-modal aus-modal">
+                    <div class="sub-header-title text-left"> <span>Your Career  </span></div>
+                    <div class="row box-shadow mb-4 career-benefits">
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title"> Mentorship </h5>
+                                    <p class="card-text">Cubes have the opportunity to look for a mentor or to become a mentor.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Internal Mobility</h5>
+                                    <p class="card-text">You’ll have access to all our opportunities globally.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Individual Development Plans</h5>
+                                    <p class="card-text">One size doesn’t fit all. An IDP at Cubic will help you track your personal career goals and share them with your manager to help you keep ahead of your career.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Higher Education Support</h5>
+                                    <p class="card-text">Our Education Assistance Policy will help you achieve your career goals.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header-title text-left"> <span>Working Here</span></div>
+                    <div class="row box-shadow mb-4 worklife-balance-benefits">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <ul class="mb-0">
+                                        <li><b>Charitable Events:</b> We regularly host events to raise money for a variety of charities.</li>
+                                        <li><b>Flexibility Options:</b> We have flexible work arrangements to help you manage all your commitments.</li>
+                                        <li><b>Cultural Events:</b> We host virtual global events to learn about each others’ cultural heritages.</li>
+                                        <li><b>Employee Resource Groups:</b> We have a variety of Employee Resource Groups that you can get involved with.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="sub-header-title text-left"> <span>Rewards</span></div>
+                    <div class="row box-shadow mb-4 compensation">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p> <b>Recognition:</b><br /> We have a comprehensive recognition program to reward you for going the extra mile.</p>
+                                    <p class="mb-0"> <b>Superannuation:</b><br /> Permanent employees can enjoy enhanced company contributions to their Superannuation fund.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Australia Benefits End -->
+    <!-- India Benefits -->
+    <div id="india" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    India Benefits
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> x </button>
+                </div>
+                <div class="modal-body px-4  benefits-modal india-modal">
+                    <div class="sub-header-title text-left"> <span>Your Career  </span></div>
+                    <div class="row box-shadow mb-4 career-benefits">
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title"> Digital Learning Library </h5>
+                                    <p class="card-text"> You’ll have access to over 1,000 on demand e-learning courses to assist you with skill sets you can develop to enhance your career.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Higher Education Support</h5>
+                                    <p class="card-text">Cubic provides a tuition reimbursement program.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Individual Development Plans </h5>
+                                    <p class="card-text">An IDP at Cubic will help you track your personal career goals and share them with your manager to help you keep ahead of your career.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Mentoring</h5>
+                                    <p class="card-text"> Want a mentor or looking to mentor others? Look no further as Cubic offers opportunities for both.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header-title text-left"> <span> Health and Well Being Benefits </span></div>
+                    <div class="row mb-4 box-shadow health-wellness">
+                        <div class="col-lg-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title"> Group Medical Coverage</h5>
+                                    <p class="card-text"> Provides Insurance coverage to you and your family for expenses related to hospitalization due to illness, disease, or injuries.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Group Personal Accident Insurance</h5>
+                                    <p class="card-text">Cubic provides a tuition reimbursement program.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Group Term Life Insurance</h5>
+                                    <p class="card-text">Provides insurance coverage to you for terminal illness and loss of life. </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">COVID-19 Insurance Coverage</h5>
+                                    <p class="card-text">Provides Insurance coverage to you in case of hospitalization due to COVID-19. </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Access EAP</h5>
+                                    <p class="card-text">Our Employee Assistance Program is there for you and your immediate family to help you through any challenges you may face, personally or professionally.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="sub-header-title text-left"> <span>Working Here</span></div>
+                    <div class="row box-shadow mb-4 worklife-balance-benefits">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <ul>
+                                        <li>Paid and Flexible Time Off.</li>
+                                        <li><b>Leaves:</b> You will be entitled to the below leaves: Privilege Leave - 15 days/per year Casual Leaves - 12 days/per year. </li>
+                                        <li><b>Special Leaves:</b> Paternity Leave - 2 weeks, Maternity Leave - 26 weeks, Bereavement Leave - 3 days, Year-end Vacation - last week of December.</li>
+                                        <li><b>Holidays:</b> Cubic provides 10 holidays per year in a combination fixed & optional holiday as per Telangana State Gazette. </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header-title text-left"> <span>Rewards </span></div>
+                    <div class="row box-shadow mb-4 compensation">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p> <b>Recognition:</b><br /> We have a comprehensive recognition program to reward you for going the extra mile. </p>
+                                    <p> <b>Retirement Benefit:</b><br /> Gratuity shall be payable to an employee after they have rendered five years of continuous service with Cubic India at the time of separation from the company. </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Indian Benefits End-->
+    <!-- Ireland Benefits -->
+    <div id="ireland" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    Ireland Benefits
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"> x </button>
+                </div>
+                <div class="modal-body px-4  benefits-modal ireland-modal">
+                    <div class="sub-header-title text-left"> <span>Your Career  </span></div>
+                    <div class="row box-shadow mb-4 career-benefits">
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title"> Digital Learning Library </h5>
+                                    <p class="card-text">You’ll have access to over 1,000 on demand e-learning courses to assist you with skill sets you can develop to enhance your career.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Higher Education Support</h5>
+                                    <p class="card-text">Cubic provides a tuition reimbursement program.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Mentoring</h5>
+                                    <p class="card-text">Want a mentor or looking to mentor others? Look no further as Cubic offers opportunities for both.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Individual Development Plans</h5>
+                                    <p class="card-text">Our Education Assistance Policy will help you achieve your career goals.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header-title text-left"> <span>Health and Well Being Benefits </span></div>
+                    <div class="row mb-4 box-shadow health-wellness">
+                        <div class="col-lg-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title"> Group Insurance </h5>
+                                    <p class="card-text">We regularly host events to raise money for a variety of charities.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title">Medical Cash Plan</h5>
+                                    <p class="card-text">We have flexible work arrangements to help you manage all your commitments.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Health Assured EAPs</h5>
+                                    <p class="card-text"> We host virtual global events to learn about each other’s cultural heritages.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="sub-header-title text-left"> <span>Working Here</span></div>
+                    <div class="row box-shadow mb-4 worklife-balance-benefits">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <ul>
+                                        <li><b>Paid and Flexible Time Off:</b> Having a work life balance is important. At Cubic, we understand the need to take time for vacation to spend time with your family and other personal needs.</li>
+                                        <li><b>Flexible Work Schedule:</b> Several of Cubic's divisions have flexible work patterns Check with your local HR.</li>
+                                        <li><b>Corporate Social Responsibility:</b> Cubic aims to provide a sustainable environment and always is ahead to support community services.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sub-header-title text-left"> <span>Rewards </span></div>
+                    <div class="row box-shadow mb-4 compensation">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <p> <b>Recognition: </b><br /> We have a comprehensive recognition program to reward you for going the extra mile. Get recognized, earn rewards and more.</p>
+                                    <p> <b>Pension: </b><br /> Employees joining the pension scheme will receive contributions from the company.</p>
+                                    <p> <b>Talent Referral: </b><br /> At Cubic we understand our best assets are you, our people! If you refer someone for an open position at the company, you could receive a referral bonus.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Ireland Benefits End-->
+    
+<!------ End of modal popup for the location flags -------->
+
+
+    <!-- Work Life Balance - Section -->
+    <section class="worklife-balance section-padding">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-6">
+                    <img class="card-img-top" src="https://stage.cubic.com/sites/default/files/2020-10/pexels-fauxels-3184302.jpg" alt="">
+                </div>
+                <div class="col-md-6">
+                    <div class="h-100 d-flex justify-content-center flex-column">
+                        <div class="header-title mb-4"> Work Life Balance </div>
+
+                        <div class="sub-header-title"> Wellness Programs </div>
+                        <p>Whether it’s a walking challenge or site sponsored physical challenge; we have you covered. </p>
+
+                        <div class="sub-header-title mt-4"> EAP </div>
+                        <p>Majority of our sites offer an Employee Assistance Program to provide you with additional support when you need it.</p>
+                    </div>
+                </div>
+            </div>
+    </section>
+
+    <!-- Your Career - Section -->
+    <section class="career-your-career section-padding">
+        <div class="container-fluid">
+            <div class="header-title text-center pb-50"> <span>Your Career </span></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="h-100 d-flex justify-content-center flex-column px-50">
+
+                        <div class="sub-header-title"> Mentorship </div>
+                        <p>Want a mentor or looking to mentor others? Look no further as Cubic has opportunities for both. </p>
+
+                        <div class="sub-header-title mt-2"> Individual Development Plans </div>
+                        <p>One size doesn’t fit all. An IDP at Cubic will help you track your personal career goals and share them with your manager to help you keep ahead of your career.</p>
+
+                        <div class="sub-header-title mt-2"> Global Opportunities </div>
+                        <p>You’ll have access to all of our opportunities globally.</p>
+
+                        <div class="sub-header-title mt-2"> Performance Reviews </div>
+                        <p>You will have regular performance reviews to help you develop in your career.</p>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img class="card-img-top" src="https://stage.cubic.com/sites/default/files/2020-10/pexels-thiszun-%28follow-me-on-ig-fb%29-1116302.jpg" alt="">
+                </div>
+            </div>
+    </section>
+
+    <!-- compensation Recognition - Section -->
+    <section class="career-compensation section-padding">
+        <div class="container">
+            <div class="header-title text-center pb-50"> <span>{% autoescape false %} {{ field_common_comp_recog_heading }} {% endautoescape %}</span></div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card mb-4">
+                        <img class="card-img-top" src="{{ field_recognition_image_url }}" alt="">
+                        <div class="card-body text-center h-100 d-flex justify-content-center flex-column">
+                            <h5 class="card-title">{% autoescape false %} {{ field_recognition_heading }} {% endautoescape %}</h5>
+                            <p class="card-text">{% autoescape false %} {{ field_recognition_content }} {% endautoescape %}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body text-center h-100 d-flex justify-content-center flex-column">
+                            <h5 class="card-title">{% autoescape false %} {{ field_employee_stock_heading }} {% endautoescape %}</h5>
+                            <p class="card-text">{% autoescape false %} {{ field_employee_stock_content }} {% endautoescape %}</p>
+                        </div>
+                        <img class="card-img-top" src="{{ field_employee_stock_image_url }}" alt="">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mb-4">
+                        <img class="card-img-top" src="{{ field_retirement_benefits_image_url }}" alt="">
+                        <div class="card-body text-center h-100 d-flex justify-content-center flex-column">
+                            <h5 class="card-title">{% autoescape false %}{{ field_retirement_heading }} {% endautoescape %}</h5>
+                            <p class="card-text">{% autoescape false %} {{ field_retirement_content }} {% endautoescape %}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mb-4">
+                        <div class="card-body text-center h-100 d-flex justify-content-center flex-column">
+                            <h5 class="card-title">{% autoescape false %} {{ field_talent_referral_heading }} {% endautoescape %}</h5>
+                            <p class="card-text">{% autoescape false %} {{ field_talent_referral_content }} {% endautoescape %}</p>
+                        </div>
+                        <img class="card-img-top" src="{{ field_talent_referral_image_url }}" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {{ page.content }}
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		 
+      </main>
+    </div>
+    {% if page.above_footer %}
+      <div id="above-footer" class="page-wrapper__above-footer">
+        {{ page.above_footer }}
+      </div>
+    {% endif %}
+    <footer class="site-footer">
+      <div class="site-footer__logo">
+        {% include directory ~ '/_/img/logo-full.svg' %}
+      </div>
+      {% if page.footer_first or page.footer_second or page.footer_third or page.footer_fourth %}
+        <div class="site-footer__top clearfix">
+          {{ page.footer_first }}
+          {{ page.footer_second }}
+          {{ page.footer_third }}
+          {{ page.footer_fourth }}
+        </div>
+      {% endif %}
+      {% if page.footer_bottom %}
+        <div class="site-footer__bottom clearfix">
+          {{ page.footer_bottom }}
+        </div>
+      {% endif %}
+    </footer>
+  </div>
+</div>

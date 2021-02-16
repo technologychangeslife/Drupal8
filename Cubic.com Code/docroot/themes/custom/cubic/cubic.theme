@@ -167,7 +167,7 @@ function cubic_preprocess_page(array &$vars) {
   $current_path = \Drupal::service('path.current')->getPath();
   $result = \Drupal::service('path.alias_manager')->getAliasByPath($current_path);
   $vars['current_path'] = $result;
-  if($result == '/new-careers-page' || $result == '/careers-cubic-wd') {
+  if($result == '/new-careers-page' || $result == '/careers-cubic-wd' || $result == '/careers') {
 	$node = _cubic_get_current_node();
 	$node_id = \Drupal::routeMatch()->getRawParameter('node');
 	$paragraph = $node->field_paragraphs->getValue();
@@ -346,7 +346,9 @@ function cubic_preprocess_page(array &$vars) {
 	}
   }
   
-  if($result == '/benefits-cubic') {
+  //print "URL Alias = ".$result;
+  if($result == '/careers/benefits-cubic' || $result == '/new-careers-page/benefits-cubic' || $result == '/benefits-cubic') {
+	//print "Inside at line 351";
 	$node = _cubic_get_current_node();
 	$node_id = \Drupal::routeMatch()->getRawParameter('node');
 	$paragraph = $node->field_paragraphs->getValue();
@@ -370,7 +372,7 @@ function cubic_preprocess_page(array &$vars) {
 	foreach ( $paragraph as $element ) {
 	  $p = \Drupal\paragraphs\Entity\Paragraph::load( $element['target_id'] );
 	  if (!empty($p) && $p instanceof Paragraph) {
-		   "Name of paragraph = ".$p->bundle(); //print '<br>';
+		   //print "Name of paragraph = ".$p->bundle(); //print '<br>';
 		   
 		   /*************Coding for Benefits Components - Health And Wellness***************/
 		  if ($p->bundle() == 'benefits_components_health_and_w') {
@@ -388,7 +390,7 @@ function cubic_preprocess_page(array &$vars) {
 		  /*************Coding for Benefits Components - Location Benefits Country Wise***************/
 		  if ($p->bundle() == 'benefits_countrywise_reference') {
 		  $benefits_countrywise_reference = $p->field_benefits_contrywise->referencedEntities();
-		  print "benefits_countrywise_reference = ".count($benefits_countrywise_reference);
+		  "benefits_countrywise_reference = ".count($benefits_countrywise_reference);
 		  $c = 0;
 		  $i = 0;
 		  $x = 0;
@@ -617,7 +619,12 @@ function cubic_theme_suggestions_page_alter(array &$suggestions, array $vars) {
    }
 
     if ($node = Drupal::routeMatch()->getParameter('node')) {
-      $content_type = $node->bundle();
+	  $current_path = Drupal::service('path.current')->getPath();
+	  $findme   = 'revisions';
+	  $pos = strpos($current_path, $findme);
+	  if ($pos === false) {
+        $content_type = $node->bundle();
+	  }
       $suggestions[] = 'page__'.$content_type;
 
         // for "page" content type only
